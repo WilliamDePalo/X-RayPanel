@@ -119,6 +119,7 @@ DashboardGaugeStyle {
                     ctx.stroke();
                 }
             }
+
         }
 
         Image {

@@ -53,6 +53,7 @@ import QtQuick.Window 2.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Extras 1.4
+import Qt.labs.calendar 1.0
 
 Window {
     id: root
@@ -61,6 +62,8 @@ Window {
     height: 600
 
     color: "#161616"
+    //property alias elementAnchorsverticalCenterOffset: element.anchors.verticalCenterOffset
+    property alias fuelGaugeY: fuelGauge.y
     title: "X-Ray Manager"
 
     ValueSource {
@@ -71,26 +74,36 @@ Window {
     // our height is never greater than our width.
     Item {
         id: container
-        width: root.width
-        height: Math.min(root.width, root.height)
-        anchors.centerIn: parent
+        anchors.fill: parent
+        // Math.min(root.width, root.height)
         Column{
             id: gaugeColumn
-            spacing: container.width * 0.02
-            anchors.centerIn: parent
+            anchors.fill: parent
+            spacing: 0
 
             Item {
-                width: height
-                height: container.height * 0.25 - gaugeColumn.spacing
-                anchors.verticalCenter: parent.top
+                id: element
+                x: 700
+                y: 0
+                width: 150
+                height: 300
+                anchors.horizontalCenterOffset: 380
+                clip: false
+                transformOrigin: Item.Right
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
 
                 CircularGauge {
                     id: fuelGauge
+                    x: 0
                     value: valueSource.fuoco
                     maximumValue: 1
-                    y: parent.height / 2 - height / 2 - container.height * 0.01
                     width: parent.width
                     height: parent.height * 0.7
+                    stepSize: 1
+                    anchors.right: parent.right
+                    anchors.rightMargin: 0
+                    visible: true
 
                     style: IconGaugeStyle {
                         id: fuelGaugeStyle
@@ -111,10 +124,18 @@ Window {
                     maximumValue: 11
                     width: parent.width
                     height: parent.height * 0.7
+                    minimumValue: 1
+                    anchors.right: parent.right
+                    anchors.rightMargin: 0
+                    clip: false
                     y: parent.height / 2 + container.height * 0.01
 
                     style: IconGaugeStyle {
                         id: tempGaugeStyle
+                        halfGauge: true
+                        tickmarkStepSize: 1
+                        minorTickmarkInset: 1
+                        tickmarkCount: 1
 
                         icon: "qrc:/images/temperature-icon.png"
                         maxWarningColor: Qt.rgba(0.5, 0, 0, 1)
@@ -123,40 +144,55 @@ Window {
                             color: "white"
                             visible: styleData.value === 0 || styleData.value === 1
                             font.pixelSize: tempGaugeStyle.toPixels(0.225)
-                            text: styleData.value === 0 ? "min" : (styleData.value === 11 ? "max" : "")
+                            text: styleData.value === 0 ? "min" : (styleData.value === 2 ? "max" : "")
                         }
                     }
                 }
 
 
-                CircularGauge {
-                    id: speedometer
-                    value: valueSource.mA
-                    anchors.verticalCenter: parent.verticalCenter
-                    maximumValue: 700
-                    // We set the width to the height, because the height will always be
-                    // the more limited factor. Also, all circular controls letterbox
-                    // their contents to ensure that they remain circular. However, we
-                    // don't want to extra space on the left and right of our gauges,
-                    // because they're laid out horizontally, and that would create
-                    // large horizontal gaps between gauges on wide screens.
-                    width: height
-                    height: container.height * 0.5
+            }
 
-                    style: DashboardGaugeStyle {}
-                }
+            CircularGauge {
+                id: tachometer
+                x: 0
+                y: 0
+                width: 290
+                height: 290
+                anchors.horizontalCenterOffset: -150
+                anchors.verticalCenterOffset: 145
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 0
+                anchors.horizontalCenter: parent.horizontalCenter//0.25 - gaugeRow.spacing
+                value: valueSource.kv
+                maximumValue: 50
+                anchors.verticalCenter: parent.verticalCenter
 
-                CircularGauge {
-                    id: tachometer
-                    width: height
-                    height: container.height * 0.5//0.25 - gaugeRow.spacing
-                    value: valueSource.kv
-                    maximumValue: 50
-                    anchors.verticalCenter: parent.verticalCenter
+                style: TachometerStyle {}
+            }
 
-                    style: TachometerStyle {}
-                }
+            CircularGauge {
+                id: speedometer
+                width: 290
+                value: valueSource.mA
+                anchors.verticalCenter: parent.verticalCenter
+                maximumValue: 700
+                // We set the width to the height, because the height will always be
+                // the more limited factor. Also, all circular controls letterbox
+                // their contents to ensure that they remain circular. However, we
+                // don't want to extra space on the left and right of our gauges,
+                // because they're laid out horizontally, and that would create
+                // large horizontal gaps between gauges on wide screens.
+                height: 290
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                anchors.horizontalCenterOffset: -150
+                anchors.verticalCenterOffset: -145
+                opacity: 1
+                visible: true
+                anchors.horizontalCenter: parent.horizontalCenter
+                transformOrigin: Item.Top
 
+                style: DashboardGaugeStyle {}
             }
         }
         Row {
@@ -169,6 +205,7 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 width: height
                 height: container.height * 0.1 - gaugeRow.spacing
+                visible: false
 
                 direction: Qt.LeftArrow
                 on: valueSource.turnSignal == Qt.LeftArrow
@@ -182,6 +219,7 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 width: height
                 height: container.height * 0.1 - gaugeRow.spacing
+                visible: false
 
                 direction: Qt.RightArrow
                 on: valueSource.turnSignal == Qt.RightArrow
@@ -190,3 +228,10 @@ Window {
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:13;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
+D{i:16;invisible:true}D{i:17;invisible:true}D{i:15;invisible:true}D{i:2;anchors_height:600;anchors_width:1024}
+}
+##^##*/

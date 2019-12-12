@@ -144,6 +144,7 @@ CircularGaugeStyle {
 
         property real xCenter: width / 2
         property real yCenter: height / 2
+        contextType: qsTr("")
 
         onPaint: {
             var ctx = getContext("2d");
