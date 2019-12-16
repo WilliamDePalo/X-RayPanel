@@ -49,6 +49,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+//import master
 //! [0]
 Item {
     id: valueSource
@@ -334,3 +335,9 @@ Item {
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

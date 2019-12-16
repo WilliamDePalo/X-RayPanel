@@ -9,5 +9,12 @@
         <file>qml/TachometerStyle.qml</file>
         <file>qml/TurnIndicator.qml</file>
         <file>qml/ValueSource.qml</file>
+        <file>qml/PressAndHoldButton.qml</file>
+        <file>images/minus-sign.png</file>
+        <file>images/plus-sign.png</file>
+        <file>qml/Button.qml</file>
+        <file>images/green.png</file>
+        <file>images/red.png</file>
+        <file>images/yellow.png</file>
     </qresource>
 </RCC>

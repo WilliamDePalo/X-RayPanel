@@ -1,9 +1,10 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2012 Denis Shienkov <denis.shienkov@gmail.com>
+** Copyright (C) 2012 Laszlo Papp <lpapp@kde.org>
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the QtSerialPort module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -48,29 +49,62 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlApplicationEngine>
-#include <QtGui/QFont>
-#include <QtGui/QFontDatabase>
+#ifndef SETTINGSDIALOG_H
+#define SETTINGSDIALOG_H
 
+#include <QDialog>
+#include <QSerialPort>
 
-#include <QQmlContext>
+QT_BEGIN_NAMESPACE
 
-//#include "serial/mainwindow.h"
-
-//#include <QApplication>
-
-int main(int argc, char *argv[])
-{
-
-
-    QGuiApplication app(argc, argv);
-
-    QFontDatabase::addApplicationFont(":/fonts/DejaVuSans.ttf");
-    app.setFont(QFont("DejaVu Sans"));
-
-    QQmlApplicationEngine engine(QUrl("qrc:/qml/dashboard.qml"));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-    return app.exec();
+namespace Ui {
+class SettingsDialog;
 }
+
+class QIntValidator;
+
+QT_END_NAMESPACE
+
+class SettingsDialog : public QDialog
+{
+    Q_OBJECT
+
+public:
+    struct Settings {
+        QString name;
+        qint32 baudRate;
+        QString stringBaudRate;
+        QSerialPort::DataBits dataBits;
+        QString stringDataBits;
+        QSerialPort::Parity parity;
+        QString stringParity;
+        QSerialPort::StopBits stopBits;
+        QString stringStopBits;
+        QSerialPort::FlowControl flowControl;
+        QString stringFlowControl;
+        bool localEchoEnabled;
+    };
+
+    explicit SettingsDialog(QWidget *parent = nullptr);
+    ~SettingsDialog();
+
+    Settings settings() const;
+
+private slots:
+    void showPortInfo(int idx);
+    void apply();
+    void checkCustomBaudRatePolicy(int idx);
+    void checkCustomDevicePathPolicy(int idx);
+
+private:
+    void fillPortsParameters();
+    void fillPortsInfo();
+    void updateSettings();
+
+private:
+    Ui::SettingsDialog *m_ui = nullptr;
+    Settings m_currentSettings;
+    QIntValidator *m_intValidator = nullptr;
+};
+
+#endif // SETTINGSDIALOG_H

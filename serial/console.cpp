@@ -1,9 +1,10 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2012 Denis Shienkov <denis.shienkov@gmail.com>
+** Copyright (C) 2012 Laszlo Papp <lpapp@kde.org>
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the QtSerialPort module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -48,29 +49,61 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlApplicationEngine>
-#include <QtGui/QFont>
-#include <QtGui/QFontDatabase>
+#include "console.h"
 
+#include <QScrollBar>
 
-#include <QQmlContext>
-
-//#include "serial/mainwindow.h"
-
-//#include <QApplication>
-
-int main(int argc, char *argv[])
+Console::Console(QWidget *parent) :
+    QPlainTextEdit(parent)
 {
+    document()->setMaximumBlockCount(100);
+    QPalette p = palette();
+    p.setColor(QPalette::Base, Qt::black);
+    p.setColor(QPalette::Text, Qt::green);
+    setPalette(p);
+}
 
+void Console::putData(const QByteArray &data)
+{
+    insertPlainText(data);
 
-    QGuiApplication app(argc, argv);
+    QScrollBar *bar = verticalScrollBar();
+    bar->setValue(bar->maximum());
+}
 
-    QFontDatabase::addApplicationFont(":/fonts/DejaVuSans.ttf");
-    app.setFont(QFont("DejaVu Sans"));
+void Console::setLocalEchoEnabled(bool set)
+{
+    m_localEchoEnabled = set;
+}
 
-    QQmlApplicationEngine engine(QUrl("qrc:/qml/dashboard.qml"));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-    return app.exec();
+void Console::keyPressEvent(QKeyEvent *e)
+{
+    switch (e->key()) {
+    case Qt::Key_Backspace:
+    case Qt::Key_Left:
+    case Qt::Key_Right:
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+        break;
+    default:
+        if (m_localEchoEnabled)
+            QPlainTextEdit::keyPressEvent(e);
+        emit getData(e->text().toLocal8Bit());
+    }
+}
+
+void Console::mousePressEvent(QMouseEvent *e)
+{
+    Q_UNUSED(e)
+    setFocus();
+}
+
+void Console::mouseDoubleClickEvent(QMouseEvent *e)
+{
+    Q_UNUSED(e)
+}
+
+void Console::contextMenuEvent(QContextMenuEvent *e)
+{
+    Q_UNUSED(e)
 }

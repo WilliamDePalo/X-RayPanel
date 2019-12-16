@@ -1,9 +1,10 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2012 Denis Shienkov <denis.shienkov@gmail.com>
+** Copyright (C) 2012 Laszlo Papp <lpapp@kde.org>
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the QtSerialPort module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -48,29 +49,53 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlApplicationEngine>
-#include <QtGui/QFont>
-#include <QtGui/QFontDatabase>
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
+#include <QMainWindow>
+#include <QSerialPort>
 
-#include <QQmlContext>
+QT_BEGIN_NAMESPACE
 
-//#include "serial/mainwindow.h"
+class QLabel;
 
-//#include <QApplication>
-
-int main(int argc, char *argv[])
-{
-
-
-    QGuiApplication app(argc, argv);
-
-    QFontDatabase::addApplicationFont(":/fonts/DejaVuSans.ttf");
-    app.setFont(QFont("DejaVu Sans"));
-
-    QQmlApplicationEngine engine(QUrl("qrc:/qml/dashboard.qml"));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-    return app.exec();
+namespace Ui {
+class MainWindow;
 }
+
+QT_END_NAMESPACE
+
+class Console;
+class SettingsDialog;
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
+private slots:
+    void openSerialPort();
+    void closeSerialPort();
+    void about();
+    void writeData(const QByteArray &data);
+    void readData();
+
+    void handleError(QSerialPort::SerialPortError error);
+
+private:
+    void initActionsConnections();
+
+private:
+    void showStatusMessage(const QString &message);
+
+    Ui::MainWindow *m_ui = nullptr;
+    QLabel *m_status = nullptr;
+    Console *m_console = nullptr;
+    SettingsDialog *m_settings = nullptr;
+    QSerialPort *m_serial = nullptr;
+};
+
+#endif // MAINWINDOW_H

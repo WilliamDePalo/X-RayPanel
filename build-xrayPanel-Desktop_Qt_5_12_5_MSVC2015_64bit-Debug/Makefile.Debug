@@ -164,13 +164,17 @@ compiler_rcc_clean:
 	-$(DEL_FILE) debug\qrc_xraypanel.cpp
 debug\qrc_xraypanel.cpp: ..\xraypanel.qrc \
 		C:\Qt\5.12.5\msvc2015_64\bin\rcc.exe \
+		..\qml\Button.qml \
 		..\qml\TurnIndicator.qml \
 		..\qml\dashboard.qml \
 		..\qml\IconGaugeStyle.qml \
 		..\qml\DashboardGaugeStyle.qml \
 		..\qml\TachometerStyle.qml \
 		..\qml\ValueSource.qml \
+		..\qml\PressAndHoldButton.qml \
+		..\images\plus-sign.png \
 		..\images\temperature-icon.png \
+		..\images\minus-sign.png \
 		..\images\fuel-icon.png \
 		..\fonts\DejaVuSans.ttf
 	C:\Qt\5.12.5\msvc2015_64\bin\rcc.exe -name xraypanel ..\xraypanel.qrc -o debug\qrc_xraypanel.cpp
@@ -294,7 +298,9 @@ debug\main.obj: ..\main.cpp C:\Qt\5.12.5\msvc2015_64\include\QtGui\QGuiApplicati
 		C:\Qt\5.12.5\msvc2015_64\include\QtGui\QFont \
 		C:\Qt\5.12.5\msvc2015_64\include\QtGui\qfont.h \
 		C:\Qt\5.12.5\msvc2015_64\include\QtGui\QFontDatabase \
-		C:\Qt\5.12.5\msvc2015_64\include\QtGui\qfontdatabase.h
+		C:\Qt\5.12.5\msvc2015_64\include\QtGui\qfontdatabase.h \
+		C:\Qt\5.12.5\msvc2015_64\include\QtQml\QQmlContext \
+		C:\Qt\5.12.5\msvc2015_64\include\QtQml\qqmlcontext.h
 
 debug\qrc_xraypanel.obj: debug\qrc_xraypanel.cpp 
 

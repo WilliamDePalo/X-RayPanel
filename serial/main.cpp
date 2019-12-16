@@ -1,9 +1,10 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2012 Denis Shienkov <denis.shienkov@gmail.com>
+** Copyright (C) 2012 Laszlo Papp <lpapp@kde.org>
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the QtSerialPort module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -48,29 +49,14 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlApplicationEngine>
-#include <QtGui/QFont>
-#include <QtGui/QFontDatabase>
+#include "mainwindow.h"
 
-
-#include <QQmlContext>
-
-//#include "serial/mainwindow.h"
-
-//#include <QApplication>
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
-
-
-    QGuiApplication app(argc, argv);
-
-    QFontDatabase::addApplicationFont(":/fonts/DejaVuSans.ttf");
-    app.setFont(QFont("DejaVu Sans"));
-
-    QQmlApplicationEngine engine(QUrl("qrc:/qml/dashboard.qml"));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-    return app.exec();
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
 }

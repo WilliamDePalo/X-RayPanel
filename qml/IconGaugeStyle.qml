@@ -57,16 +57,16 @@ DashboardGaugeStyle {
     minimumValueAngle: -60
     maximumValueAngle: 60
     tickmarkStepSize: 1
-    labelStepSize: 0.25
+    labelStepSize: 1
     labelInset: toPixels(-0.25)
-    minorTickmarkCount: 0
+    minorTickmarkCount: 3
 
     needleLength: toPixels(0.85)
     needleBaseWidth: toPixels(0.08)
     needleTipWidth: toPixels(0.03)
 
     halfGauge: true
-
+    property string textt: ""
     property string icon: ""
     property color minWarningColor: "transparent"
     property color maxWarningColor: "transparent"
@@ -119,9 +119,19 @@ DashboardGaugeStyle {
                     ctx.stroke();
                 }
             }
+        }
+        Text {
+            id: focusText
+            text: textt
+            color: "white"
+            font.pixelSize: toPixels(0.2)
+            horizontalAlignment: Text.AlignRight
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.verticalCenter
+            anchors.topMargin: toPixels(0.1)
+
 
         }
-
         Image {
             source: icon
             anchors.bottom: parent.verticalCenter

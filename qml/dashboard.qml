@@ -74,6 +74,10 @@ Window {
     // our height is never greater than our width.
     Item {
         id: container
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.topMargin: 0
         anchors.fill: parent
         // Math.min(root.width, root.height)
         Column{
@@ -107,7 +111,11 @@ Window {
 
                     style: IconGaugeStyle {
                         id: fuelGaugeStyle
-
+                        Text {
+                            id: textSec
+                            text: qsTr("SEC")
+                        }
+                        textt: "FOCUS"
                         icon: "qrc:/images/fuel-icon.png"
                         minWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
@@ -120,11 +128,13 @@ Window {
                     }
                 }
                 CircularGauge {
-                    value: valueSource.secondi
-                    maximumValue: 11
+                    id: tempGauge
+                    maximumValue: 12
                     width: parent.width
                     height: parent.height * 0.7
-                    minimumValue: 1
+                    value: 0
+                    stepSize: 11
+                    minimumValue: 0
                     anchors.right: parent.right
                     anchors.rightMargin: 0
                     clip: false
@@ -133,18 +143,20 @@ Window {
                     style: IconGaugeStyle {
                         id: tempGaugeStyle
                         halfGauge: true
-                        tickmarkStepSize: 1
-                        minorTickmarkInset: 1
-                        tickmarkCount: 1
+                        tickmarkStepSize: 3
+                        minorTickmarkInset: 2
+                        minorTickmarkCount: 2
 
-                        icon: "qrc:/images/temperature-icon.png"
+   //                     tickmarkCount: 1
+                       textt: "MSEC"
+                       icon: "qrc:/images/temperature-icon.png"
                         maxWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
                         tickmarkLabel: Text {
                             color: "white"
-                            visible: styleData.value === 0 || styleData.value === 1
+                            visible: styleData.value === 0 || styleData.value === 11
                             font.pixelSize: tempGaugeStyle.toPixels(0.225)
-                            text: styleData.value === 0 ? "min" : (styleData.value === 2 ? "max" : "")
+                            text: styleData.value === 0 ? "min" : (styleData.value === 11 ? "max" : "")
                         }
                     }
                 }
@@ -156,8 +168,8 @@ Window {
                 id: tachometer
                 x: 0
                 y: 0
-                width: 290
-                height: 290
+                width: 285
+                height: 285
                 anchors.horizontalCenterOffset: -150
                 anchors.verticalCenterOffset: 145
                 anchors.bottom: parent.bottom
@@ -168,11 +180,52 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
 
                 style: TachometerStyle {}
+
+                PressAndHoldButton {
+                    id: kvPlus
+                    width: 18
+                    height: 23
+                    antialiasing: true
+                    anchors.left: tachometer.right
+                    anchors.leftMargin: -350
+                    anchors.verticalCenterOffset: -30
+                    anchors.verticalCenter: tachometer.verticalCenter
+                    z: 1.63
+                    scale: 3.859
+                    transformOrigin: Item.Top
+                    sourceSize.height: 24
+                    fillMode: Image.Stretch
+                    sourceSize.width: 23
+                    pressed: false
+                    source: "../images/plus-sign.png"
+                    onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
+            }
+                PressAndHoldButton {
+                    id: kvMinus
+                    width: 18
+                    height: 23
+                    antialiasing: true
+                    anchors.rightMargin: -350
+                    anchors.right:  tachometer.left
+                    anchors.leftMargin: -350
+                    anchors.verticalCenterOffset: -30
+                    anchors.verticalCenter: tachometer.verticalCenter
+                    z: 1.63
+                    scale: 3.859
+                    transformOrigin: Item.Top
+                    sourceSize.height: 24
+                    fillMode: Image.Stretch
+                    sourceSize.width: 23
+                    pressed: false
+                    source: "../images/minus-sign.png"
+                    onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
+            }
+
             }
 
             CircularGauge {
                 id: speedometer
-                width: 290
+                width: 285
                 value: valueSource.mA
                 anchors.verticalCenter: parent.verticalCenter
                 maximumValue: 700
@@ -182,7 +235,7 @@ Window {
                 // don't want to extra space on the left and right of our gauges,
                 // because they're laid out horizontally, and that would create
                 // large horizontal gaps between gauges on wide screens.
-                height: 290
+                height: 285
                 anchors.top: parent.top
                 anchors.topMargin: 0
                 anchors.horizontalCenterOffset: -150
@@ -192,9 +245,51 @@ Window {
                 anchors.horizontalCenter: parent.horizontalCenter
                 transformOrigin: Item.Top
 
-                style: DashboardGaugeStyle {}
+                style: DashboardGaugeStyle {}              
             }
+            anchors.centerIn: parent
+          //  spacing: 10
+
+            PressAndHoldButton {
+                id: mAPlus
+                width: 18
+                height: 23
+                antialiasing: true
+                anchors.left: speedometer.right
+                anchors.leftMargin: -350
+                anchors.verticalCenterOffset: -30
+                anchors.verticalCenter: speedometer.verticalCenter
+                z: 1.63
+                scale: 3.859
+                transformOrigin: Item.Top
+                sourceSize.height: 24
+                fillMode: Image.Stretch
+                sourceSize.width: 23
+                pressed: false
+                source: "../images/plus-sign.png"
+                onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
         }
+            PressAndHoldButton {
+                id: mAMinus
+                width: 18
+                height: 23
+                antialiasing: true
+                anchors.rightMargin: -350
+                anchors.right:  speedometer.left
+                anchors.leftMargin: -350
+                anchors.verticalCenterOffset: -30
+                anchors.verticalCenter: speedometer.verticalCenter
+                z: 1.63
+                scale: 3.859
+                transformOrigin: Item.Top
+                sourceSize.height: 24
+                fillMode: Image.Stretch
+                sourceSize.width: 23
+                pressed: false
+                source: "../images/minus-sign.png"
+                onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
+        }
+
         Row {
             id: gaugeRow
             spacing: container.width * 0.02
@@ -226,12 +321,124 @@ Window {
             }
 
         }
+
+        PressAndHoldButton {
+            id: speedPlus1
+            width: 18
+            height: 23
+            transformOrigin: Item.Top
+            anchors.left: speedometer.right
+            anchors.verticalCenterOffset: -30
+            anchors.leftMargin: -350
+            sourceSize.width: 23
+            sourceSize.height: 24
+            z: 1.63
+            anchors.verticalCenter: speedometer.verticalCenter
+            scale: 3.859
+            source: "../images/plus-sign.png"
+            pressed: false
+            fillMode: Image.Stretch
+        }
+        }
     }
+    Image {
+        id: lights
+
+       // property alias button: button
+        anchors.verticalCenterOffset: -238
+        anchors.right: parent.right
+        anchors.rightMargin: 100
+        anchors.verticalCenter: parent.verticalCenter
+        //   property TrafficLightStateMachine stateMachine
+
+    //    source: "background.png"
+
+        Row {
+            y: -28
+            width: 246
+            height: 64
+            anchors.horizontalCenterOffset: -71
+            spacing: 20
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Image {
+                id: redLight
+                opacity: 0.2
+                source: "../images/red.png"
+            }
+
+            Image {
+                id: yellowLight
+                opacity: 0.2
+                source: "../images/yellow.png"
+            }
+
+            Image {
+                id: greenLight
+                opacity: 0.2
+                source: "../images/green.png"
+            }
+        }
+
+ /*       Button {
+            id: button
+
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 20
+        //    source: "pause.png"
+        }*/
+
+        states: [
+            State {
+                name: "Red"
+                when: stateMachine.red
+
+                PropertyChanges {
+                    target: redLight
+                    opacity: 1
+                }
+            },
+            State {
+                name: "RedGoingGreen"
+                when: stateMachine.redGoingGreen
+
+                PropertyChanges {
+                    target: redLight
+                    opacity: 1
+                }
+
+                PropertyChanges {
+                    target: yellowLight
+                    opacity: 1
+                }
+            },
+            State {
+                name: "Yellow"
+                when: stateMachine.yellow || stateMachine.blinking
+
+                PropertyChanges {
+                    target: yellowLight
+                    opacity: 1
+                }
+            },
+            State {
+                name: "Green"
+                when: stateMachine.green
+
+                PropertyChanges {
+                    target: greenLight
+                    opacity: 1
+                }
+            }
+        ]
+    }
+
 }
 
 /*##^##
 Designer {
-    D{i:13;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
-D{i:16;invisible:true}D{i:17;invisible:true}D{i:15;invisible:true}D{i:2;anchors_height:600;anchors_width:1024}
+    D{i:14;anchors_y:0}D{i:16;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
+D{i:2;anchors_height:600;anchors_width:1024}
 }
 ##^##*/

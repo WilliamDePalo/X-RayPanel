@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the examples of the Qt Toolkit.
@@ -48,29 +48,45 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlApplicationEngine>
-#include <QtGui/QFont>
-#include <QtGui/QFontDatabase>
+import QtQuick 2.0
 
+Image {
+    id: container
 
-#include <QQmlContext>
+    property int repeatDelay: 300
+    property int repeatDuration: 75
+    property bool pressed: false
 
-//#include "serial/mainwindow.h"
+    signal clicked
 
-//#include <QApplication>
+    scale: pressed ? 0.9 : 1
 
-int main(int argc, char *argv[])
-{
+    function release() {
+        autoRepeatClicks.stop()
+        container.pressed = false
+    }
 
+    SequentialAnimation on pressed {
+        id: autoRepeatClicks
+        running: false
 
-    QGuiApplication app(argc, argv);
+        PropertyAction { target: container; property: "pressed"; value: true }
+        ScriptAction { script: container.clicked() }
+        PauseAnimation { duration: repeatDelay }
 
-    QFontDatabase::addApplicationFont(":/fonts/DejaVuSans.ttf");
-    app.setFont(QFont("DejaVu Sans"));
+        SequentialAnimation {
+            loops: Animation.Infinite
+            ScriptAction { script: container.clicked() }
+            PauseAnimation { duration: repeatDuration }
+        }
+    }
 
-    QQmlApplicationEngine engine(QUrl("qrc:/qml/dashboard.qml"));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-    return app.exec();
+    MouseArea {
+        anchors.fill: parent
+
+        onPressed: autoRepeatClicks.start()
+        onReleased: container.release()
+        onCanceled: container.release()
+    }
 }
+

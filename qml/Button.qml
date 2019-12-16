@@ -3,7 +3,7 @@
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the QtScxml module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -48,29 +48,15 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlApplicationEngine>
-#include <QtGui/QFont>
-#include <QtGui/QFontDatabase>
+import QtQuick 2.5
 
+Image {
+    id: button
+    signal clicked
 
-#include <QQmlContext>
-
-//#include "serial/mainwindow.h"
-
-//#include <QApplication>
-
-int main(int argc, char *argv[])
-{
-
-
-    QGuiApplication app(argc, argv);
-
-    QFontDatabase::addApplicationFont(":/fonts/DejaVuSans.ttf");
-    app.setFont(QFont("DejaVu Sans"));
-
-    QQmlApplicationEngine engine(QUrl("qrc:/qml/dashboard.qml"));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-    return app.exec();
+    MouseArea {
+        id: mouse
+        anchors.fill: parent
+        onClicked: button.clicked()
+    }
 }

@@ -1,9 +1,10 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2012 Denis Shienkov <denis.shienkov@gmail.com>
+** Copyright (C) 2012 Laszlo Papp <lpapp@kde.org>
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the QtSerialPort module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -48,29 +49,32 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlApplicationEngine>
-#include <QtGui/QFont>
-#include <QtGui/QFontDatabase>
+#ifndef CONSOLE_H
+#define CONSOLE_H
 
+#include <QPlainTextEdit>
 
-#include <QQmlContext>
-
-//#include "serial/mainwindow.h"
-
-//#include <QApplication>
-
-int main(int argc, char *argv[])
+class Console : public QPlainTextEdit
 {
+    Q_OBJECT
 
+signals:
+    void getData(const QByteArray &data);
 
-    QGuiApplication app(argc, argv);
+public:
+    explicit Console(QWidget *parent = nullptr);
 
-    QFontDatabase::addApplicationFont(":/fonts/DejaVuSans.ttf");
-    app.setFont(QFont("DejaVu Sans"));
+    void putData(const QByteArray &data);
+    void setLocalEchoEnabled(bool set);
 
-    QQmlApplicationEngine engine(QUrl("qrc:/qml/dashboard.qml"));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-    return app.exec();
-}
+protected:
+    void keyPressEvent(QKeyEvent *e) override;
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseDoubleClickEvent(QMouseEvent *e) override;
+    void contextMenuEvent(QContextMenuEvent *e) override;
+
+private:
+    bool m_localEchoEnabled = false;
+};
+
+#endif // CONSOLE_H
