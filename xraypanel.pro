@@ -2,12 +2,14 @@ TEMPLATE = app
 TARGET = xrayPanel
 INCLUDEPATH += .
 QT += quick
+QT += widgets
+QT += serialport
 
 SOURCES += \
     main.cpp \
     serial/console.cpp \
-    serial/main.cpp \
     serial/mainwindow.cpp \
+    serial/serial_main.cpp \
     serial/settingsdialog.cpp
 
 RESOURCES += \

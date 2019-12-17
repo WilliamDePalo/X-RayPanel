@@ -405,7 +405,7 @@ Window {
                 layer.samples: 2
                 isDefault: false
                 checkable: false
-                onClicked: new SettingsDialog
+                onClicked:  m_settings(new SettingsDialog)
 
 
                 style:ButtonStyle{
