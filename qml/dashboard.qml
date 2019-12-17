@@ -62,6 +62,7 @@ Window {
     height: 600
 
     color: "#161616"
+    property alias yellowButtonIconSource: yellowButton.iconSource
     //property alias elementAnchorsverticalCenterOffset: element.anchors.verticalCenterOffset
     property alias fuelGaugeY: fuelGauge.y
     title: "X-Ray Manager"
@@ -82,6 +83,7 @@ Window {
         // Math.min(root.width, root.height)
         Column{
             id: gaugeColumn
+            rotation: 0
             anchors.fill: parent
             spacing: 0
 
@@ -354,31 +356,130 @@ Window {
     //    source: "background.png"
 
         Row {
-            y: -28
-            width: 246
-            height: 64
-            anchors.horizontalCenterOffset: -71
+            id:rowLights
+            y: -35
+            width: 171
+            height: 41
+            anchors.horizontalCenterOffset: -129
             spacing: 20
             anchors.horizontalCenter: parent.horizontalCenter
 
             Image {
                 id: redLight
-                opacity: 0.2
+                width: 38
+                height: 38
+                opacity: 1
                 source: "../images/red.png"
+
             }
 
-            Image {
+ /*           Image {
                 id: yellowLight
-                opacity: 0.2
+                width: 38
+                height: 38
+                opacity: 1
                 source: "../images/yellow.png"
-            }
+            }*/
+            Button {
+                id: yellowButton
+                x: 0
+                y: 0
+                width: 38
+                height: 38
+                antialiasing: true
+                smooth: false
+                iconSource: ""
+                activeFocusOnPress: false
+                enabled: true
+                layer.wrapMode: ShaderEffectSource.ClampToEdge
+                layer.textureSize.height: 0
+                layer.mipmap: false
+                layer.format: ShaderEffectSource.RGBA
+                anchors.horizontalCenter: parent.horizontalCenter
+                scale: 1
+                layer.enabled: false
+                clip: false
+                visible: true
+                layer.textureSize.width: 0
+                layer.textureMirroring: ShaderEffectSource.NoMirroring
+                layer.samples: 2
+                isDefault: false
+                checkable: false
+                onClicked: new SettingsDialog
 
+
+                style:ButtonStyle{
+
+                    background:Rectangle{
+                        antialiasing: true
+                        color: control.pressed ? "#d1d1d1" : control.hovered ? "#666" : "transparent"
+                        border.color: "transparent"
+                        radius: height/2
+                        border.width: 1
+                    }
+
+            /*       background:Image {
+                        id: myRoundButton
+                        width: 38
+                        height: 38
+                        scale: -4.402
+                        anchors.fill: parent
+                        source: "../images/yellow.png"
+                        clip: false
+                        sourceSize.height: 0
+                        sourceSize.width: 0
+                    //    verticalTileMode: BorderImage.Round
+                     //   horizontalTileMode: BorderImage.Round
+
+                    }*/
+
+
+
+                }
+
+
+                opacity: 1
+                Image {
+                    id: btnyellImage
+                    x: 0
+                    y: 0
+                    width: 38
+                    height: 38
+                    visible: true
+                    rotation: 180
+                    sourceSize.height: 0
+                    sourceSize.width: 0
+                    fillMode: Image.Stretch
+                    anchors.rightMargin: 0
+                    anchors.bottomMargin: 0
+                    anchors.leftMargin: 0
+                    anchors.topMargin: 0
+                    scale: 1
+                    anchors.fill: parent
+                    source: "../images/yellow.png"
+                }
+
+              }
             Image {
                 id: greenLight
+                x: 0
+                width: 38
+                height: 38
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                visible: true
                 opacity: 0.2
                 source: "../images/green.png"
             }
+
+
+
+         //            style:Image{
+         //                id: yellowLight
+         //                source: "../images/yellow.png"
+               //      }
         }
+
 
  /*       Button {
             id: button
@@ -387,7 +488,7 @@ Window {
             anchors.bottom: parent.bottom
             anchors.margins: 20
         //    source: "pause.png"
-        }*/
+        }
 
         states: [
             State {
@@ -431,7 +532,7 @@ Window {
                     opacity: 1
                 }
             }
-        ]
+        ]*/
     }
 
 }

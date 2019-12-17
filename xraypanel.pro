@@ -4,7 +4,11 @@ INCLUDEPATH += .
 QT += quick
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    serial/console.cpp \
+    serial/main.cpp \
+    serial/mainwindow.cpp \
+    serial/settingsdialog.cpp
 
 RESOURCES += \
     xraypanel.qrc
@@ -19,3 +23,12 @@ OTHER_FILES += \
 
 target.path = ./quickcontrols/extras/dashboard
 INSTALLS += target
+
+FORMS += \
+    serial/mainwindow.ui \
+    serial/settingsdialog.ui
+
+HEADERS += \
+    serial/console.h \
+    serial/mainwindow.h \
+    serial/settingsdialog.h
