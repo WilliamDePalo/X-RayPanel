@@ -16,5 +16,6 @@
         <file>images/green.png</file>
         <file>images/red.png</file>
         <file>images/yellow.png</file>
+        <file>qml/Page1.qml</file>
     </qresource>
 </RCC>

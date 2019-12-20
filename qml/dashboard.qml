@@ -47,13 +47,13 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.2
 import QtQuick.Window 2.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Extras 1.4
 import Qt.labs.calendar 1.0
+import QtQuick 2.7
 
 Window {
     id: root
@@ -405,8 +405,10 @@ Window {
                 layer.samples: 2
                 isDefault: false
                 checkable: false
-                onClicked:  m_settings(new SettingsDialog)
+                onClicked:  {
 
+
+                }
 
                 style:ButtonStyle{
 
@@ -533,6 +535,44 @@ Window {
                 }
             }
         ]*/
+    }
+    Column {
+        x: 754
+
+        y: 78
+
+        Label{
+
+            text: qsTr("Serial port: ")
+        }
+
+        ComboBox {
+
+            id: serialPorts
+            width: 100
+            model: portsNameModel
+
+        }
+
+        Label {
+
+            text: qsTr("Baud: ")
+        }
+
+        ComboBox {
+
+            id: baudRate
+            width: 100
+            model: baudsModel
+
+        }
+
+        Button {
+
+            id: connectBtn
+            text: qsTr("Connect")
+
+        }
     }
 
 }

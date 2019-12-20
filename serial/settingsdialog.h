@@ -55,6 +55,26 @@
 #include <QDialog>
 #include <QSerialPort>
 
+
+#include <QObject>
+#include <QSerialPortInfo>
+#include <QVariant>
+
+class SerialPortManager : public QObject
+{
+    Q_OBJECT
+public:
+    Q_INVOKABLE static QVariant availablePorts() {
+        QList<QSerialPortInfo> portsAvailable = QSerialPortInfo::availablePorts();
+        QStringList names_PortsAvailable;
+        for(const QSerialPortInfo& portInfo : portsAvailable) {
+            names_PortsAvailable<<portInfo.portName();
+        }
+        return QVariant::fromValue(names_PortsAvailable);
+    }
+};
+
+
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
@@ -85,7 +105,7 @@ public:
         bool localEchoEnabled;
     };
 
-    explicit SettingsDialog(QWidget *parent = nullptr);
+    explicit SettingsDialog(/*QWidget *parent = nullptr*/);
     ~SettingsDialog();
 
     Settings settings() const;
