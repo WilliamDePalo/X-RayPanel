@@ -625,7 +625,7 @@ Window {
         Connections {
 
             target: serialTerminal
-
+            property real tmp :0
             onGetData: {
                 if((data[0] ==="F")&&            // gestione fuoco
                         (data[1]==="O"))
@@ -635,10 +635,19 @@ Window {
                     else
                         valueSource.fuoco = true
                 }
+                if ((data[0] ==="K")&&            // gestione kV
+                    (data[1]==="V"))
+                {
+
+                    tmp = (data[2]-"0")*100;
+                    tmp += (data[3]-"0")*10;
+                    tmp += data[4]-"0";
+                    valueSource.kv = tmp;
+                }
                 else
                 {
                     // errore connessione
-                    errorMessage.text ===qsTr("Connection ERROR !!!")
+                    errorMessage.text = qsTr("Connection ERROR !!!")
                     errorMessage.visible = true
                 }
 
@@ -700,7 +709,7 @@ Window {
         width: 380
         height: 60
         color: "#ef5050"
-        text: qsTr("text")
+        text: qsTr("Error Example !!")
         visible: false
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 48
@@ -725,7 +734,7 @@ Window {
 /*##^##
 Designer {
     D{i:14;anchors_y:0}D{i:16;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
-D{i:31;anchors_x:-95;anchors_y:4}D{i:30;anchors_width:100;anchors_y:0}D{i:32;anchors_x:-50;anchors_y:35}
+D{i:31;anchors_x:"-95";anchors_y:4}D{i:30;anchors_width:100;anchors_y:0}D{i:32;anchors_x:"-50";anchors_y:35}
 D{i:33;anchors_y:0}D{i:34;anchors_y:0}D{i:35;anchors_y:0}D{i:36;anchors_width:100;anchors_y:40}
 D{i:2;anchors_height:600;anchors_width:1024}
 }

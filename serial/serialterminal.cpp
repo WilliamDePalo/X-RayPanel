@@ -74,11 +74,17 @@ bool SerialTerminal::getConnectionStatusSlot(){
 
 void SerialTerminal::readFromSerialPort(){
    unsigned char idx = 0;
+   unsigned char idToSend = 0;
    unsigned char  cksm = 0;
   QByteArray toSend;
    QString data;
+
+
   //  if (serialPort->canReadLine()){
-        QByteArray rcvByte = serialPort->readAll();          
+        QByteArray rcvByte = serialPort->readAll();
+        // gestione pacchetti spezzati
+        while (serialPort->waitForReadyRead(500)) // se aspetto meno di 500 milli
+                rcvByte.append(serialPort->readAll());
         // gestione ricezione comandi multipli
         do{
             while (rcvByte[idx].operator char() != static_cast<char>(0x03)&&
@@ -92,19 +98,23 @@ void SerialTerminal::readFromSerialPort(){
                     else
                         valueSource.fuoco = true
                 }*/
-                toSend[idx] = rcvByte[idx];
-                cksm+=(rcvByte[idx].operator char() & 0xff);
-                idx++;
+                toSend[idToSend++] = rcvByte[idx];
+                cksm+=(rcvByte[idx].operator char() & 0xff); //salvo checksum
+                idx++;  // avanzo di una posizione
             }
             cksm+=(rcvByte[idx].operator char() & 0xff); // salvo lo stop
             //controllo il cks
             idx++;
-            if (cksm != rcvByte[idx].operator char())
+            if ( rcvByte[idx].operator char() != static_cast<char> (cksm))
             {
                 toSend = "ERROR";
             }
+            cksm = 0;     // reinizializzo il cks
+            idToSend = 0;  // riposiziono l'ofset dei dati da salvare
+            idx++; // salto la posizione del chsum
             data= QString::fromLatin1(toSend);
             emit getData(data);
+            toSend.fill(0); //pulisco l'array
         }while ((idx)<=rcvByte.length());
 
 
