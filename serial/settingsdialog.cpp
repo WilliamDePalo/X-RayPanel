@@ -58,8 +58,8 @@
 
 static const char blankString[] = QT_TRANSLATE_NOOP("SettingsDialog", "N/A");
 
-SettingsDialog::SettingsDialog(QWidget *parent) :
-    QDialog(parent),
+SettingsDialog::SettingsDialog(/*QWidget *parent*/) :
+ //   QDialog(parent),
     m_ui(new Ui::SettingsDialog),
     m_intValidator(new QIntValidator(0, 4000000, this))
 {

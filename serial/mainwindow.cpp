@@ -92,6 +92,9 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 //! [3]
 
+
+
+
 MainWindow::~MainWindow()
 {
     delete m_settings;
