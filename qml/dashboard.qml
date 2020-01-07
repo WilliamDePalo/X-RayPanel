@@ -69,6 +69,7 @@ Window {
 
     ValueSource {
         id: valueSource
+        fuoco: false
     }
 
     // Dashboards are typically in a landscape orientation, so we need to ensure
@@ -83,6 +84,8 @@ Window {
         // Math.min(root.width, root.height)
         Column{
             id: gaugeColumn
+            visible: true
+            transformOrigin: Item.Center
             rotation: 0
             anchors.fill: parent
             spacing: 0
@@ -291,8 +294,24 @@ Window {
                 source: "../images/minus-sign.png"
                 onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
         }
-
-        Row {
+            PressAndHoldButton {
+                id: speedPlus1
+                width: 18
+                height: 23
+                transformOrigin: Item.Top
+                anchors.left: speedometer.right
+                anchors.verticalCenterOffset: -30
+                anchors.leftMargin: -350
+                sourceSize.width: 23
+                sourceSize.height: 24
+                z: 1.63
+                anchors.verticalCenter: speedometer.verticalCenter
+                scale: 3.859
+                source: "../images/plus-sign.png"
+                pressed: false
+                fillMode: Image.Stretch
+            }
+    /*    Row {
             id: gaugeRow
             spacing: container.width * 0.02
             anchors.centerIn: parent
@@ -322,27 +341,11 @@ Window {
                 on: valueSource.turnSignal == Qt.RightArrow
             }
 
+        }*/
+
+
         }
 
-        PressAndHoldButton {
-            id: speedPlus1
-            width: 18
-            height: 23
-            transformOrigin: Item.Top
-            anchors.left: speedometer.right
-            anchors.verticalCenterOffset: -30
-            anchors.leftMargin: -350
-            sourceSize.width: 23
-            sourceSize.height: 24
-            z: 1.63
-            anchors.verticalCenter: speedometer.verticalCenter
-            scale: 3.859
-            source: "../images/plus-sign.png"
-            pressed: false
-            fillMode: Image.Stretch
-        }
-        }
-    }
     Image {
         id: lights
 
@@ -360,7 +363,7 @@ Window {
             y: -35
             width: 171
             height: 41
-            anchors.horizontalCenterOffset: -129
+            anchors.horizontalCenterOffset: -20
             spacing: 20
             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -406,8 +409,13 @@ Window {
                 isDefault: false
                 checkable: false
                 onClicked:  {
-
-
+                    if (serialSettings.visible)
+                        serialSettings.visible = false
+                    else
+                    {
+                        baudRate.currentIndex = 8
+                        serialSettings.visible = true
+                    }
                 }
 
                 style:ButtonStyle{
@@ -470,7 +478,7 @@ Window {
                 anchors.right: parent.right
                 anchors.rightMargin: 0
                 visible: true
-                opacity: 0.2
+                opacity: 0.3
                 source: "../images/green.png"
             }
 
@@ -537,49 +545,188 @@ Window {
         ]*/
     }
     Column {
-        x: 754
+        id: serialSettings
+        anchors.top: parent.top
+        anchors.topMargin: 76
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 524
+        anchors.left: parent.left
+        anchors.leftMargin: 909
+        anchors.right: parent.right
+        anchors.rightMargin: 115
 
-        y: 78
+    visible: false
+    ComboBox {
+
+        id: serialPorts
+        anchors.right: parent.right
+        anchors.rightMargin: -100
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: -20
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        transformOrigin: Item.Top
+        model: portsNameModel
+
+
 
         Label{
+            color: "#fdfdfd"
 
             text: qsTr("Serial port: ")
+            anchors.right: parent.right
+            anchors.rightMargin: 139
+            anchors.left: parent.left
+            anchors.leftMargin: -95
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 3
+            anchors.top: parent.top
+            anchors.topMargin: 4
         }
+ }
 
-        ComboBox {
+    Label {
+        color: "#fbfbfb"
 
-            id: serialPorts
-            width: 100
-            model: portsNameModel
-
-        }
-
-        Label {
-
-            text: qsTr("Baud: ")
+        text: qsTr("Baud: ")
+        anchors.right: parent.right
+        anchors.rightMargin: 19
+        anchors.left: parent.left
+        anchors.leftMargin: -50
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: -48
+        anchors.top: parent.top
+        anchors.topMargin: 35
         }
 
         ComboBox {
 
             id: baudRate
             width: 100
+            anchors.right: parent.right
+            anchors.rightMargin: -100
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: -47
+            anchors.top: serialPorts.top
+            anchors.topMargin: 27
+            scale: 1
+            transformOrigin: Item.Center
+            clip: false
             model: baudsModel
 
+          //  Text: "19200"
         }
 
+
+        Connections {
+
+            target: serialTerminal
+
+            onGetData: {
+                if((data[0] ==="F")&&            // gestione fuoco
+                        (data[1]==="O"))
+                {
+                    if (data[2]==="0") // fuoco piccolo
+                        valueSource.fuoco = false
+                    else
+                        valueSource.fuoco = true
+                }
+                else
+                {
+                    // errore connessione
+                    errorMessage.text ===qsTr("Connection ERROR !!!")
+                    errorMessage.visible = true
+                }
+
+            }
+        }
         Button {
 
             id: connectBtn
             text: qsTr("Connect")
+            anchors.right: parent.right
+            anchors.rightMargin: -75
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: -79
+            anchors.top: baudRate.bottom
+            anchors.topMargin: 9
+            onClicked: {
 
+                if (serialTerminal.getConnectionStatusSlot() === false){
+                    serialTerminal.openSerialPortSlot(serialPorts.currentText,baudRate.currentText)
+
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        connectBtn.text = "Disconnect"
+                        serialSettings.visible = false
+                        greenLight.opacity = 1
+                        redLight.opacity = 0.3
+                        yellowButton.opacity = 0.3
+                        serialTerminal.writeToSerialPCIMode("ET1")
+                        serialTerminal.writeToSerialPCIMode("FO1")
+                        serialTerminal.writeToSerialPCIMode("KV075")
+                    }
+                }else {
+
+                    serialTerminal.closeSerialPortSlot();
+                    connectBtn.text = "Connect"
+                    greenLight.opacity = 0.3
+                    redLight.opacity = 1
+                    yellowButton.opacity = 1
+                    serialSettings.visible = false
+                }
+            }
         }
+    }    
+//    Timer {
+ //          interval: 50; running: true; repeat: true
+//           onTriggered:
+//           {
+//               if (serialTerminal.getConnectionStatusSlot() === true)
+ //               serialTerminal.readFromSerialPort();
+          //     time.text = Date().toString()
+//           }
+//       }
+    Text {
+        id: errorMessage
+        x: 592
+        y: 507
+        width: 380
+        height: 60
+        color: "#ef5050"
+        text: qsTr("text")
+        visible: false
+        horizontalAlignment: Text.AlignHCenter
+        font.pixelSize: 48
+        enabled: false
+        lineHeight: 1.2
+        fontSizeMode: Text.Fit
+        textFormat: Text.AutoText
+        style: Text.Normal
+        font.weight: Font.Light
+        verticalAlignment: Text.AlignVCenter
+        font.family: "Arial"
+        anchors.right: parent.right
+        anchors.rightMargin: 52
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 33
     }
 
+     //  Text { id: time }
+    }
 }
 
 /*##^##
 Designer {
     D{i:14;anchors_y:0}D{i:16;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
+D{i:31;anchors_x:-95;anchors_y:4}D{i:30;anchors_width:100;anchors_y:0}D{i:32;anchors_x:-50;anchors_y:35}
+D{i:33;anchors_y:0}D{i:34;anchors_y:0}D{i:35;anchors_y:0}D{i:36;anchors_width:100;anchors_y:40}
 D{i:2;anchors_height:600;anchors_width:1024}
 }
 ##^##*/

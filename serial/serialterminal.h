@@ -24,7 +24,7 @@ public slots:
     void readFromSerialPort();
     bool getConnectionStatusSlot();
     void closeSerialPortSlot();
-
+    void writeToSerialPCIMode(QString message);
 
 
 private:
@@ -36,7 +36,7 @@ private:
 signals:
 
     QString getData(QString data);
-
+    QByteArray getBinaryData(QByteArray rcvByte);
 
 
 };

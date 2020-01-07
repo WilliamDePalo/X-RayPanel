@@ -53,10 +53,10 @@ import QtQuick 2.2
 //! [0]
 Item {
     id: valueSource
-    property real kph: 0
-    property real rpm: 1
-    property real fuel: 0.85
-    property string gear: {
+  //  property real kph: 0
+ //   property real rpm: 1
+ //   property real fuel: 0.85
+/*    property string gear: {
         var g;
         if (kph == 0) {
             return "P";
@@ -76,16 +76,16 @@ Item {
         if (kph < 160) {
             return "5";
         }
-    }
-    property int turnSignal: gear == "P" && !start ? randomDirection() : -1
-    property real temperature: 0.6
+    }*/
+  //  property int turnSignal: gear == "P" && !start ? randomDirection() : -1
+ //   property real temperature: 0.6
     property bool start: true
     property real kv:30
     property real mA: 50
     property real secondi: 0.2
     property bool fuoco:false
 //! [0]
-
+/*
     function randomDirection() {
         return Math.random() > 0.5 ? Qt.LeftArrow : Qt.RightArrow;
     }
@@ -108,16 +108,19 @@ Item {
         SequentialAnimation {
             loops: Animation.Infinite
 //! [1]
+
+
             ParallelAnimation {
                 NumberAnimation {
                     target: valueSource
-                    property: "kph"
+                    property: "kv"
+
                     easing.type: Easing.InOutSine
                     from: 0
                     to: 30
                     duration: 3000
                 }
-                NumberAnimation {
+ /*               NumberAnimation {
                     target: valueSource
                     property: "rpm"
                     easing.type: Easing.InOutSine
@@ -333,7 +336,7 @@ Item {
                 duration: 5000
             }
         }
-    }
+    }*/
 }
 
 /*##^##

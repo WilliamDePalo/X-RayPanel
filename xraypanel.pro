@@ -8,9 +8,6 @@ QT += serialport
 
 SOURCES += \
     main.cpp \
-    serial/console.cpp \
-    serial/mainwindow.cpp \
-    serial/serial_main.cpp \
     serial/serialterminal.cpp \
     serial/settingsdialog.cpp
 
@@ -33,10 +30,7 @@ FORMS += \
     serial/settingsdialog.ui
 
 HEADERS += \
-    serial/console.h \
-    serial/mainwindow.h \
     serial/serialterminal.h \
     serial/settingsdialog.h
 
-DISTFILES += \
-    qml/Page1.qml
+DISTFILES +=
