@@ -70,6 +70,7 @@ Window {
     ValueSource {
         id: valueSource
         fuoco: false
+
     }
 
     // Dashboards are typically in a landscape orientation, so we need to ensure
@@ -78,7 +79,7 @@ Window {
         id: container
         anchors.rightMargin: 0
         anchors.bottomMargin: 0
-        anchors.leftMargin: 0
+        anchors.leftMargin: -175
         anchors.topMargin: 0
         anchors.fill: parent
         // Math.min(root.width, root.height)
@@ -96,7 +97,7 @@ Window {
                 y: 0
                 width: 150
                 height: 300
-                anchors.horizontalCenterOffset: 380
+                anchors.horizontalCenterOffset: 458
                 clip: false
                 transformOrigin: Item.Right
                 anchors.verticalCenter: parent.verticalCenter
@@ -152,9 +153,9 @@ Window {
                         minorTickmarkInset: 2
                         minorTickmarkCount: 2
 
-   //                     tickmarkCount: 1
-                       textt: "MSEC"
-                       icon: "qrc:/images/temperature-icon.png"
+                        //                     tickmarkCount: 1
+                        textt: "MSEC"
+                        icon: "qrc:/images/temperature-icon.png"
                         maxWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
                         tickmarkLabel: Text {
@@ -181,51 +182,61 @@ Window {
                 anchors.bottomMargin: 0
                 anchors.horizontalCenter: parent.horizontalCenter//0.25 - gaugeRow.spacing
                 value: valueSource.kv
-                maximumValue: 50
+                maximumValue: 125
+                minimumValue: 40
                 anchors.verticalCenter: parent.verticalCenter
 
                 style: TachometerStyle {}
-
-                PressAndHoldButton {
-                    id: kvPlus
-                    width: 18
-                    height: 23
-                    antialiasing: true
-                    anchors.left: tachometer.right
-                    anchors.leftMargin: -350
-                    anchors.verticalCenterOffset: -30
-                    anchors.verticalCenter: tachometer.verticalCenter
-                    z: 1.63
-                    scale: 3.859
-                    transformOrigin: Item.Top
-                    sourceSize.height: 24
-                    fillMode: Image.Stretch
-                    sourceSize.width: 23
-                    pressed: false
-                    source: "../images/plus-sign.png"
-                    onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
             }
-                PressAndHoldButton {
-                    id: kvMinus
-                    width: 18
-                    height: 23
-                    antialiasing: true
-                    anchors.rightMargin: -350
-                    anchors.right:  tachometer.left
-                    anchors.leftMargin: -350
-                    anchors.verticalCenterOffset: -30
-                    anchors.verticalCenter: tachometer.verticalCenter
-                    z: 1.63
-                    scale: 3.859
-                    transformOrigin: Item.Top
-                    sourceSize.height: 24
-                    fillMode: Image.Stretch
-                    sourceSize.width: 23
-                    pressed: false
-                    source: "../images/minus-sign.png"
-                    onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
+            PressAndHoldButton {
+                id: kvPlus
+                width: 18
+                height: 23
+                antialiasing: true
+                anchors.left: tachometer.right
+                anchors.leftMargin: -350
+                anchors.verticalCenterOffset: -30
+                anchors.verticalCenter: tachometer.verticalCenter
+                z: 1.63
+                scale: 3.859
+                transformOrigin: Item.Top
+                sourceSize.height: 24
+                fillMode: Image.Stretch
+                sourceSize.width: 23
+                pressed: false
+                source: "../images/plus-sign.png"
+                onClicked:
+                {
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        serialTerminal.writeToSerialPCIMode("KV+")
+                    }
+                }
             }
-
+            PressAndHoldButton {
+                id: kvMinus
+                width: 18
+                height: 23
+                antialiasing: true
+                anchors.rightMargin: -350
+                anchors.right:  tachometer.left
+                anchors.leftMargin: -350
+                anchors.verticalCenterOffset: -30
+                anchors.verticalCenter: tachometer.verticalCenter
+                z: 1.63
+                scale: 3.859
+                transformOrigin: Item.Top
+                sourceSize.height: 24
+                fillMode: Image.Stretch
+                sourceSize.width: 23
+                pressed: false
+                source: "../images/minus-sign.png"
+                onClicked:{
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        serialTerminal.writeToSerialPCIMode("KV-")
+                    }
+                }
             }
 
             CircularGauge {
@@ -233,7 +244,8 @@ Window {
                 width: 285
                 value: valueSource.mA
                 anchors.verticalCenter: parent.verticalCenter
-                maximumValue: 700
+                minimumValue: 80
+                maximumValue: 160
                 // We set the width to the height, because the height will always be
                 // the more limited factor. Also, all circular controls letterbox
                 // their contents to ensure that they remain circular. However, we
@@ -250,10 +262,10 @@ Window {
                 anchors.horizontalCenter: parent.horizontalCenter
                 transformOrigin: Item.Top
 
-                style: DashboardGaugeStyle {}              
+                style: DashboardGaugeStyle {}
             }
             anchors.centerIn: parent
-          //  spacing: 10
+            //  spacing: 10
 
             PressAndHoldButton {
                 id: mAPlus
@@ -272,8 +284,14 @@ Window {
                 sourceSize.width: 23
                 pressed: false
                 source: "../images/plus-sign.png"
-                onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
-        }
+                onClicked:{
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        serialTerminal.writeToSerialPCIMode("MA+")
+                    }
+                }
+
+            }
             PressAndHoldButton {
                 id: mAMinus
                 width: 18
@@ -292,9 +310,14 @@ Window {
                 sourceSize.width: 23
                 pressed: false
                 source: "../images/minus-sign.png"
-                onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
-        }
-            PressAndHoldButton {
+                onClicked:{
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        serialTerminal.writeToSerialPCIMode("MA-")
+                    }
+                }
+            }
+            /*           PressAndHoldButton {
                 id: speedPlus1
                 width: 18
                 height: 23
@@ -311,7 +334,7 @@ Window {
                 pressed: false
                 fillMode: Image.Stretch
             }
-    /*    Row {
+              Row {
             id: gaugeRow
             spacing: container.width * 0.02
             anchors.centerIn: parent
@@ -346,89 +369,89 @@ Window {
 
         }
 
-    Image {
-        id: lights
+        Image {
+            id: lights
 
-       // property alias button: button
-        anchors.verticalCenterOffset: -238
-        anchors.right: parent.right
-        anchors.rightMargin: 100
-        anchors.verticalCenter: parent.verticalCenter
-        //   property TrafficLightStateMachine stateMachine
+            // property alias button: button
+            anchors.verticalCenterOffset: -238
+            anchors.right: parent.right
+            anchors.rightMargin: 100
+            anchors.verticalCenter: parent.verticalCenter
+            //   property TrafficLightStateMachine stateMachine
 
-    //    source: "background.png"
+            //    source: "background.png"
 
-        Row {
-            id:rowLights
-            y: -35
-            width: 171
-            height: 41
-            anchors.horizontalCenterOffset: -20
-            spacing: 20
-            anchors.horizontalCenter: parent.horizontalCenter
+            Row {
+                id:rowLights
+                y: -35
+                width: 171
+                height: 41
+                anchors.horizontalCenterOffset: -20
+                spacing: 20
+                anchors.horizontalCenter: parent.horizontalCenter
 
-            Image {
-                id: redLight
-                width: 38
-                height: 38
-                opacity: 1
-                source: "../images/red.png"
+                Image {
+                    id: redLight
+                    width: 38
+                    height: 38
+                    opacity: 1
+                    source: "../images/red.png"
 
-            }
+                }
 
- /*           Image {
+                /*           Image {
                 id: yellowLight
                 width: 38
                 height: 38
                 opacity: 1
                 source: "../images/yellow.png"
             }*/
-            Button {
-                id: yellowButton
-                x: 0
-                y: 0
-                width: 38
-                height: 38
-                antialiasing: true
-                smooth: false
-                iconSource: ""
-                activeFocusOnPress: false
-                enabled: true
-                layer.wrapMode: ShaderEffectSource.ClampToEdge
-                layer.textureSize.height: 0
-                layer.mipmap: false
-                layer.format: ShaderEffectSource.RGBA
-                anchors.horizontalCenter: parent.horizontalCenter
-                scale: 1
-                layer.enabled: false
-                clip: false
-                visible: true
-                layer.textureSize.width: 0
-                layer.textureMirroring: ShaderEffectSource.NoMirroring
-                layer.samples: 2
-                isDefault: false
-                checkable: false
-                onClicked:  {
-                    if (serialSettings.visible)
-                        serialSettings.visible = false
-                    else
-                    {
-                        baudRate.currentIndex = 8
-                        serialSettings.visible = true
-                    }
-                }
-
-                style:ButtonStyle{
-
-                    background:Rectangle{
-                        antialiasing: true
-                        color: control.pressed ? "#d1d1d1" : control.hovered ? "#666" : "transparent"
-                        border.color: "transparent"
-                        radius: height/2
-                        border.width: 1
+                Button {
+                    id: yellowButton
+                    x: 0
+                    y: 0
+                    width: 38
+                    height: 38
+                    antialiasing: true
+                    smooth: false
+                    iconSource: ""
+                    activeFocusOnPress: false
+                    enabled: true
+                    layer.wrapMode: ShaderEffectSource.ClampToEdge
+                    layer.textureSize.height: 0
+                    layer.mipmap: false
+                    layer.format: ShaderEffectSource.RGBA
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    scale: 1
+                    layer.enabled: false
+                    clip: false
+                    visible: true
+                    layer.textureSize.width: 0
+                    layer.textureMirroring: ShaderEffectSource.NoMirroring
+                    layer.samples: 2
+                    isDefault: false
+                    checkable: false
+                    onClicked:  {
+                        if (serialSettings.visible)
+                            serialSettings.visible = false
+                        else
+                        {
+                            baudRate.currentIndex = 8
+                            serialSettings.visible = true
+                        }
                     }
 
-            /*       background:Image {
+                    style:ButtonStyle{
+
+                        background:Rectangle{
+                            antialiasing: true
+                            color: control.pressed ? "#d1d1d1" : control.hovered ? "#666" : "transparent"
+                            border.color: "transparent"
+                            radius: height/2
+                            border.width: 1
+                        }
+
+                        /*       background:Image {
                         id: myRoundButton
                         width: 38
                         height: 38
@@ -445,53 +468,53 @@ Window {
 
 
 
+                    }
+
+
+                    opacity: 1
+                    Image {
+                        id: btnyellImage
+                        x: 0
+                        y: 0
+                        width: 38
+                        height: 38
+                        visible: true
+                        rotation: 180
+                        sourceSize.height: 0
+                        sourceSize.width: 0
+                        fillMode: Image.Stretch
+                        anchors.rightMargin: 0
+                        anchors.bottomMargin: 0
+                        anchors.leftMargin: 0
+                        anchors.topMargin: 0
+                        scale: 1
+                        anchors.fill: parent
+                        source: "../images/yellow.png"
+                    }
+
                 }
-
-
-                opacity: 1
                 Image {
-                    id: btnyellImage
+                    id: greenLight
                     x: 0
-                    y: 0
                     width: 38
                     height: 38
-                    visible: true
-                    rotation: 180
-                    sourceSize.height: 0
-                    sourceSize.width: 0
-                    fillMode: Image.Stretch
+                    anchors.right: parent.right
                     anchors.rightMargin: 0
-                    anchors.bottomMargin: 0
-                    anchors.leftMargin: 0
-                    anchors.topMargin: 0
-                    scale: 1
-                    anchors.fill: parent
-                    source: "../images/yellow.png"
+                    visible: true
+                    opacity: 0.3
+                    source: "../images/green.png"
                 }
 
-              }
-            Image {
-                id: greenLight
-                x: 0
-                width: 38
-                height: 38
-                anchors.right: parent.right
-                anchors.rightMargin: 0
-                visible: true
-                opacity: 0.3
-                source: "../images/green.png"
+
+
+                //            style:Image{
+                //                id: yellowLight
+                //                source: "../images/yellow.png"
+                //      }
             }
 
 
-
-         //            style:Image{
-         //                id: yellowLight
-         //                source: "../images/yellow.png"
-               //      }
-        }
-
-
- /*       Button {
+            /*       Button {
             id: button
 
             anchors.right: parent.right
@@ -543,199 +566,293 @@ Window {
                 }
             }
         ]*/
-    }
-    Column {
-        id: serialSettings
-        anchors.top: parent.top
-        anchors.topMargin: 76
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 524
-        anchors.left: parent.left
-        anchors.leftMargin: 909
-        anchors.right: parent.right
-        anchors.rightMargin: 115
-
-    visible: false
-    ComboBox {
-
-        id: serialPorts
-        anchors.right: parent.right
-        anchors.rightMargin: -100
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: -20
-        anchors.top: parent.top
-        anchors.topMargin: 0
-        transformOrigin: Item.Top
-        model: portsNameModel
-
-
-
-        Label{
-            color: "#fdfdfd"
-
-            text: qsTr("Serial port: ")
-            anchors.right: parent.right
-            anchors.rightMargin: 139
-            anchors.left: parent.left
-            anchors.leftMargin: -95
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 3
+        }
+        Column {
+            id: serialSettings
             anchors.top: parent.top
-            anchors.topMargin: 4
-        }
- }
-
-    Label {
-        color: "#fbfbfb"
-
-        text: qsTr("Baud: ")
-        anchors.right: parent.right
-        anchors.rightMargin: 19
-        anchors.left: parent.left
-        anchors.leftMargin: -50
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: -48
-        anchors.top: parent.top
-        anchors.topMargin: 35
-        }
-
-        ComboBox {
-
-            id: baudRate
-            width: 100
-            anchors.right: parent.right
-            anchors.rightMargin: -100
-            anchors.left: parent.left
-            anchors.leftMargin: 0
+            anchors.topMargin: 76
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: -47
-            anchors.top: serialPorts.top
-            anchors.topMargin: 27
-            scale: 1
-            transformOrigin: Item.Center
-            clip: false
-            model: baudsModel
+            anchors.bottomMargin: 524
+            anchors.right: parent.right
+            anchors.rightMargin: 115
 
-          //  Text: "19200"
-        }
+            visible: true
+            ComboBox {
+
+                id: serialPorts
+                anchors.right: parent.right
+                anchors.rightMargin: -100
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: -20
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                transformOrigin: Item.Top
+                model: portsNameModel
 
 
-        Connections {
 
-            target: serialTerminal
-            property real tmp :0
-            onGetData: {
-                if((data[0] ==="F")&&            // gestione fuoco
-                        (data[1]==="O"))
-                {
-                    if (data[2]==="0") // fuoco piccolo
-                        valueSource.fuoco = false
-                    else
-                        valueSource.fuoco = true
+                Label{
+                    color: "#fdfdfd"
+
+                    text: qsTr("Serial port: ")
+                    anchors.right: parent.right
+                    anchors.rightMargin: 139
+                    anchors.left: parent.left
+                    anchors.leftMargin: -95
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+                    anchors.top: parent.top
+                    anchors.topMargin: 4
                 }
-                if ((data[0] ==="K")&&            // gestione kV
-                    (data[1]==="V"))
-                {
-
-                    tmp = (data[2]-"0")*100;
-                    tmp += (data[3]-"0")*10;
-                    tmp += data[4]-"0";
-                    valueSource.kv = tmp;
-                }
-                else
-                {
-                    // errore connessione
-                    errorMessage.text = qsTr("Connection ERROR !!!")
-                    errorMessage.visible = true
-                }
-
             }
-        }
-        Button {
 
-            id: connectBtn
-            text: qsTr("Connect")
-            anchors.right: parent.right
-            anchors.rightMargin: -75
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: -79
-            anchors.top: baudRate.bottom
-            anchors.topMargin: 9
-            onClicked: {
+            Label {
+                color: "#fbfbfb"
 
-                if (serialTerminal.getConnectionStatusSlot() === false){
-                    serialTerminal.openSerialPortSlot(serialPorts.currentText,baudRate.currentText)
+                text: qsTr("Baud: ")
+                anchors.right: parent.right
+                anchors.rightMargin: 19
+                anchors.left: parent.left
+                anchors.leftMargin: -50
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: -48
+                anchors.top: parent.top
+                anchors.topMargin: 35
+            }
 
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
+            ComboBox {
+
+                id: baudRate
+                width: 100
+                anchors.right: parent.right
+                anchors.rightMargin: -100
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: -47
+                anchors.top: serialPorts.top
+                anchors.topMargin: 27
+                scale: 1
+                transformOrigin: Item.Center
+                clip: false
+                model: baudsModel
+
+                //  Text: "19200"
+            }
+
+
+            Connections {
+
+                target: serialTerminal
+                property real tmp :0
+                onGetData: {
+                    if((data[0] ==="F")&&            // gestione fuoco
+                            (data[1]==="O"))
                     {
-                        connectBtn.text = "Disconnect"
-                        serialSettings.visible = false
-                        greenLight.opacity = 1
-                        redLight.opacity = 0.3
-                        yellowButton.opacity = 0.3
-                        serialTerminal.writeToSerialPCIMode("ET1")
-                        serialTerminal.writeToSerialPCIMode("FO1")
-                        serialTerminal.writeToSerialPCIMode("KV075")
+                        if (data[2]==="0") // fuoco piccolo
+                        {
+                            valueSource.fuoco = false
+                            speedometer.minimumValue = 80
+                            speedometer.maximumValue = 160
+                        }
+                        else
+                        {
+                            valueSource.fuoco = true
+                            speedometer.minimumValue= 80
+                            speedometer.maximumValue= 400
+                        }
+                        errorMessage.visible = false
                     }
-                }else {
+                    else if ((data[0] ==="K")&&            // gestione kV
+                             (data[1]==="V"))
+                    {
 
-                    serialTerminal.closeSerialPortSlot();
-                    connectBtn.text = "Connect"
-                    greenLight.opacity = 0.3
-                    redLight.opacity = 1
-                    yellowButton.opacity = 1
-                    serialSettings.visible = false
+                        tmp = (data[2]-"0")*100;
+                        tmp += (data[3]-"0")*10;
+                        tmp += data[4]-"0";
+                        valueSource.kv = tmp;
+                        errorMessage.visible = false
+                    }else if ((data[0] ==="M")&&            // gestione kV
+                              (data[1]==="A"))
+                    {
+                        tmp =  (data[2]-"0")*1000;
+                        tmp += (data[3]-"0")*100;
+                        tmp += (data[4]-"0")*10;//0;
+                        tmp += (data[5]-"0");//*10;
+                        // tmp +=  data[6]-"0";
+                        valueSource.mA = tmp;
+                        errorMessage.visible = false
+                    }else if ((data[0] ==="M")&&            // gestione kV
+                              (data[1]==="S"))
+                    {
+                        tmp =  (data[2]-"0")*1000;
+                        tmp += (data[3]-"0")*100;
+                        tmp += (data[4]-"0")*100;
+                        tmp += (data[5]-"0")*10;
+                        tmp +=  data[6]-"0";
+                        valueSource.secondi = tmp/1000; // in secondi
+                        errorMessage.visible = false
+                    }else if ((data[0] ==="P")&&            // gestione PRONTO
+                              (data[1]==="R"))
+                    {
+                        serialTerminal.writeToSerialPCIMode(data);
+                        prState.value = data[3]-"0";
+                        if (data[2] === "0")
+                            prStatus.text = "IDLE"
+                        else if (data[2]=== "1")
+                            prStatus.text = "ACTIVE !!"
+                        else if(data[2]==="2")
+                            prStatus.text = "READY !!!"
+
+                    }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
+                              (data[1]==="L"))
+                    {
+                         serialTerminal.writeToSerialPCIMode(data);
+                        errorMessage.text = qsTr("LATCHING ERROR !!!")
+                        errorMessage.visible = true
+                    }
+                    else
+                    {
+                        if (data === "ERROR")
+                        {// errore connessione
+                            errorMessage.text = qsTr("Connection ERROR !!!")
+                            errorMessage.visible = true
+                        }
+                        // poi ci sono i parametri non gestiti tipo ET 0/1
+                    }
+
+                }
+            }
+            Button {
+
+                id: connectBtn
+                text: qsTr("Connect")
+                anchors.right: parent.right
+                anchors.rightMargin: -75
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: -79
+                anchors.top: baudRate.bottom
+                anchors.topMargin: 9
+                onClicked: {
+
+                    if (serialTerminal.getConnectionStatusSlot() === false){
+                        serialTerminal.openSerialPortSlot(serialPorts.currentText,baudRate.currentText)
+
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            connectBtn.text = "Disconnect"
+                            serialSettings.visible = false
+                            greenLight.opacity = 1
+                            redLight.opacity = 0.3
+                            yellowButton.opacity = 0.3
+                            serialTerminal.writeToSerialPCIMode("ET1")
+                            serialTerminal.writeToSerialPCIMode("FO1")
+                            serialTerminal.writeToSerialPCIMode("KV075")
+                            serialTerminal.writeToSerialPCIMode("MA01600")
+                            serialTerminal.writeToSerialPCIMode("MS00500")
+                        }
+                    }else {
+
+                        serialTerminal.closeSerialPortSlot();
+                        connectBtn.text = "Connect"
+                        greenLight.opacity = 0.3
+                        redLight.opacity = 1
+                        yellowButton.opacity = 1
+                        serialSettings.visible = false
+                    }
                 }
             }
         }
-    }    
-//    Timer {
- //          interval: 50; running: true; repeat: true
-//           onTriggered:
-//           {
-//               if (serialTerminal.getConnectionStatusSlot() === true)
- //               serialTerminal.readFromSerialPort();
-          //     time.text = Date().toString()
-//           }
-//       }
-    Text {
-        id: errorMessage
-        x: 592
-        y: 507
-        width: 380
-        height: 60
-        color: "#ef5050"
-        text: qsTr("Error Example !!")
-        visible: false
-        horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 48
-        enabled: false
-        lineHeight: 1.2
-        fontSizeMode: Text.Fit
-        textFormat: Text.AutoText
-        style: Text.Normal
-        font.weight: Font.Light
-        verticalAlignment: Text.AlignVCenter
-        font.family: "Arial"
-        anchors.right: parent.right
-        anchors.rightMargin: 52
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 33
-    }
+        //    Timer {
+        //          interval: 50; running: true; repeat: true
+        //           onTriggered:
+        //           {
+        //               if (serialTerminal.getConnectionStatusSlot() === true)
+        //               serialTerminal.readFromSerialPort();
+        //     time.text = Date().toString()
+        //           }
+        //       }
+        Text {
+            id: errorMessage
+            x: 592
+            y: 507
+            width: 380
+            height: 60
+            color: "#ef5050"
+            text: qsTr("Error Example !!")
+            visible: false
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 48
+            enabled: false
+            lineHeight: 1.2
+            fontSizeMode: Text.Fit
+            textFormat: Text.AutoText
+            style: Text.Normal
+            font.weight: Font.Light
+            verticalAlignment: Text.AlignVCenter
+            font.family: "Arial"
+            anchors.right: parent.right
+            anchors.rightMargin: 52
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 33
+        }
 
-     //  Text { id: time }
+        Column {
+            id: prContainer
+            x: 703
+            y: 18
+            width: 200
+            height: 89
+
+            ProgressBar {
+                id: prState
+                anchors.verticalCenter: parent.verticalCenter
+                value: 0
+                indeterminate: false
+                maximumValue: 2
+            }
+
+            Text {
+                id: prTitle
+                width: 111
+                height: 24
+                color: "#fbfbfb"
+                text: qsTr("Generator State :")
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pixelSize: 12
+            }
+
+            Text {
+                id: prStatus
+                width: 111
+                height: 24
+                color: "#fbfbfb"
+                text: qsTr("INACTIVE")
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 0
+                font.pixelSize: 12
+            }
+        }
+
+        //  Text { id: time }
     }
 }
 
 /*##^##
 Designer {
     D{i:14;anchors_y:0}D{i:16;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
-D{i:31;anchors_x:"-95";anchors_y:4}D{i:30;anchors_width:100;anchors_y:0}D{i:32;anchors_x:"-50";anchors_y:35}
-D{i:33;anchors_y:0}D{i:34;anchors_y:0}D{i:35;anchors_y:0}D{i:36;anchors_width:100;anchors_y:40}
+D{i:30;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:29;anchors_width:100;anchors_y:0}
+D{i:31;anchors_x:"-95";anchors_y:4}D{i:32;anchors_x:"-50";anchors_y:35}D{i:33;anchors_y:0}
+D{i:34;anchors_y:0}D{i:35;anchors_width:100;anchors_y:0}D{i:36;anchors_width:100;anchors_y:40}
 D{i:2;anchors_height:600;anchors_width:1024}
 }
 ##^##*/

@@ -44,6 +44,7 @@ void SerialTerminal::writeToSerialPCIMode(QString message){
     checksum += (0x03 & 0xff);
     msgToSend[messageArray.length()+1] = static_cast<char>(checksum);
     serialPort->write(msgToSend);
+    serialPort->flush();
 }
 
 void SerialTerminal::writeToSerialPort(QString message){
@@ -81,7 +82,8 @@ void SerialTerminal::readFromSerialPort(){
 
 
   //  if (serialPort->canReadLine()){
-        QByteArray rcvByte = serialPort->readAll();
+       static QByteArray rcvByte;// = serialPort->readAll();
+         rcvByte.append(serialPort->readAll());
         // gestione pacchetti spezzati
         while (serialPort->waitForReadyRead(500)) // se aspetto meno di 500 milli
                 rcvByte.append(serialPort->readAll());
@@ -119,6 +121,8 @@ void SerialTerminal::readFromSerialPort(){
 
 
 
+        rcvByte.fill(0);
+        rcvByte.clear();
 
       //  QString data= QString::fromLatin1(toSend);
 
