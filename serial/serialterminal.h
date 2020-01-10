@@ -4,7 +4,7 @@
 #include <QtSerialPort/QSerialPort>
 
 #include <QObject>
-
+#include "serialLogger.h"
 
 
 class SerialTerminal : public QObject
@@ -30,7 +30,7 @@ public slots:
 private:
 
     QSerialPort *serialPort;
-
+    Logger *logger;
 
 
 signals:

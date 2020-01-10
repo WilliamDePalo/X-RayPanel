@@ -8,6 +8,7 @@ QT += serialport
 
 SOURCES += \
     main.cpp \
+    serial/serialLogger.cpp \
     serial/serialterminal.cpp \
     serial/settingsdialog.cpp
 
@@ -30,6 +31,7 @@ FORMS += \
     serial/settingsdialog.ui
 
 HEADERS += \
+    serial/serialLogger.h \
     serial/serialterminal.h \
     serial/settingsdialog.h
 

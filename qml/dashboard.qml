@@ -62,6 +62,7 @@ Window {
     height: 600
 
     color: "#161616"
+
     property alias yellowButtonIconSource: yellowButton.iconSource
     //property alias elementAnchorsverticalCenterOffset: element.anchors.verticalCenterOffset
     property alias fuelGaugeY: fuelGauge.y
@@ -77,11 +78,10 @@ Window {
     // our height is never greater than our width.
     Item {
         id: container
-        anchors.rightMargin: 0
-        anchors.bottomMargin: 0
-        anchors.leftMargin: -175
-        anchors.topMargin: 0
-        anchors.fill: parent
+        width: 1024
+        height: 600
+        anchors.left: parent.left
+        anchors.right: parent.right
         // Math.min(root.width, root.height)
         Column{
             id: gaugeColumn
@@ -93,15 +93,15 @@ Window {
 
             Item {
                 id: element
-                x: 700
                 y: 0
-                width: 150
                 height: 300
-                anchors.horizontalCenterOffset: 458
+                anchors.left: parent.left
+                anchors.leftMargin: 834
+                anchors.right: parent.right
+                anchors.rightMargin: 38
                 clip: false
                 transformOrigin: Item.Right
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
 
                 CircularGauge {
                     id: fuelGauge
@@ -135,34 +135,35 @@ Window {
                 }
                 CircularGauge {
                     id: tempGauge
-                    maximumValue: 12
+                    maximumValue: 2 //12
                     width: parent.width
                     height: parent.height * 0.7
-                    value: 0
-                    stepSize: 11
+                    value: valueSource.secondi
+                    stepSize: 0//11
                     minimumValue: 0
                     anchors.right: parent.right
                     anchors.rightMargin: 0
                     clip: false
                     y: parent.height / 2 + container.height * 0.01
 
-                    style: IconGaugeStyle {
+                    style: IconGaugeStyle {                         
                         id: tempGaugeStyle
                         halfGauge: true
-                        tickmarkStepSize: 3
-                        minorTickmarkInset: 2
-                        minorTickmarkCount: 2
+                        tickmarkStepSize: 0.25
+                        minorTickmarkInset: 0
+                        minorTickmarkCount: 1
 
                         //                     tickmarkCount: 1
                         textt: "MSEC"
                         icon: "qrc:/images/temperature-icon.png"
-                        maxWarningColor: Qt.rgba(0.5, 0, 0, 1)
+                        minWarningColor: "#b8a521"
+                        maxWarningColor: "#ef5050"
 
                         tickmarkLabel: Text {
                             color: "white"
-                            visible: styleData.value === 0 || styleData.value === 11
+                            visible: styleData.value === 0 || styleData.value === 2/*11*/
                             font.pixelSize: tempGaugeStyle.toPixels(0.225)
-                            text: styleData.value === 0 ? "min" : (styleData.value === 11 ? "max" : "")
+                            text: styleData.value === 0 ? "min" : (styleData.value === 2/*11*/ ? "max" : "")
                         }
                     }
                 }
@@ -576,7 +577,7 @@ Window {
             anchors.right: parent.right
             anchors.rightMargin: 115
 
-            visible: true
+            visible: false
             ComboBox {
 
                 id: serialPorts
@@ -647,7 +648,15 @@ Window {
 
                 target: serialTerminal
                 property real tmp :0
+                property string  rcv: ""
+
                 onGetData: {
+                    //textlog1.text = "<-APP " + data.ToString;
+                   //  textlog1.text = data->element;
+                //    while (data[tmp]!==0)
+               //         textlog1.text += cStr() data[tmp] ;
+                //    textlog1.text = "<-APP " + rcv;
+                    errorMessage.visible = false
                     if((data[0] ==="F")&&            // gestione fuoco
                             (data[1]==="O"))
                     {
@@ -674,7 +683,7 @@ Window {
                         tmp += data[4]-"0";
                         valueSource.kv = tmp;
                         errorMessage.visible = false
-                    }else if ((data[0] ==="M")&&            // gestione kV
+                    }else if ((data[0] ==="M")&&            // gestione Ma
                               (data[1]==="A"))
                     {
                         tmp =  (data[2]-"0")*1000;
@@ -684,7 +693,7 @@ Window {
                         // tmp +=  data[6]-"0";
                         valueSource.mA = tmp;
                         errorMessage.visible = false
-                    }else if ((data[0] ==="M")&&            // gestione kV
+                    }else if ((data[0] ==="M")&&            // gestione Ms
                               (data[1]==="S"))
                     {
                         tmp =  (data[2]-"0")*1000;
@@ -698,7 +707,7 @@ Window {
                               (data[1]==="R"))
                     {
                         serialTerminal.writeToSerialPCIMode(data);
-                        prState.value = data[3]-"0";
+                        prState.value = data[2]-"0";
                         if (data[2] === "0")
                             prStatus.text = "IDLE"
                         else if (data[2]=== "1")
@@ -706,11 +715,59 @@ Window {
                         else if(data[2]==="2")
                             prStatus.text = "READY !!!"
 
-                    }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
-                              (data[1]==="L"))
+                    }else if ((data[0] ==="X")&&            // gestione PRONTO
+                              (data[1]==="R"))
                     {
-                         serialTerminal.writeToSerialPCIMode(data);
+                        serialTerminal.writeToSerialPCIMode(data);
+
+                        if (data[2] === "0")
+                            emissionSts.active = false;
+                        else if (data[2]=== "1")
+                        {
+
+                            emissionSts.active = true;
+                            prState.value =0;
+                            prStatus.text = "IDLE"
+                        }
+                    }
+                    else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
+                             (data[1]==="L"))
+                    {
+                        serialTerminal.writeToSerialPCIMode(data);
                         errorMessage.text = qsTr("LATCHING ERROR !!!")
+                        errorMessage.visible = true
+                    }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
+                              (data[1]==="R"))
+                    {
+                        serialTerminal.writeToSerialPCIMode(data);
+                        if (data[3] === "0")
+                        {
+                            if (data[4] === "1")
+                            {
+                                errorMessage.text = qsTr("INVALID COMMAND !!!")
+                            }else if (data[4] === "2")
+                            {
+                                errorMessage.text = qsTr("COMMAND NOT ALLOWED!!!")
+                            }else if (data[4] === "3")
+                            {
+                                errorMessage.text = qsTr("GENERATOR KV LIMIT !!!")
+                            }else if (data[4] === "4")
+                            {
+                                errorMessage.text = qsTr("GENERATOR MA LIMIT !!!")
+                            }else if (data[4] === "5")
+                            {
+                                errorMessage.text = qsTr("GENERATOR MS LIMIT !!!")
+                            }else if (data[4] === "6")
+                            {
+                                errorMessage.text = qsTr("GENERATOR MAS LIMIT !!!")
+                            }else
+                            {
+                                errorMessage.text = qsTr("GENERIC ERROR !!!")
+                            }
+                        }else
+                        {
+                            errorMessage.text = qsTr("GENERIC ERROR !!!")
+                        }
                         errorMessage.visible = true
                     }
                     else
@@ -728,9 +785,8 @@ Window {
             Button {
 
                 id: connectBtn
+                width: 100
                 text: qsTr("Connect")
-                anchors.right: parent.right
-                anchors.rightMargin: -75
                 anchors.left: parent.left
                 anchors.leftMargin: 0
                 anchors.bottom: parent.bottom
@@ -766,6 +822,7 @@ Window {
                     }
                 }
             }
+
         }
         //    Timer {
         //          interval: 50; running: true; repeat: true
@@ -776,37 +833,16 @@ Window {
         //     time.text = Date().toString()
         //           }
         //       }
-        Text {
-            id: errorMessage
-            x: 592
-            y: 507
-            width: 380
-            height: 60
-            color: "#ef5050"
-            text: qsTr("Error Example !!")
-            visible: false
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: 48
-            enabled: false
-            lineHeight: 1.2
-            fontSizeMode: Text.Fit
-            textFormat: Text.AutoText
-            style: Text.Normal
-            font.weight: Font.Light
-            verticalAlignment: Text.AlignVCenter
-            font.family: "Arial"
-            anchors.right: parent.right
-            anchors.rightMargin: 52
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 33
-        }
 
         Column {
             id: prContainer
-            x: 703
-            y: 18
+            x: 570
             width: 200
-            height: 89
+            height: 71
+            anchors.right: parent.right
+            anchors.rightMargin: 254
+            anchors.top: parent.top
+            anchors.topMargin: 17
 
             ProgressBar {
                 id: prState
@@ -843,16 +879,70 @@ Window {
             }
         }
 
+        StatusIndicator {
+            id: emissionSts
+            width: 59
+            color: "#ff0000"
+            z: 19.022
+            anchors.left: parent.left
+            anchors.leftMargin: 711
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 389
+            anchors.top: parent.top
+            anchors.topMargin: 163
+            antialiasing: true
+            enabled: false
+            active: false
+        }
+
+        Text {
+            id: errorMessage
+            x: 471
+            y: 1
+            width: 380
+            height: 60
+            color: "#ef5050"
+            text: qsTr("Error Example !!")
+            visible: false
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 48
+            enabled: false
+            lineHeight: 1.2
+            fontSizeMode: Text.Fit
+            textFormat: Text.AutoText
+            style: Text.Normal
+            font.weight: Font.Light
+            verticalAlignment: Text.AlignVCenter
+            font.family: "Arial"
+            anchors.right: parent.right
+            anchors.rightMargin: 52
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 33
+        }
+
+        Text {
+            id: textlog1
+            x: 652
+            y: 276
+            width: 176
+            height: 191
+            color: "#fbfbfb"
+            text: qsTr("")
+            clip: true
+            styleColor: "#b8a521"
+            font.pixelSize: 12
+        }
+
         //  Text { id: time }
     }
 }
 
 /*##^##
 Designer {
-    D{i:14;anchors_y:0}D{i:16;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
+    D{i:4;anchors_width:150;anchors_x:700}D{i:14;anchors_y:0}D{i:16;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
 D{i:30;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:29;anchors_width:100;anchors_y:0}
 D{i:31;anchors_x:"-95";anchors_y:4}D{i:32;anchors_x:"-50";anchors_y:35}D{i:33;anchors_y:0}
-D{i:34;anchors_y:0}D{i:35;anchors_width:100;anchors_y:0}D{i:36;anchors_width:100;anchors_y:40}
-D{i:2;anchors_height:600;anchors_width:1024}
+D{i:34;anchors_width:100;anchors_y:0}D{i:35;anchors_width:100;anchors_y:40}D{i:39;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}
+D{i:40;anchors_width:100;anchors_y:0}D{i:2;anchors_height:600;anchors_width:1024}
 }
 ##^##*/

@@ -107,6 +107,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QQmlContext *context = engine.rootContext();
     SerialTerminal serialTerminal;
+
     context->setContextProperty("serialTerminal",&serialTerminal);
     context->setContextProperty("portsNameModel",QVariant::fromValue(portsName));
     context->setContextProperty("baudsModel",QVariant::fromValue(baudsStr));
