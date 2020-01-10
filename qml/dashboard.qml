@@ -681,8 +681,7 @@ Window {
                     }
                     else if ((data[0] ==="K")&&            // gestione kV
                              (data[1]==="V"))
-                    {
-
+                    {                            
                         tmp = (data[2]-"0")*100;
                         tmp += (data[3]-"0")*10;
                         tmp += data[4]-"0";
@@ -755,16 +754,16 @@ Window {
                                 errorMessage.text = qsTr("COMMAND NOT ALLOWED!!!")
                             }else if (data[4] === "3")
                             {
-                                errorMessage.text = qsTr("GENERATOR KV LIMIT !!!")
+                                errorMessage.text = qsTr("GENERATOR KV LIMIT EXCEDEED !!!")
                             }else if (data[4] === "4")
                             {
-                                errorMessage.text = qsTr("GENERATOR MA LIMIT !!!")
+                                errorMessage.text = qsTr("GENERATOR MA LIMIT EXCEDEED !!!")
                             }else if (data[4] === "5")
                             {
-                                errorMessage.text = qsTr("GENERATOR MS LIMIT !!!")
+                                errorMessage.text = qsTr("GENERATOR MS LIMIT EXCEDEED !!!")
                             }else if (data[4] === "6")
                             {
-                                errorMessage.text = qsTr("GENERATOR MAS LIMIT !!!")
+                                errorMessage.text = qsTr("GENERATOR MAS LIMIT EXCEDEED !!!")
                             }else
                             {
                                 errorMessage.text = qsTr("GENERIC ERROR !!!")
@@ -812,7 +811,7 @@ Window {
                             yellowButton.opacity = 0.3
                             serialTerminal.writeToSerialPCIMode("ET1")
                             serialTerminal.writeToSerialPCIMode("FO1")
-                            serialTerminal.writeToSerialPCIMode("KV075")
+                            serialTerminal.writeToSerialPCIMode("KV050")
                             serialTerminal.writeToSerialPCIMode("MA01600")
                             serialTerminal.writeToSerialPCIMode("MS00500")
                         }

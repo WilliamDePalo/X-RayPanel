@@ -85,7 +85,8 @@ void SerialTerminal::readFromSerialPort(){
    unsigned char  cksm = 0;
    QByteArray toSend;
    QString data;
-
+int tmp ;
+        QString dt;
 
   //  if (serialPort->canReadLine()){
        static QByteArray rcvByte;// = serialPort->readAll();
@@ -133,7 +134,14 @@ void SerialTerminal::readFromSerialPort(){
 
                         data= QString::fromLatin1(toSend);
                     if (data.length()>0)
-                    {
+                    {// controllo se data è più lungo di 5 e ontiene ER, allora segue un errore
+                        if((data.contains("ER00"))&&(data.length()>5))
+                        {
+                            // prendo solo l'errore che compone l'ultima parte
+                            tmp = data.lastIndexOf(QRegExp("E"));
+                            dt = data.right(data.length()-tmp);
+                            data = dt;
+                        }
                         emit getData(data);
                         logger->write( "             EMIT     " + data +"\n");
                     }
