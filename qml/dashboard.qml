@@ -148,6 +148,10 @@ Window {
 
                     style: IconGaugeStyle {                         
                         id: tempGaugeStyle
+
+                        minimumValueAngle: -60
+                        maximumValueAngle: 60
+
                         halfGauge: true
                         tickmarkStepSize: 0.25
                         minorTickmarkInset: 0
@@ -155,15 +159,16 @@ Window {
 
                         //                     tickmarkCount: 1
                         textt: "MSEC"
-                        icon: "qrc:/images/temperature-icon.png"
-                        minWarningColor: "#b8a521"
-                        maxWarningColor: "#ef5050"
+                    //    icon: "qrc:/images/temperature-icon.png"
+                    //    minWarningColor: "#b8a521"
+                    //    maxWarningColor: "#ef5050"
+                        maxWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
                         tickmarkLabel: Text {
                             color: "white"
-                            visible: styleData.value === 0 || styleData.value === 2/*11*/
+                            visible: styleData.value === 0 || styleData.value === 2/*11*/|| styleData.value === 1
                             font.pixelSize: tempGaugeStyle.toPixels(0.225)
-                            text: styleData.value === 0 ? "min" : (styleData.value === 2/*11*/ ? "max" : "")
+                            text: styleData.value === 0 ? "min" :(styleData.value === 1 ? "1000" : (styleData.value === 2/*11*/ ? "max" : ""))
                         }
                     }
                 }
