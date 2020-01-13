@@ -710,25 +710,29 @@ Window {
                     }else if ((data[0] ==="P")&&            // gestione PRONTO
                               (data[1]==="R"))
                     {
-                        serialTerminal.writeToSerialPCIMode(data);
+
                         prState.value = data[2]-"0";
                         if (data[2] === "0")
                             prStatus.text = "IDLE"
                         else if (data[2]=== "1")
+                        {
+                            serialTerminal.writeToSerialPCIMode(data);
                             prStatus.text = "ACTIVE !!"
+                        }
                         else if(data[2]==="2")
+                        {
+                            serialTerminal.writeToSerialPCIMode(data);
                             prStatus.text = "READY !!!"
-
+                        }
                     }else if ((data[0] ==="X")&&            // gestione PRONTO
                               (data[1]==="R"))
                     {
-                        serialTerminal.writeToSerialPCIMode(data);
 
                         if (data[2] === "0")
                             emissionSts.active = false;
                         else if (data[2]=== "1")
                         {
-
+                            serialTerminal.writeToSerialPCIMode(data);
                             emissionSts.active = true;
                             prState.value =0;
                             prStatus.text = "IDLE"

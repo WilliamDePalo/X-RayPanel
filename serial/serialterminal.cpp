@@ -1,6 +1,9 @@
 #include "serialterminal.h"
 #include <QtSerialPort/QSerialPort>
 
+#define MAX_BUFF_SIZE 1024
+#define MAX_TIME_WAIT_MS 100
+
 SerialTerminal::SerialTerminal()
 {
     serialPort = new QSerialPort(this);
@@ -21,7 +24,7 @@ void SerialTerminal::openSerialPort(QString comName, int baud){
     serialPort->open(QIODevice::ReadWrite);
     connect(serialPort,SIGNAL(readyRead()),this,SLOT(readFromSerialPort()));
 
-    serialPort->setReadBufferSize(100);
+    serialPort->setReadBufferSize(MAX_BUFF_SIZE);
 }
 
 void SerialTerminal::closeSerialPort(){
@@ -93,7 +96,7 @@ int tmp ;
          rcvByte.append(serialPort->readAll());
           logger->write( "<- serial " + rcvByte +"\n");
         // gestione pacchetti spezzati
-        while (serialPort->waitForReadyRead(100)) // se aspetto meno di 500 milli
+        while (serialPort->waitForReadyRead(MAX_TIME_WAIT_MS)) // se aspetto meno di 500 milli
         {
             rcvByte.append(serialPort->readAll());
             logger->write( "<- waitForReadyRead" + rcvByte +"\n");
