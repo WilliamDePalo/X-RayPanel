@@ -11,6 +11,7 @@ SerialTerminal::SerialTerminal()
     QString fileName = "C:\\Users\\willi\\OneDrive\\Desktop\\xray Prj\\xray panel\\serial.txt";
     logger = new Logger(this, fileName/*, editor*/);
     logger->setShowDateTime(1);
+    waitForAnAck = 0;
 }
 
 void SerialTerminal::openSerialPort(QString comName, int baud){
@@ -39,21 +40,27 @@ bool SerialTerminal::getConnectionStatus(){
 }
 
 void SerialTerminal::writeToSerialPCIMode(QString message){
-    QByteArray msgToSend(message.size()+2,0);
-    const QByteArray &messageArray = message.toLocal8Bit();
-    unsigned char checksum = 0;
-    unsigned char id = 0;
-    for(id = 0 ; id<messageArray.length();id++)
+
+        QByteArray msgToSend(message.size()+2,0);
+        const QByteArray &messageArray = message.toLocal8Bit();
+        unsigned char checksum = 0;
+        unsigned char id = 0;
+        for(id = 0 ; id<messageArray.length();id++)
+        {
+            msgToSend[id] = messageArray[id];
+            checksum += (messageArray[id] & 0xff);
+        }
+        msgToSend[messageArray.length()] = 0x03;
+        checksum += (0x03 & 0xff);
+        msgToSend[messageArray.length()+1] = static_cast<char>(checksum);
+        logger->write( " -> serial " + msgToSend + "\n\r");
+        serialPort->write(msgToSend);
+    if (waitForAnAck == ackState::ACK_FREE ||
+        waitForAnAck == ackState::ACK_TO_SEND)
     {
-        msgToSend[id] = messageArray[id];
-        checksum += (messageArray[id] & 0xff);
+        waitForAnAck = ACK_WAITING;
+        serialPort->flush();
     }
-    msgToSend[messageArray.length()] = 0x03;
-    checksum += (0x03 & 0xff);
-    msgToSend[messageArray.length()+1] = static_cast<char>(checksum);
-    logger->write( " -> serial " + msgToSend + "\n\r");
-    serialPort->write(msgToSend);
-    serialPort->flush();
 }
 
 void SerialTerminal::writeToSerialPort(QString message){
@@ -83,12 +90,12 @@ bool SerialTerminal::getConnectionStatusSlot(){
 }
 
 void SerialTerminal::readFromSerialPort(){
-   unsigned char idx = 0;
+   static unsigned char idx = 0;
    unsigned char idToSend = 0;
    unsigned char  cksm = 0;
    QByteArray toSend;
    QString data;
-int tmp ;
+   int tmp ;
         QString dt;
 
   //  if (serialPort->canReadLine()){
@@ -145,8 +152,11 @@ int tmp ;
                             dt = data.right(data.length()-tmp);
                             data = dt;
                         }
-                        emit getData(data);
+                        emit getData(data);                        
                         logger->write( "             EMIT     " + data +"\n");
+                        if ( waitForAnAck == ackState::ACK_WAITING)
+                            waitForAnAck = ackState::ACK_FREE;
+                        return;
                     }
                 }
             }
@@ -154,7 +164,7 @@ int tmp ;
         }while ((idx)<rcvByte.length());
 
 
-
+        idx = 0;
         rcvByte.fill(0);
         rcvByte.clear();
 

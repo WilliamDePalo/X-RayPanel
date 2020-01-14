@@ -65,7 +65,7 @@ Window {
 
     property alias yellowButtonIconSource: yellowButton.iconSource
     //property alias elementAnchorsverticalCenterOffset: element.anchors.verticalCenterOffset
-    property alias fuelGaugeY: fuelGauge.y
+    property alias fuelGaugeY: focusGauge.y
     title: "X-Ray Manager"
 
     ValueSource {
@@ -78,13 +78,17 @@ Window {
     // our height is never greater than our width.
     Item {
         id: container
+        y: 0
         width: 1024
         height: 600
+        anchors.rightMargin: 0
+        anchors.leftMargin: 0
         anchors.left: parent.left
         anchors.right: parent.right
         // Math.min(root.width, root.height)
         Column{
             id: gaugeColumn
+            anchors.leftMargin: -200
             visible: true
             transformOrigin: Item.Center
             rotation: 0
@@ -93,26 +97,58 @@ Window {
 
             Item {
                 id: element
+                x: 700
                 y: 0
+                width: 150
                 height: 300
-                anchors.left: parent.left
-                anchors.leftMargin: 834
                 anchors.right: parent.right
                 anchors.rightMargin: 38
                 clip: false
                 transformOrigin: Item.Right
                 anchors.verticalCenter: parent.verticalCenter
+            Button {
+                    id:focusBtn
+                    width: parent.width
+                    height: 95
+                    anchors.top: parent.top
+                    anchors.topMargin: 0
+                    anchors.right: parent.right
+                    checkable: false
+                    anchors.rightMargin: 0
+                    style:ButtonStyle{
 
+                        background:Rectangle{
+                            antialiasing: true
+                            color: control.pressed ? "#d1d1d1" : control.hovered ? "#666" : "transparent"
+                            border.color: "transparent"
+                            radius: height/2
+                            border.width: 1
+                        }
+                    }
+                    onClicked:{
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            if (valueSource.fuoco) // Se fuoco grande
+                            {
+                                serialTerminal.writeToSerialPCIMode("FO0")
+                            }else // se piccolo
+                            {
+                                serialTerminal.writeToSerialPCIMode("FO1")
+                            }
+                        }
+                    }
                 CircularGauge {
-                    id: fuelGauge
+                    id: focusGauge
                     x: 0
                     value: valueSource.fuoco
                     maximumValue: 1
                     width: parent.width
-                    height: parent.height * 0.7
-                    stepSize: 1
+                    height: 210
+                    anchors.top: parent.top
+                    anchors.topMargin: -36
                     anchors.right: parent.right
                     anchors.rightMargin: 0
+                    stepSize: 1
                     visible: true
 
                     style: IconGaugeStyle {
@@ -131,7 +167,9 @@ Window {
                             font.pixelSize: fuelGaugeStyle.toPixels(0.225)
                             text: styleData.value === 0 ? "SMALL" : (styleData.value === 1 ? "LARGE" : "")
                         }
+
                     }
+                  }
                 }
                 CircularGauge {
                     id: tempGauge
@@ -159,16 +197,75 @@ Window {
 
                         //                     tickmarkCount: 1
                         textt: "MSEC"
-                    //    icon: "qrc:/images/temperature-icon.png"
-                    //    minWarningColor: "#b8a521"
-                    //    maxWarningColor: "#ef5050"
+                        //    icon: "qrc:/images/temperature-icon.png"
+                        //    minWarningColor: "#b8a521"
+                        //    maxWarningColor: "#ef5050"
                         maxWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
                         tickmarkLabel: Text {
                             color: "white"
                             visible: styleData.value === 0 || styleData.value === 2/*11*/|| styleData.value === 1
                             font.pixelSize: tempGaugeStyle.toPixels(0.225)
-                            text: styleData.value === 0 ? "min" :(styleData.value === 1 ? "1000" : (styleData.value === 2/*11*/ ? "max" : ""))
+                            text: styleData.value === 0 ? "min" :(styleData.value === 1 ? "x1000" : (styleData.value === 2/*11*/ ? "max" : ""))
+                        }
+                    }
+
+                    PressAndHoldButton {
+                        id: msecMinus
+                        y: 111
+                        width: 8
+                        height: 8
+                        anchors.left: parent.left
+                        anchors.right: tachometer.left
+                        transformOrigin: Item.Top
+                        anchors.verticalCenterOffset: -30
+                        sourceSize.width: 23
+                        anchors.rightMargin: -350
+                        sourceSize.height: 24
+                        z: 1.63
+                        scale: 3.859
+                        fillMode: Image.Stretch
+                        pressed: false
+                        source: "../images/minus-sign.png"
+                        anchors.verticalCenter: tachometer.verticalCenter
+                        anchors.leftMargin: 16
+                        antialiasing: true
+                        onClicked:
+                        {
+                            if (serialTerminal.getConnectionStatusSlot() !== false)
+                            {
+                                serialTerminal.writeToSerialPCIMode("MS-")
+                            }
+                        }
+                    }
+
+                    PressAndHoldButton {
+                        id: msecPlus
+                        x: 131
+                        y: 111
+                        width: 8
+                        height: 8
+                        anchors.right: parent.right
+                        anchors.rightMargin: 16
+                        anchors.verticalCenterOffset: -30
+                        source: "../images/plus-sign.png"
+                        anchors.leftMargin: -350
+                        antialiasing: true
+                        anchors.verticalCenter: tachometer.verticalCenter
+                        scale: 3.859
+                        transformOrigin: Item.Top
+                        z: 1.63
+                        fillMode: Image.Stretch
+                        anchors.left: tachometer.right
+                        sourceSize.width: 23
+                        sourceSize.height: 24
+                        pressed: false
+                        onClicked:
+                        {
+                            if (serialTerminal.getConnectionStatusSlot() !== false)
+                            {
+                                serialTerminal.writeToSerialPCIMode("MS+")
+                            }
                         }
                     }
                 }
@@ -196,12 +293,12 @@ Window {
             }
             PressAndHoldButton {
                 id: kvPlus
-                width: 18
-                height: 23
+                width: 20
+                height: 20
+                anchors.left: tachometer.left
+                anchors.leftMargin: 332
                 antialiasing: true
-                anchors.left: tachometer.right
-                anchors.leftMargin: -350
-                anchors.verticalCenterOffset: -30
+                anchors.verticalCenterOffset: -32
                 anchors.verticalCenter: tachometer.verticalCenter
                 z: 1.63
                 scale: 3.859
@@ -221,13 +318,13 @@ Window {
             }
             PressAndHoldButton {
                 id: kvMinus
-                width: 18
-                height: 23
+                x: 254
+                width: 20
+                height: 20
+                anchors.right: tachometer.left
+                anchors.rightMargin: 42
                 antialiasing: true
-                anchors.rightMargin: -350
-                anchors.right:  tachometer.left
-                anchors.leftMargin: -350
-                anchors.verticalCenterOffset: -30
+                anchors.verticalCenterOffset: -32
                 anchors.verticalCenter: tachometer.verticalCenter
                 z: 1.63
                 scale: 3.859
@@ -259,6 +356,8 @@ Window {
                 // because they're laid out horizontally, and that would create
                 // large horizontal gaps between gauges on wide screens.
                 height: 285
+                stepSize: 1
+
                 anchors.top: parent.top
                 anchors.topMargin: 0
                 anchors.horizontalCenterOffset: -150
@@ -268,18 +367,21 @@ Window {
                 anchors.horizontalCenter: parent.horizontalCenter
                 transformOrigin: Item.Top
 
-                style: DashboardGaugeStyle {}
+                style: DashboardGaugeStyle {
+                    labelStepSize:20
+                }
+             //   DashboardGaugeStyle.
             }
             anchors.centerIn: parent
             //  spacing: 10
 
             PressAndHoldButton {
                 id: mAPlus
-                width: 18
-                height: 23
+                width: 20
+                height: 20
+                anchors.left: speedometer.left
+                anchors.leftMargin: 332
                 antialiasing: true
-                anchors.left: speedometer.right
-                anchors.leftMargin: -350
                 anchors.verticalCenterOffset: -30
                 anchors.verticalCenter: speedometer.verticalCenter
                 z: 1.63
@@ -300,11 +402,10 @@ Window {
             }
             PressAndHoldButton {
                 id: mAMinus
-                width: 18
-                height: 23
+                width: 20
+                height: 20
+                anchors.left: speedometer.right
                 antialiasing: true
-                anchors.rightMargin: -350
-                anchors.right:  speedometer.left
                 anchors.leftMargin: -350
                 anchors.verticalCenterOffset: -30
                 anchors.verticalCenter: speedometer.verticalCenter
@@ -652,7 +753,9 @@ Window {
             Connections {
 
                 target: serialTerminal
-                property real tmp :0
+                property real tmp :5000
+                 property  real tmp1: 1000
+                 property  real tmp2:0
                 property string  rcv: ""
 
                 onGetData: {
@@ -670,12 +773,14 @@ Window {
                             valueSource.fuoco = false
                             speedometer.minimumValue = 80
                             speedometer.maximumValue = 160
+                            speedometer.DashboardGaugeStyle.labelStepSize = 20
                         }
                         else
                         {
                             valueSource.fuoco = true
-                            speedometer.minimumValue= 80
+                            speedometer.minimumValue= 160
                             speedometer.maximumValue= 400
+                             speedometer.DashboardGaugeStyle.labelStepSize = 50
                         }
                         errorMessage.visible = false
                     }
@@ -687,6 +792,18 @@ Window {
                         tmp += data[4]-"0";
                         valueSource.kv = tmp;
                         errorMessage.visible = false
+                        // dato che nel comando di init MAS e' lultimo ad arrivare, se parte vuoto e tutti sono vuoti
+                        // allora devo dargli i primi parametri
+                        if((valueSource.kv /*|| valueSource.mA || valueSource.secondi || valueSource.mas */) === 0)
+                        {// invio i default
+                            serialTerminal.writeToSerialPCIMode("ET1")
+                            serialTerminal.writeToSerialPCIMode("FO1")
+                            serialTerminal.writeToSerialPCIMode("KV050")
+                            serialTerminal.writeToSerialPCIMode("MA01600")
+                            serialTerminal.writeToSerialPCIMode("MS00500")
+                            errorMessage.text = qsTr("DEFAULT PARAM !!!")
+                            errorMessage.visible = true
+                        }
                     }else if ((data[0] ==="M")&&            // gestione Ma
                               (data[1]==="A"))
                     {
@@ -700,14 +817,40 @@ Window {
                     }else if ((data[0] ==="M")&&            // gestione Ms
                               (data[1]==="S"))
                     {
-                        tmp =  (data[2]-"0")*1000;
-                        tmp += (data[3]-"0")*100;
+                   /*     tmp =  (data[2]-"0")*10000;
+                        tmp += (data[3]-"0")*1000;
                         tmp += (data[4]-"0")*100;
                         tmp += (data[5]-"0")*10;
-                        tmp +=  data[6]-"0";
+                        tmp +=  data[6]-"0";*/
+                        tmp1 = (data[2]-"0");
+                        tmp2 = tmp1*10000
+                        tmp =  tmp2;
+                        tmp1= (data[3]-"0");
+                        tmp2= tmp1*1000;
+                        tmp+=tmp2;
+                        tmp1 = (data[4]-"0");
+                        tmp2= tmp1*100;
+                        tmp+=tmp2;
+                        tmp1 = (data[5]-"0");
+                        tmp2= tmp1*10;
+                        tmp+=tmp2;
+                        tmp1 = data[6]-"0";
+                        tmp2 = tmp;
+                        tmp = tmp1+tmp2;
                         valueSource.secondi = tmp/1000; // in secondi
+                        errorMessage.visible = false                        
+                    }else if ((data[0] ==="M")&&            // gestione MAs
+                              (data[1]==="X"))
+                    {
+                        tmp =  (data[2]-"0")*1000;
+                        tmp += (data[3]-"0")*100;
+                        tmp += (data[4]-"0")*10;//0;
+                        tmp += (data[5]-"0");//*10;
+                        // tmp +=  data[6]-"0";
+                        valueSource.mas = tmp;
                         errorMessage.visible = false
-                    }else if ((data[0] ==="P")&&            // gestione PRONTO
+                    }
+                    else if ((data[0] ==="P")&&            // gestione PRONTO
                               (data[1]==="R"))
                     {
 
@@ -747,7 +890,7 @@ Window {
                     }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
                               (data[1]==="R"))
                     {
-                        serialTerminal.writeToSerialPCIMode(data);
+                 //       serialTerminal.writeToSerialPCIMode(data);
                         if (data[3] === "0")
                         {
                             if (data[4] === "1")
@@ -768,6 +911,9 @@ Window {
                             }else if (data[4] === "6")
                             {
                                 errorMessage.text = qsTr("GENERATOR MAS LIMIT EXCEDEED !!!")
+                            }else if (data[4] === "7")
+                            {
+                                errorMessage.text = qsTr("TIMEOUT GENERATION !!!")
                             }else
                             {
                                 errorMessage.text = qsTr("GENERIC ERROR !!!")
@@ -813,11 +959,12 @@ Window {
                             greenLight.opacity = 1
                             redLight.opacity = 0.3
                             yellowButton.opacity = 0.3
-                            serialTerminal.writeToSerialPCIMode("ET1")
+                       /*     serialTerminal.writeToSerialPCIMode("ET1")
                             serialTerminal.writeToSerialPCIMode("FO1")
                             serialTerminal.writeToSerialPCIMode("KV050")
                             serialTerminal.writeToSerialPCIMode("MA01600")
-                            serialTerminal.writeToSerialPCIMode("MS00500")
+                            serialTerminal.writeToSerialPCIMode("MS00500")*/
+                            serialTerminal.writeToSerialPCIMode("RR")
                         }
                     }else {
 
@@ -844,13 +991,13 @@ Window {
 
         Column {
             id: prContainer
-            x: 570
+            x: 544
             width: 200
             height: 71
             anchors.right: parent.right
-            anchors.rightMargin: 254
+            anchors.rightMargin: 280
             anchors.top: parent.top
-            anchors.topMargin: 17
+            anchors.topMargin: 265
 
             ProgressBar {
                 id: prState
@@ -890,14 +1037,14 @@ Window {
         StatusIndicator {
             id: emissionSts
             width: 59
-            color: "#ff0000"
+            color: "#feec63"
             z: 19.022
             anchors.left: parent.left
-            anchors.leftMargin: 711
+            anchors.leftMargin: 609
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 389
+            anchors.bottomMargin: 193
             anchors.top: parent.top
-            anchors.topMargin: 163
+            anchors.topMargin: 359
             antialiasing: true
             enabled: false
             active: false
@@ -928,29 +1075,24 @@ Window {
             anchors.bottomMargin: 33
         }
 
-        Text {
-            id: textlog1
-            x: 652
-            y: 276
-            width: 176
-            height: 191
-            color: "#fbfbfb"
-            text: qsTr("")
-            clip: true
-            styleColor: "#b8a521"
-            font.pixelSize: 12
-        }
-
         //  Text { id: time }
     }
 }
 
 /*##^##
 Designer {
-    D{i:4;anchors_width:150;anchors_x:700}D{i:14;anchors_y:0}D{i:16;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
-D{i:30;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:29;anchors_width:100;anchors_y:0}
-D{i:31;anchors_x:"-95";anchors_y:4}D{i:32;anchors_x:"-50";anchors_y:35}D{i:33;anchors_y:0}
-D{i:34;anchors_width:100;anchors_y:0}D{i:35;anchors_width:100;anchors_y:40}D{i:39;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}
-D{i:40;anchors_width:100;anchors_y:0}D{i:2;anchors_height:600;anchors_width:1024}
+    D{i:8;anchors_y:14}D{i:15;anchors_x:19;anchors_y:0}D{i:16;anchors_x:651;anchors_y:0}
+D{i:14;anchors_y:0}D{i:13;anchors_y:0}D{i:4;anchors_width:150;anchors_x:700}D{i:18;anchors_x:254;anchors_y:0}
+D{i:17;anchors_x:254;anchors_y:0}D{i:19;anchors_x:254;anchors_y:0}D{i:20;anchors_x:649;anchors_y:0}
+D{i:22;anchors_x:254}D{i:21;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254}D{i:24;anchors_x:254}
+D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}D{i:31;anchors_width:100;anchors_y:0}
+D{i:32;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:35;anchors_width:100;anchors_x:"-50";anchors_y:0}
+D{i:34;anchors_width:100;anchors_x:"-50";anchors_y:35}D{i:36;anchors_width:100;anchors_x:"-50";anchors_y:0}
+D{i:37;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:38;anchors_width:100;anchors_y:40}
+D{i:39;anchors_width:100;anchors_y:40}D{i:33;anchors_width:100;anchors_x:"-95";anchors_y:4}
+D{i:41;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}D{i:42;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:43;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:40;anchors_width:100;anchors_y:40}
+D{i:44;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:45;anchors_width:100;anchors_y:0}
+D{i:2;anchors_height:600;anchors_width:1024}
 }
 ##^##*/

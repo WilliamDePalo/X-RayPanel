@@ -84,6 +84,7 @@ Item {
     property real mA: 50
     property real secondi: 0.2
     property bool fuoco:false
+    property real mas:0
 //! [0]
 /*
     function randomDirection() {

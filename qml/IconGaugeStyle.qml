@@ -118,7 +118,7 @@ DashboardGaugeStyle {
                         degToRad(maxWarningStartAngle), false);
                     ctx.stroke();
                 }
-            }
+            }            
         }
         Text {
             id: focusText
