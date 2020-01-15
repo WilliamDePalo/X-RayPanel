@@ -25,7 +25,7 @@ SerialTerminal::SerialTerminal()
 {
     serialPort = new QSerialPort(this);
    // QPlainTextEdit *editor = new QPlainTextEdit();//) (this);
-    QString fileName = "C:\\Users\\willi\\OneDrive\\Desktop\\xray Prj\\xray panel\\serial.txt";
+    QString fileName = ".\\serial.txt";
     logger = new Logger(this, fileName/*, editor*/);
     logger->setShowDateTime(1);
     waitForAnAck = 0;
@@ -58,8 +58,8 @@ bool SerialTerminal::getConnectionStatus(){
 
 void SerialTerminal::writeToSerialPCIMode(QString message,int flush){
 
-    if (waitForAnAck == ackState::ACK_FREE ||
-        waitForAnAck == ackState::ACK_TO_SEND)
+    if (waitForAnAck == ACK_FREE ||
+        waitForAnAck == ACK_TO_SEND)
     {
         QByteArray msgToSend(message.size()+2,0);
         const QByteArray &messageArray = message.toLocal8Bit();
@@ -171,8 +171,8 @@ void SerialTerminal::readFromSerialPort(){
                             }
                             emit getData(data);
                             logger->write( "             EMIT     " + data +"\n");
-                            if ( waitForAnAck == ackState::ACK_WAITING)
-                                waitForAnAck = ackState::ACK_FREE;
+                            if ( waitForAnAck ==ACK_WAITING)
+                                waitForAnAck = ACK_FREE;
                             return;
                         }
                     }else // se siamo nel caso in cui ho valori divisi da uno spazio devo emettere i valori in sequenza
@@ -193,9 +193,8 @@ void SerialTerminal::readFromSerialPort(){
                                 }
                                 emit getData(data);
                                 logger->write( "             EMIT     " + data +"\n");
-                                if ( waitForAnAck == ackState::ACK_WAITING)
-                                    waitForAnAck = ackState::ACK_FREE;
-                                return;
+                                if ( waitForAnAck == ACK_WAITING)
+                                    waitForAnAck = ACK_FREE;
                             }
                         }
                     }
