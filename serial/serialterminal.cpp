@@ -1,8 +1,25 @@
 #include "serialterminal.h"
 #include <QtSerialPort/QSerialPort>
+//#include <QGuiApplication>
+//#include <QQmlApplicationEngine>
 
 #define MAX_BUFF_SIZE 1024
 #define MAX_TIME_WAIT_MS 100
+
+
+ /*   Q_INVOKABLE QString StringParsing::process(QString a){
+        QString  status =  a;
+
+        // copip
+
+        mErrorMessage = status;//status? "": QString("error message: %1 + %2 is different to %3").arg(a).arg(b).arg(res);
+        return status;
+    }*/
+
+
+
+
+
 
 SerialTerminal::SerialTerminal()
 {
@@ -39,8 +56,11 @@ bool SerialTerminal::getConnectionStatus(){
 
 }
 
-void SerialTerminal::writeToSerialPCIMode(QString message){
+void SerialTerminal::writeToSerialPCIMode(QString message,int flush){
 
+    if (waitForAnAck == ackState::ACK_FREE ||
+        waitForAnAck == ackState::ACK_TO_SEND)
+    {
         QByteArray msgToSend(message.size()+2,0);
         const QByteArray &messageArray = message.toLocal8Bit();
         unsigned char checksum = 0;
@@ -55,11 +75,11 @@ void SerialTerminal::writeToSerialPCIMode(QString message){
         msgToSend[messageArray.length()+1] = static_cast<char>(checksum);
         logger->write( " -> serial " + msgToSend + "\n\r");
         serialPort->write(msgToSend);
-    if (waitForAnAck == ackState::ACK_FREE ||
-        waitForAnAck == ackState::ACK_TO_SEND)
-    {
-        waitForAnAck = ACK_WAITING;
-        serialPort->flush();
+        if (flush)
+        {
+            waitForAnAck = ACK_WAITING;
+            serialPort->flush();
+        }
     }
 }
 
@@ -95,6 +115,7 @@ void SerialTerminal::readFromSerialPort(){
    unsigned char  cksm = 0;
    QByteArray toSend;
    QString data;
+
    int tmp ;
         QString dt;
 
@@ -116,15 +137,7 @@ void SerialTerminal::readFromSerialPort(){
             {
                 while ((rcvByte[idx].operator char() != static_cast<char>(0x03))&&
                        (idx<rcvByte.length()))
-                {
-      /*              if((rcvByte[idx].operator char()=='F')&&            // gestione fuoco
-                            (rcvByte[idx+1]=="O"))
-                    {
-                        if (data[idx+2]==="0") // fuoco piccolo
-                            valueSource.fuoco = false
-                        else
-                            valueSource.fuoco = true
-                    }*/
+                {// fince' e' diverso da ETX allora continuo a salvare il dato e calcolare la cKS
                     toSend[idToSend++] = rcvByte[idx];
                     cksm+=(rcvByte[idx].operator char() & 0xff); //salvo checksum
                     idx++;  // avanzo di una posizione
@@ -134,6 +147,7 @@ void SerialTerminal::readFromSerialPort(){
                     cksm+=(rcvByte[idx].operator char() & 0xff); // salvo lo stop
                     //controllo il cks
                     idx++;
+                    // se la CKsm ricevuta e' diversa da quella calcolata allora do errore e esco
                     if ( rcvByte[idx].operator char() != static_cast<char> (cksm))
                     {
                         toSend = "ERROR";
@@ -141,22 +155,49 @@ void SerialTerminal::readFromSerialPort(){
                     cksm = 0;     // reinizializzo il cks
                     idToSend = 0;  // riposiziono l'ofset dei dati da salvare
                     idx++; // salto la posizione del chsum
+// CONTROLLO SE E' IL CASO DI SPEZZARE GLI INVII DI DATA (nella risposta al comando RR le risposte sono divise da uno spazio)
 
+                    if (!toSend.contains(""))
+                    {
                         data= QString::fromLatin1(toSend);
-                    if (data.length()>0)
-                    {// controllo se data è più lungo di 5 e ontiene ER, allora segue un errore
-                        if((data.contains("ER00"))&&(data.length()>5))
-                        {
-                            // prendo solo l'errore che compone l'ultima parte
-                            tmp = data.lastIndexOf(QRegExp("E"));
-                            dt = data.right(data.length()-tmp);
-                            data = dt;
+                        if (data.length()>0)
+                        {// controllo se data è più lungo di 5 e contiene ER, allora segue un errore
+                            if((data.contains("ER00"))&&(data.length()>5))
+                            {
+                                // prendo solo l'errore che compone l'ultima parte
+                                tmp = data.lastIndexOf(QRegExp("E"));
+                                dt = data.right(data.length()-tmp);
+                                data = dt;
+                            }
+                            emit getData(data);
+                            logger->write( "             EMIT     " + data +"\n");
+                            if ( waitForAnAck == ackState::ACK_WAITING)
+                                waitForAnAck = ackState::ACK_FREE;
+                            return;
                         }
-                        emit getData(data);                        
-                        logger->write( "             EMIT     " + data +"\n");
-                        if ( waitForAnAck == ackState::ACK_WAITING)
-                            waitForAnAck = ackState::ACK_FREE;
-                        return;
+                    }else // se siamo nel caso in cui ho valori divisi da uno spazio devo emettere i valori in sequenza
+                    {
+                        unsigned char id;
+                        QList <QByteArray> BuffSend = toSend.split(' ');
+                        for(id= 0;id<BuffSend.length();id++)
+                        {
+                            data= QString::fromLatin1(BuffSend.at(id));
+                            if (data.length()>0)
+                            {// controllo se data è più lungo di 5 e contiene ER, allora segue un errore
+                                if((data.contains("ER00"))&&(data.length()>5))
+                                {
+                                    // prendo solo l'errore che compone l'ultima parte
+                                    tmp = data.lastIndexOf(QRegExp("E"));
+                                    dt = data.right(data.length()-tmp);
+                                    data = dt;
+                                }
+                                emit getData(data);
+                                logger->write( "             EMIT     " + data +"\n");
+                                if ( waitForAnAck == ackState::ACK_WAITING)
+                                    waitForAnAck = ackState::ACK_FREE;
+                                return;
+                            }
+                        }
                     }
                 }
             }

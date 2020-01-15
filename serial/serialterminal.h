@@ -5,7 +5,19 @@
 
 #include <QObject>
 #include "serialLogger.h"
-
+/*
+class StringParsing: public QObject{
+    Q_OBJECT
+    Q_PROPERTY(QString errorMessage READ errorMessage)
+public:
+    using QObject::QObject;
+    Q_INVOKABLE QString process(QString a);
+    QString errorMessage() const{
+        return mErrorMessage;
+    }
+private:
+    QString mErrorMessage;
+};*/
 
 class SerialTerminal : public QObject
 {
@@ -24,7 +36,7 @@ public slots:
     void readFromSerialPort();
     bool getConnectionStatusSlot();
     void closeSerialPortSlot();
-    void writeToSerialPCIMode(QString message);
+    void writeToSerialPCIMode(QString message,int flush);
 
 
 private:
@@ -41,7 +53,7 @@ enum ackState{
 signals:
 
     QString getData(QString data);
-    QByteArray getBinaryData(QByteArray rcvByte);
+ //   QByteArray getBinaryData(QByteArray rcvByte);
 
 
 };
