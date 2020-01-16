@@ -425,6 +425,12 @@ Window {
                     }
                 }
             }
+
+            Item {
+                id: threePointPanel
+                width: 202
+                height: 202
+            }
             /*           PressAndHoldButton {
                 id: speedPlus1
                 width: 18
@@ -798,18 +804,7 @@ Window {
                         tmp += data[4]-"0";
                         valueSource.kv = tmp;
                         errorMessage.visible = false                        
-                        // dato che nel comando di init MAS e' lultimo ad arrivare, se parte vuoto e tutti sono vuoti
-                        // allora devo dargli i primi parametri
-                        if((valueSource.kv /*|| valueSource.mA || valueSource.secondi || valueSource.mas */) === 0)
-                        {// invio i default
-                            serialTerminal.writeToSerialPCIMode("ET1",0)
-                            serialTerminal.writeToSerialPCIMode("FO1",0)
-                            serialTerminal.writeToSerialPCIMode("KV050",0)
-                            serialTerminal.writeToSerialPCIMode("MA01600",0)
-                            serialTerminal.writeToSerialPCIMode("MS00500",1)
-                            errorMessage.text = qsTr("DEFAULT PARAM !!!")
-                            errorMessage.visible = true
-                        }
+
                     }else if ((data[0] ==="M")&&            // gestione Ma
                               (data[1]==="A"))
                     {
@@ -848,6 +843,18 @@ Window {
                     }else if ((data[0] ==="M")&&            // gestione MAs
                               (data[1]==="X"))
                     {
+                        // dato che nel comando di init MAS e' lultimo ad arrivare, se parte vuoto e tutti sono vuoti
+                        // allora devo dargli i primi parametri
+                        if((valueSource.kv || valueSource.mA || valueSource.secondi || valueSource.mas ) === 0)
+                        {// invio i default
+                            serialTerminal.writeToSerialPCIMode("ET1",0)
+                            serialTerminal.writeToSerialPCIMode("FO1",0)
+                            serialTerminal.writeToSerialPCIMode("KV050",0)
+                            serialTerminal.writeToSerialPCIMode("MA01600",0)
+                            serialTerminal.writeToSerialPCIMode("MS00500",1)
+                            errorMessage.text = qsTr("DEFAULT PARAM !!!")
+                            errorMessage.visible = true
+                        }
                         tmp =  (data[2]-"0")*1000;
                         tmp += (data[3]-"0")*100;
                         tmp += (data[4]-"0")*10;//0;
@@ -997,13 +1004,13 @@ Window {
 
         Column {
             id: prContainer
-            x: 544
+            x: 539
             width: 200
             height: 71
             anchors.right: parent.right
-            anchors.rightMargin: 280
+            anchors.rightMargin: 286
             anchors.top: parent.top
-            anchors.topMargin: 265
+            anchors.topMargin: 205
 
             ProgressBar {
                 id: prState
@@ -1048,9 +1055,9 @@ Window {
             anchors.left: parent.left
             anchors.leftMargin: 609
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 193
+            anchors.bottomMargin: 442
             anchors.top: parent.top
-            anchors.topMargin: 359
+            anchors.topMargin: 110
             antialiasing: true
             enabled: false
             active: false
@@ -1088,17 +1095,17 @@ Window {
 /*##^##
 Designer {
     D{i:8;anchors_y:14}D{i:15;anchors_x:19;anchors_y:0}D{i:16;anchors_x:651;anchors_y:0}
-D{i:14;anchors_y:0}D{i:13;anchors_y:0}D{i:4;anchors_width:150;anchors_x:700}D{i:18;anchors_x:254;anchors_y:0}
+D{i:13;anchors_y:0}D{i:14;anchors_y:0}D{i:4;anchors_width:150;anchors_x:700}D{i:18;anchors_x:254;anchors_y:0}
 D{i:17;anchors_x:254;anchors_y:0}D{i:19;anchors_x:254;anchors_y:0}D{i:20;anchors_x:649;anchors_y:0}
 D{i:22;anchors_x:254}D{i:21;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254}D{i:24;anchors_x:254}
-D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}D{i:31;anchors_width:100;anchors_y:0}
-D{i:32;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:35;anchors_width:100;anchors_x:"-50";anchors_y:0}
-D{i:34;anchors_width:100;anchors_x:"-50";anchors_y:35}D{i:36;anchors_width:100;anchors_x:"-50";anchors_y:0}
-D{i:37;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:38;anchors_width:100;anchors_y:40}
-D{i:39;anchors_width:100;anchors_y:40}D{i:33;anchors_width:100;anchors_x:"-95";anchors_y:4}
-D{i:41;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}D{i:42;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:43;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:40;anchors_width:100;anchors_y:40}
-D{i:44;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:45;anchors_width:100;anchors_y:0}
+D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}D{i:32;anchors_width:100;anchors_y:0}
+D{i:33;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:36;anchors_width:100;anchors_x:"-50";anchors_y:0}
+D{i:35;anchors_width:100;anchors_x:"-50";anchors_y:35}D{i:37;anchors_width:100;anchors_x:"-50";anchors_y:0}
+D{i:38;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:39;anchors_width:100;anchors_y:40}
+D{i:40;anchors_width:100;anchors_y:40}D{i:34;anchors_width:100;anchors_x:"-95";anchors_y:4}
+D{i:42;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}D{i:43;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:44;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:41;anchors_width:100;anchors_y:40}
+D{i:45;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:46;anchors_width:100;anchors_y:0}
 D{i:2;anchors_height:600;anchors_width:1024}
 }
 ##^##*/
