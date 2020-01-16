@@ -97,7 +97,7 @@ Window {
             spacing: 0
 
             Item {
-                id: element
+                id: rigthColumn
                 x: 700
                 y: 0
                 width: 150
@@ -107,7 +107,7 @@ Window {
                 clip: false
                 transformOrigin: Item.Right
                 anchors.verticalCenter: parent.verticalCenter
-            Button {
+                Button {
                     id:focusBtn
                     width: parent.width
                     height: 95
@@ -138,54 +138,229 @@ Window {
                             }
                         }
                     }
-                CircularGauge {
-                    id: focusGauge
-                    x: 0
-                    value: valueSource.fuoco
-                    maximumValue: 1
-                    width: parent.width
-                    height: 210
-                    anchors.top: parent.top
-                    anchors.topMargin: -36
-                    anchors.right: parent.right
-                    anchors.rightMargin: 0
-                    stepSize: 1
-                    visible: true
+                    CircularGauge {
+                        id: focusGauge
+                        x: 0
+                        value: valueSource.fuoco
+                        maximumValue: 1
+                        width: parent.width
+                        height: 210
+                        anchors.top: parent.top
+                        anchors.topMargin: -36
+                        anchors.right: parent.right
+                        anchors.rightMargin: 0
+                        stepSize: 1
+                        visible: true
 
-                    style: IconGaugeStyle {
-                        id: fuelGaugeStyle
-                        Text {
-                            id: textSec
-                            text: qsTr("SEC")
+                        style: IconGaugeStyle {
+                            id: fuelGaugeStyle
+                            Text {
+                                id: textSec
+                                text: qsTr("SEC")
+                            }
+                            textt: "FOCUS"
+                            icon: "qrc:/images/fuel-icon.png"
+                            minWarningColor: Qt.rgba(0.5, 0, 0, 1)
+
+                            tickmarkLabel: Text {
+                                color: "white"
+                                visible: styleData.value === 0 || styleData.value === 1
+                                font.pixelSize: fuelGaugeStyle.toPixels(0.225)
+                                text: styleData.value === 0 ? "SMALL" : (styleData.value === 1 ? "LARGE" : "")
+                            }
+
                         }
-                        textt: "FOCUS"
-                        icon: "qrc:/images/fuel-icon.png"
-                        minWarningColor: Qt.rgba(0.5, 0, 0, 1)
-
-                        tickmarkLabel: Text {
-                            color: "white"
-                            visible: styleData.value === 0 || styleData.value === 1
-                            font.pixelSize: fuelGaugeStyle.toPixels(0.225)
-                            text: styleData.value === 0 ? "SMALL" : (styleData.value === 1 ? "LARGE" : "")
-                        }
-
                     }
-                  }
                 }
+
+
+            }
+
+            CircularGauge {
+                id: tachometer
+                x: 319
+                y: 0
+                width: 285
+                height: 285
+                anchors.verticalCenterOffset: -145
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenterOffset: -150
+                anchors.horizontalCenter: parent.horizontalCenter//0.25 - gaugeRow.spacing
+                value: valueSource.kv
+                maximumValue: 125
+                minimumValue: 40
+
+                style: TachometerStyle {}
+            }
+            PressAndHoldButton {
+                id: kvPlus
+                width: 20
+                height: 20
+                anchors.left: tachometer.left
+                anchors.leftMargin: 332
+                antialiasing: true
+                anchors.verticalCenterOffset: -32
+                anchors.verticalCenter: tachometer.verticalCenter
+                z: 1.63
+                scale: 3.859
+                transformOrigin: Item.Top
+                sourceSize.height: 24
+                fillMode: Image.Stretch
+                sourceSize.width: 23
+                pressed: false
+                source: "../images/plus-sign.png"
+                onClicked:
+                {
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        serialTerminal.writeToSerialPCIMode("KV+",1)
+                    }
+                }
+            }
+            PressAndHoldButton {
+                id: kvMinus
+                x: 254
+                width: 20
+                height: 20
+                anchors.right: tachometer.left
+                anchors.rightMargin: 42
+                antialiasing: true
+                anchors.verticalCenterOffset: -32
+                anchors.verticalCenter: tachometer.verticalCenter
+                z: 1.63
+                scale: 3.859
+                transformOrigin: Item.Top
+                sourceSize.height: 24
+                fillMode: Image.Stretch
+                sourceSize.width: 23
+                pressed: false
+                source: "../images/minus-sign.png"
+                onClicked:{
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        serialTerminal.writeToSerialPCIMode("KV-",1)
+                    }
+                }
+            }
+            anchors.centerIn: parent
+            //  spacing: 10
+
+            Item {
+                id: threePointPanel
+                x: 9
+                width: 783
+                height: 285
+                visible: true
+                anchors.verticalCenterOffset: 145
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenterOffset: -100
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                PressAndHoldButton {
+                    id: mAMinus
+                    x: 42
+                    y: 103
+                    width: 20
+                    height: 20
+                    anchors.horizontalCenterOffset: -52
+                    anchors.left: speedometer.right
+                    antialiasing: true
+                    anchors.leftMargin: -345
+                    anchors.verticalCenterOffset: -29
+                    anchors.verticalCenter: speedometer.verticalCenter
+                    z: 1.63
+                    scale: 3.859
+                    transformOrigin: Item.Top
+                    sourceSize.height: 24
+                    fillMode: Image.Stretch
+                    sourceSize.width: 23
+                    pressed: false
+                    source: "../images/minus-sign.png"
+                    onClicked:{
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.writeToSerialPCIMode("MA-",1)
+                        }
+                    }
+                }
+
+                PressAndHoldButton {
+                    id: mAPlus
+                    x: 439
+                    y: 113
+                    width: 20
+                    height: 20
+                    anchors.horizontalCenterOffset: -52
+                    anchors.left: speedometer.left
+                    anchors.leftMargin: 331
+                    antialiasing: true
+                    anchors.verticalCenterOffset: -29
+                    anchors.verticalCenter: speedometer.verticalCenter
+                    z: 1.63
+                    scale: 3.859
+                    transformOrigin: Item.Top
+                    sourceSize.height: 24
+                    fillMode: Image.Stretch
+                    sourceSize.width: 23
+                    pressed: false
+                    source: "../images/plus-sign.png"
+                    onClicked:{
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.writeToSerialPCIMode("MA+",1)
+                        }
+                    }
+
+                }
+
+                CircularGauge {
+                    id: speedometer
+                    x: 107
+                    y: 0
+                    width: 285
+                    value: valueSource.mA
+                    anchors.verticalCenter: parent.verticalCenter
+                    minimumValue: 80
+                    maximumValue: 160
+                    // We set the width to the height, because the height will always be
+                    // the more limited factor. Also, all circular controls letterbox
+                    // their contents to ensure that they remain circular. However, we
+                    // don't want to extra space on the left and right of our gauges,
+                    // because they're laid out horizontally, and that would create
+                    // large horizontal gaps between gauges on wide screens.
+                    height: 285
+                    anchors.horizontalCenterOffset: -52
+                    stepSize: 1
+
+                    anchors.verticalCenterOffset: 0
+                    opacity: 1
+                    visible: true
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    transformOrigin: Item.Top
+
+                    style: DashboardGaugeStyle {
+                        labelStepSize:20
+                    }
+                    //   DashboardGaugeStyle.
+                }
+
                 CircularGauge {
                     id: tempGauge
+                    x: 633
+                    y: 104
+                    width: 150
+                    height: 210
+                    anchors.bottomMargin: -29
+                    anchors.bottom: parent.bottom
                     maximumValue: 2 //12
-                    width: parent.width
-                    height: parent.height * 0.7
+                    anchors.right: parent.right
+                    anchors.rightMargin: 0
                     value: valueSource.secondi
                     stepSize: 0//11
                     minimumValue: 0
-                    anchors.right: parent.right
-                    anchors.rightMargin: 0
                     clip: false
-                    y: parent.height / 2 + container.height * 0.01
 
-                    style: IconGaugeStyle {                         
+                    style: IconGaugeStyle {
                         id: tempGaugeStyle
 
                         minimumValueAngle: -60
@@ -272,164 +447,6 @@ Window {
                 }
 
 
-            }
-
-            CircularGauge {
-                id: tachometer
-                x: 0
-                y: 0
-                width: 285
-                height: 285
-                anchors.horizontalCenterOffset: -150
-                anchors.verticalCenterOffset: 145
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 0
-                anchors.horizontalCenter: parent.horizontalCenter//0.25 - gaugeRow.spacing
-                value: valueSource.kv
-                maximumValue: 125
-                minimumValue: 40
-                anchors.verticalCenter: parent.verticalCenter
-
-                style: TachometerStyle {}
-            }
-            PressAndHoldButton {
-                id: kvPlus
-                width: 20
-                height: 20
-                anchors.left: tachometer.left
-                anchors.leftMargin: 332
-                antialiasing: true
-                anchors.verticalCenterOffset: -32
-                anchors.verticalCenter: tachometer.verticalCenter
-                z: 1.63
-                scale: 3.859
-                transformOrigin: Item.Top
-                sourceSize.height: 24
-                fillMode: Image.Stretch
-                sourceSize.width: 23
-                pressed: false
-                source: "../images/plus-sign.png"
-                onClicked:
-                {
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        serialTerminal.writeToSerialPCIMode("KV+",1)
-                    }
-                }
-            }
-            PressAndHoldButton {
-                id: kvMinus
-                x: 254
-                width: 20
-                height: 20
-                anchors.right: tachometer.left
-                anchors.rightMargin: 42
-                antialiasing: true
-                anchors.verticalCenterOffset: -32
-                anchors.verticalCenter: tachometer.verticalCenter
-                z: 1.63
-                scale: 3.859
-                transformOrigin: Item.Top
-                sourceSize.height: 24
-                fillMode: Image.Stretch
-                sourceSize.width: 23
-                pressed: false
-                source: "../images/minus-sign.png"
-                onClicked:{
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        serialTerminal.writeToSerialPCIMode("KV-",1)
-                    }
-                }
-            }
-
-            CircularGauge {
-                id: speedometer
-                width: 285
-                value: valueSource.mA
-                anchors.verticalCenter: parent.verticalCenter
-                minimumValue: 80
-                maximumValue: 160
-                // We set the width to the height, because the height will always be
-                // the more limited factor. Also, all circular controls letterbox
-                // their contents to ensure that they remain circular. However, we
-                // don't want to extra space on the left and right of our gauges,
-                // because they're laid out horizontally, and that would create
-                // large horizontal gaps between gauges on wide screens.
-                height: 285
-                stepSize: 1
-
-                anchors.top: parent.top
-                anchors.topMargin: 0
-                anchors.horizontalCenterOffset: -150
-                anchors.verticalCenterOffset: -145
-                opacity: 1
-                visible: true
-                anchors.horizontalCenter: parent.horizontalCenter
-                transformOrigin: Item.Top
-
-                style: DashboardGaugeStyle {
-                    labelStepSize:20
-                }
-             //   DashboardGaugeStyle.
-            }
-            anchors.centerIn: parent
-            //  spacing: 10
-
-            PressAndHoldButton {
-                id: mAPlus
-                width: 20
-                height: 20
-                anchors.left: speedometer.left
-                anchors.leftMargin: 332
-                antialiasing: true
-                anchors.verticalCenterOffset: -30
-                anchors.verticalCenter: speedometer.verticalCenter
-                z: 1.63
-                scale: 3.859
-                transformOrigin: Item.Top
-                sourceSize.height: 24
-                fillMode: Image.Stretch
-                sourceSize.width: 23
-                pressed: false
-                source: "../images/plus-sign.png"
-                onClicked:{
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        serialTerminal.writeToSerialPCIMode("MA+",1)
-                    }
-                }
-
-            }
-            PressAndHoldButton {
-                id: mAMinus
-                width: 20
-                height: 20
-                anchors.left: speedometer.right
-                antialiasing: true
-                anchors.leftMargin: -350
-                anchors.verticalCenterOffset: -30
-                anchors.verticalCenter: speedometer.verticalCenter
-                z: 1.63
-                scale: 3.859
-                transformOrigin: Item.Top
-                sourceSize.height: 24
-                fillMode: Image.Stretch
-                sourceSize.width: 23
-                pressed: false
-                source: "../images/minus-sign.png"
-                onClicked:{
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        serialTerminal.writeToSerialPCIMode("MA-",1)
-                    }
-                }
-            }
-
-            Item {
-                id: threePointPanel
-                width: 202
-                height: 202
             }
             /*           PressAndHoldButton {
                 id: speedPlus1
@@ -756,26 +773,26 @@ Window {
                 //  Text: "19200"
             }
 
-//StringParsing{ id: strPars }
+            //StringParsing{ id: strPars }
             Connections {
 
                 target: serialTerminal
                 property real tmp :5000
-                 property  real tmp1: 1000
-                 property  real tmp2:0
+                property  real tmp1: 1000
+                property  real tmp2:0
                 property string  rcv: ""
 
                 onGetData: {
-    //                var dt;
-    //                dt =  strPars.process(data)
-   //                dt =  data;
+                    //                var dt;
+                    //                dt =  strPars.process(data)
+                    //                dt =  data;
 
 
                     //textlog1.text = "<-APP " + data.ToString;
-                   //  textlog1.text = data->element;
-                //    while (data[tmp]!==0)
-               //         textlog1.text += cStr() data[tmp] ;
-                //    textlog1.text = "<-APP " + rcv;
+                    //  textlog1.text = data->element;
+                    //    while (data[tmp]!==0)
+                    //         textlog1.text += cStr() data[tmp] ;
+                    //    textlog1.text = "<-APP " + rcv;
                     errorMessage.visible = false
                     if((data[0] ==="F")&&            // gestione fuoco
                             (data[1]==="O"))
@@ -792,18 +809,18 @@ Window {
                             valueSource.fuoco = true
                             speedometer.minimumValue= 160
                             speedometer.maximumValue= 400
-                             speedometer.DashboardGaugeStyle.labelStepSize = 50
+                            speedometer.DashboardGaugeStyle.labelStepSize = 50
                         }
                         errorMessage.visible = false
                     }
                     else if ((data[0] ==="K")&&            // gestione kV
                              (data[1]==="V"))
-                    {                            
+                    {
                         tmp = (data[2]-"0")*100;
                         tmp += (data[3]-"0")*10;
                         tmp += data[4]-"0";
                         valueSource.kv = tmp;
-                        errorMessage.visible = false                        
+                        errorMessage.visible = false
 
                     }else if ((data[0] ==="M")&&            // gestione Ma
                               (data[1]==="A"))
@@ -818,7 +835,7 @@ Window {
                     }else if ((data[0] ==="M")&&            // gestione Ms
                               (data[1]==="S"))
                     {
-                   /*     tmp =  (data[2]-"0")*10000;
+                        /*     tmp =  (data[2]-"0")*10000;
                         tmp += (data[3]-"0")*1000;
                         tmp += (data[4]-"0")*100;
                         tmp += (data[5]-"0")*10;
@@ -839,7 +856,7 @@ Window {
                         tmp2 = tmp;
                         tmp = tmp1+tmp2;
                         valueSource.secondi = tmp/1000; // in secondi
-                        errorMessage.visible = false                        
+                        errorMessage.visible = false
                     }else if ((data[0] ==="M")&&            // gestione MAs
                               (data[1]==="X"))
                     {
@@ -864,7 +881,7 @@ Window {
                         errorMessage.visible = false
                     }
                     else if ((data[0] ==="P")&&            // gestione PRONTO
-                              (data[1]==="R"))
+                             (data[1]==="R"))
                     {
 
                         prState.value = data[2]-"0";
@@ -903,7 +920,7 @@ Window {
                     }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
                               (data[1]==="R"))
                     {
-                 //       serialTerminal.writeToSerialPCIMode(data);
+                        //       serialTerminal.writeToSerialPCIMode(data);
                         if (data[3] === "0")
                         {
                             if (data[4] === "1")
@@ -972,7 +989,7 @@ Window {
                             greenLight.opacity = 1
                             redLight.opacity = 0.3
                             yellowButton.opacity = 0.3
-                       /*     serialTerminal.writeToSerialPCIMode("ET1")
+                            /*     serialTerminal.writeToSerialPCIMode("ET1")
                             serialTerminal.writeToSerialPCIMode("FO1")
                             serialTerminal.writeToSerialPCIMode("KV050")
                             serialTerminal.writeToSerialPCIMode("MA01600")
@@ -1065,8 +1082,8 @@ Window {
 
         Text {
             id: errorMessage
-            x: 471
-            y: 1
+            x: 406
+            y: 16
             width: 380
             height: 60
             color: "#ef5050"
@@ -1083,9 +1100,9 @@ Window {
             verticalAlignment: Text.AlignVCenter
             font.family: "Arial"
             anchors.right: parent.right
-            anchors.rightMargin: 52
+            anchors.rightMargin: 238
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 33
+            anchors.bottomMargin: 524
         }
 
         //  Text { id: time }
@@ -1094,10 +1111,9 @@ Window {
 
 /*##^##
 Designer {
-    D{i:8;anchors_y:14}D{i:15;anchors_x:19;anchors_y:0}D{i:16;anchors_x:651;anchors_y:0}
-D{i:13;anchors_y:0}D{i:14;anchors_y:0}D{i:4;anchors_width:150;anchors_x:700}D{i:18;anchors_x:254;anchors_y:0}
-D{i:17;anchors_x:254;anchors_y:0}D{i:19;anchors_x:254;anchors_y:0}D{i:20;anchors_x:649;anchors_y:0}
-D{i:22;anchors_x:254}D{i:21;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254}D{i:24;anchors_x:254}
+    D{i:8;anchors_y:14}D{i:4;anchors_width:150;anchors_x:700}D{i:13;anchors_x:254;anchors_y:0}
+D{i:12;anchors_x:254;anchors_y:0}D{i:14;anchors_x:254;anchors_y:0}D{i:15;anchors_x:649;anchors_y:0}
+D{i:17;anchors_x:254}D{i:18;anchors_x:254}D{i:20;anchors_x:254}D{i:19;anchors_x:254;anchors_y:0}
 D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}D{i:32;anchors_width:100;anchors_y:0}
 D{i:33;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:36;anchors_width:100;anchors_x:"-50";anchors_y:0}
 D{i:35;anchors_width:100;anchors_x:"-50";anchors_y:35}D{i:37;anchors_width:100;anchors_x:"-50";anchors_y:0}
