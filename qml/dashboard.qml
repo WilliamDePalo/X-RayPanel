@@ -56,6 +56,8 @@ import Qt.labs.calendar 1.0
 import QtQuick 2.7
 //import WdpClass 1.0
 
+
+
 Window {
     id: root
     visible: true
@@ -131,10 +133,22 @@ Window {
                         {
                             if (valueSource.fuoco) // Se fuoco grande
                             {
-                                serialTerminal.writeToSerialPCIMode("FO0",1)
+                                    // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco grande
+                               serialTerminal.putPC1cmd("MA01600",1)
+                                serialTerminal.putPC1cmd("FO0",1)
+                                 serialTerminal.putPC1cmd("MA01600",1)
+
+
+
+
+
                             }else // se piccolo
                             {
-                                serialTerminal.writeToSerialPCIMode("FO1",1)
+                                    // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco piccolo
+                                serialTerminal.putPC1cmd("MA01600",1)
+                                serialTerminal.putPC1cmd("FO1",1)
+                                serialTerminal.putPC1cmd("MA00800",1)
+
                             }
                         }
                     }
@@ -213,7 +227,7 @@ Window {
                 {
                     if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
-                        serialTerminal.writeToSerialPCIMode("KV+",1)
+                        serialTerminal.putPC1cmd("KV+",1)
                     }
                 }
             }
@@ -238,7 +252,7 @@ Window {
                 onClicked:{
                     if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
-                        serialTerminal.writeToSerialPCIMode("KV-",1)
+                        serialTerminal.putPC1cmd("KV-",1)
                     }
                 }
             }
@@ -279,7 +293,7 @@ Window {
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
-                            serialTerminal.writeToSerialPCIMode("MA-",1)
+                            serialTerminal.putPC1cmd("MA-",1)
                         }
                     }
                 }
@@ -307,7 +321,7 @@ Window {
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
-                            serialTerminal.writeToSerialPCIMode("MA+",1)
+                            serialTerminal.putPC1cmd("MA+",1)
                         }
                     }
 
@@ -410,7 +424,7 @@ Window {
                         {
                             if (serialTerminal.getConnectionStatusSlot() !== false)
                             {
-                                serialTerminal.writeToSerialPCIMode("MS-",1)
+                                serialTerminal.putPC1cmd("MS-",1)
                             }
                         }
                     }
@@ -440,7 +454,7 @@ Window {
                         {
                             if (serialTerminal.getConnectionStatusSlot() !== false)
                             {
-                                serialTerminal.writeToSerialPCIMode("MS+",1)
+                                serialTerminal.putPC1cmd("MS+",1)
                             }
                         }
                     }
@@ -864,11 +878,11 @@ Window {
                         // allora devo dargli i primi parametri
                         if((valueSource.kv || valueSource.mA || valueSource.secondi || valueSource.mas ) === 0)
                         {// invio i default
-                            serialTerminal.writeToSerialPCIMode("ET1",0)
-                            serialTerminal.writeToSerialPCIMode("FO1",0)
-                            serialTerminal.writeToSerialPCIMode("KV050",0)
-                            serialTerminal.writeToSerialPCIMode("MA01600",0)
-                            serialTerminal.writeToSerialPCIMode("MS00500",1)
+                            serialTerminal.putPC1cmd("ET1",0)
+                            serialTerminal.putPC1cmd("FO1",0)
+                            serialTerminal.putPC1cmd("KV050",0)
+                            serialTerminal.putPC1cmd("MA01600",0)
+                            serialTerminal.putPC1cmd("MS00500",1)
                             errorMessage.text = qsTr("DEFAULT PARAM !!!")
                             errorMessage.visible = true
                         }
@@ -889,12 +903,12 @@ Window {
                             prStatus.text = "IDLE"
                         else if (data[2]=== "1")
                         {
-                            serialTerminal.writeToSerialPCIMode(data,1);
+                            serialTerminal.putPC1cmd(data,1);
                             prStatus.text = "ACTIVE !!"
                         }
                         else if(data[2]==="2")
                         {
-                            serialTerminal.writeToSerialPCIMode(data,1);
+                            serialTerminal.putPC1cmd(data,1);
                             prStatus.text = "READY !!!"
                         }
                     }else if ((data[0] ==="X")&&            // gestione PRONTO
@@ -905,7 +919,7 @@ Window {
                             emissionSts.active = false;
                         else if (data[2]=== "1")
                         {
-                            serialTerminal.writeToSerialPCIMode(data,1);
+                            serialTerminal.putPC1cmd(data,1);
                             emissionSts.active = true;
                             prState.value =0;
                             prStatus.text = "IDLE"
@@ -914,13 +928,13 @@ Window {
                     else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
                              (data[1]==="L"))
                     {
-                        serialTerminal.writeToSerialPCIMode(data);
+                        serialTerminal.putPC1cmd(data,0);
                         errorMessage.text = qsTr("LATCHING ERROR !!!")
                         errorMessage.visible = true
                     }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
                               (data[1]==="R"))
                     {
-                        //       serialTerminal.writeToSerialPCIMode(data);
+                        //       serialTerminal.putPC1cmd(data);
                         if (data[3] === "0")
                         {
                             if (data[4] === "1")
@@ -989,12 +1003,12 @@ Window {
                             greenLight.opacity = 1
                             redLight.opacity = 0.3
                             yellowButton.opacity = 0.3
-                            /*     serialTerminal.writeToSerialPCIMode("ET1")
-                            serialTerminal.writeToSerialPCIMode("FO1")
-                            serialTerminal.writeToSerialPCIMode("KV050")
-                            serialTerminal.writeToSerialPCIMode("MA01600")
-                            serialTerminal.writeToSerialPCIMode("MS00500")*/
-                            serialTerminal.writeToSerialPCIMode("RR",1)
+                            serialTerminal.putPC1cmd("ET?",1)
+                            serialTerminal.putPC1cmd("FO?",1)
+                       /*     serialTerminal.putPC1cmd("KV050")
+                            serialTerminal.putPC1cmd("MA01600")
+                            serialTerminal.putPC1cmd("MS00500")*/
+                            serialTerminal.putPC1cmd("RR",1)
                         }
                     }else {
                         errorMessage.visible = false;

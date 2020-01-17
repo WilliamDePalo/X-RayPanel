@@ -29,6 +29,8 @@ SerialTerminal::SerialTerminal()
     logger = new Logger(this, fileName/*, editor*/);
     logger->setShowDateTime(1);
     waitForAnAck = 0;
+    sendPeriodicTimer = new QTimer(this);
+    waitAckTimer = new QTimer(this);
 }
 
 void SerialTerminal::openSerialPort(QString comName, int baud){
@@ -41,7 +43,9 @@ void SerialTerminal::openSerialPort(QString comName, int baud){
     serialPort->setStopBits(QSerialPort::TwoStop);
     serialPort->open(QIODevice::ReadWrite);
     connect(serialPort,SIGNAL(readyRead()),this,SLOT(readFromSerialPort()));
-
+    connect(sendPeriodicTimer, SIGNAL(timeout()), this, SLOT(flushSendBuffer()));
+    connect(waitAckTimer,SIGNAL(timeout()), this, SLOT(resetAck()));
+    sendPeriodicTimer->start(1000);
     serialPort->setReadBufferSize(MAX_BUFF_SIZE);
 }
 
@@ -79,6 +83,7 @@ void SerialTerminal::writeToSerialPCIMode(QString message,int flush){
         {
             waitForAnAck = ACK_WAITING;
             serialPort->flush();
+            waitAckTimer->start(1000);
         }
     }
 }
@@ -216,8 +221,40 @@ void SerialTerminal::readFromSerialPort(){
 
 }
 
+void SerialTerminal::resetAck(){
+    waitForAnAck = ACK_FREE;
+    waitAckTimer->stop();
+}
+
+void SerialTerminal::flushSendBuffer(){
+    int id = 0 ;
+    if (SendBuffer.length()) // se il buffer non è vuoto
+    {
+        for (id=0;id<SendBuffer.length();id++)
+        {
+            if (waitForAnAck == ACK_FREE ||
+                waitForAnAck == ACK_TO_SEND)
+            {
+                writeToSerialPCIMode(SendBuffer.at(id).cmd,SendBuffer.at(id).toWaitAck);
+                SendBuffer.removeAt(id);
+              //  break; // esco e processo gli altri elementi al prossimo giro
+            }else
+            {
+                break;
+            }
+        }
+    }
+    sendPeriodicTimer->start(50);
+}
 
 
+void SerialTerminal::putPC1cmd(QString message,char flush)
+{
+   PC1SendElement el;
+   el.cmd = message;
+   el.toWaitAck = flush;
+   SendBuffer.append(el);
+}
 
 
 
