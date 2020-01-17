@@ -177,7 +177,10 @@ void SerialTerminal::readFromSerialPort(){
                             emit getData(data);
                             logger->write( "             EMIT     " + data +"\n");
                             if ( waitForAnAck ==ACK_WAITING)
+                            {
                                 waitForAnAck = ACK_FREE;
+                                waitAckTimer->stop();
+                            }
                             return;
                         }
                     }else // se siamo nel caso in cui ho valori divisi da uno spazio devo emettere i valori in sequenza
@@ -199,7 +202,10 @@ void SerialTerminal::readFromSerialPort(){
                                 emit getData(data);
                                 logger->write( "             EMIT     " + data +"\n");
                                 if ( waitForAnAck == ACK_WAITING)
+                                {
                                     waitForAnAck = ACK_FREE;
+                                    waitAckTimer->stop();
+                                }
                             }
                         }
                     }
@@ -222,7 +228,8 @@ void SerialTerminal::readFromSerialPort(){
 }
 
 void SerialTerminal::resetAck(){
-    waitForAnAck = ACK_FREE;
+    if (waitForAnAck != ACK_FREE)
+        waitForAnAck = ACK_FREE;
     waitAckTimer->stop();
 }
 

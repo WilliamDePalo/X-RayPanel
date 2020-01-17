@@ -77,6 +77,34 @@ Window {
 
     }
 
+    Timer{
+        id: afterFocusTimer
+           running: false
+           repeat: false
+
+           property var callback
+
+           onTriggered: callback()
+    }
+
+    function setTimeout(callback, delay)
+    {
+        if (afterFocusTimer.running) {
+      //      console.error("nested calls to setTimeout are not supported!");
+            return;
+        }
+        afterFocusTimer.callback = callback;
+        // note: an interval of 0 is directly triggered, so add a little padding
+        afterFocusTimer.interval = delay + 1;
+        afterFocusTimer.running = true;
+    }
+     function sendMinMaFp()
+     {
+          serialTerminal.putPC1cmd("MA00800",1)
+     }
+    function sendMaxMaFp(){
+     serialTerminal.putPC1cmd("MA01600",1)
+    }
     // Dashboards are typically in a landscape orientation, so we need to ensure
     // our height is never greater than our width.
     Item {
@@ -133,21 +161,23 @@ Window {
                         {
                             if (valueSource.fuoco) // Se fuoco grande
                             {
-                                    // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco grande
-                               serialTerminal.putPC1cmd("MA01600",1)
-                                serialTerminal.putPC1cmd("FO0",1)
-                                 serialTerminal.putPC1cmd("MA01600",1)
 
+                                serialTerminal.putPC1cmd("FO0",1)
+                                // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco piccolo
+                             //   setTimeout(sendMinMaFp,2000)
+                                serialTerminal.putPC1cmd("MA00800",1)
 
 
 
 
                             }else // se piccolo
                             {
-                                    // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco piccolo
-                                serialTerminal.putPC1cmd("MA01600",1)
                                 serialTerminal.putPC1cmd("FO1",1)
-                                serialTerminal.putPC1cmd("MA00800",1)
+                                // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco grande
+
+                             //   setTimeout(sendMaxMaFp,2000)
+
+                                 serialTerminal.putPC1cmd("MA01600",1)
 
                             }
                         }
@@ -875,14 +905,15 @@ Window {
                               (data[1]==="X"))
                     {
                         // dato che nel comando di init MAS e' lultimo ad arrivare, se parte vuoto e tutti sono vuoti
+                        // Discriminare in base alla tecnica
                         // allora devo dargli i primi parametri
-                        if((valueSource.kv || valueSource.mA || valueSource.secondi || valueSource.mas ) === 0)
+                        if((valueSource.kv && valueSource.mA && valueSource.secondi/* || valueSource.mas*/ ) === 0)
                         {// invio i default
                             serialTerminal.putPC1cmd("ET1",0)
-                            serialTerminal.putPC1cmd("FO1",0)
+                            serialTerminal.putPC1cmd("FO0",0)
                             serialTerminal.putPC1cmd("KV050",0)
                             serialTerminal.putPC1cmd("MA01600",0)
-                            serialTerminal.putPC1cmd("MS00500",1)
+                            serialTerminal.putPC1cmd("MS01500",1)
                             errorMessage.text = qsTr("DEFAULT PARAM !!!")
                             errorMessage.visible = true
                         }
