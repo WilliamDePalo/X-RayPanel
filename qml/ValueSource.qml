@@ -85,6 +85,7 @@ Item {
     property real secondi: 0.2
     property bool fuoco:false
     property real mas:0
+    property int tecn : 1
 //! [0]
 /*
     function randomDirection() {

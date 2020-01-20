@@ -56,8 +56,6 @@ import Qt.labs.calendar 1.0
 import QtQuick 2.7
 //import WdpClass 1.0
 
-
-
 Window {
     id: root
     visible: true
@@ -73,6 +71,7 @@ Window {
 
     ValueSource {
         id: valueSource
+
         fuoco: false
 
     }
@@ -131,9 +130,10 @@ Window {
                 x: 700
                 y: 0
                 width: 150
-                height: 300
-                anchors.right: parent.right
-                anchors.rightMargin: 38
+                height: 400
+                anchors.verticalCenterOffset: 90
+                anchors.right: parent.horizontalCenter
+                anchors.rightMargin: -574
                 clip: false
                 transformOrigin: Item.Right
                 anchors.verticalCenter: parent.verticalCenter
@@ -217,7 +217,127 @@ Window {
                     }
                 }
 
+    /*            Row {
+                    id: tecniqueRow
+                    y: 282
+                    height: 118
+                    anchors.left: parent.left
+                    anchors.leftMargin: 0
+                    anchors.right: parent.right
+                    anchors.rightMargin: 0
+                    visible: true
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 0
+                    spacing: container.width * 0.02
 
+                    TurnIndicator {
+                        id: leftIndicator
+                        width: 70
+                        height: 70
+                        flashing: true
+                        on: true
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: false
+
+                        direction: Qt.LeftArrow
+                    }
+
+
+
+
+                    TurnIndicator {
+                        id: rightIndicator
+                        width: 70
+                        height: 70
+                        flashing: true
+                        on: true
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: true
+
+                        direction: Qt.RightArrow
+                    }
+
+          }*/
+                Switch{
+                    id: swTecnique
+                    x: 0
+                    y: 335
+                    width: 150
+                    height: 22
+                    checked: true
+                    activeFocusOnPress: false
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 35
+
+                    style: SwitchStyle{
+                        groove: Rectangle {
+                            id: guida
+                            height: 20
+                            color: "#62626a"
+                            //     width: 80
+                            //     height: 22
+                            implicitWidth: 130
+                            implicitHeight: 20
+                            radius: 1
+                            border.color: "#161616"
+                            visible: true
+                            //    border.color: "#62626a"
+                            scale: 1
+                            border.width: 9
+
+                        }
+                    }
+                    onCheckedChanged: {
+                        if (checked==true)// 3 punti
+                        {// invio il comando
+                            if (serialTerminal.getConnectionStatusSlot() !== false)
+                            {
+                                serialTerminal.putPC1cmd("ET1",1)
+                            }
+                        }else // invio il comando 2 punti
+                        {
+                            if (serialTerminal.getConnectionStatusSlot() !== false)
+                            {
+                                serialTerminal.putPC1cmd("ET0",1)
+                            }
+                        }
+                    }
+                }
+                Text {
+                    id: tecLabel2
+                    x: 8
+                    y: 371
+                    height: 18
+                    color: "#fdfdfd"
+                    anchors.right: swTecnique.right
+
+                    text: qsTr("2 point")
+                    anchors.rightMargin: 96
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 11
+                    font.pointSize: 11
+                    fontSizeMode: Text.FixedSize
+                    verticalAlignment: Text.AlignBottom
+                    horizontalAlignment: Text.AlignHCenter
+
+                }
+
+                Text {
+                    id: tecLabel3
+                    x: 76
+                    y: 371
+                    height: 18
+                    color: "#fdfdfd"
+                    text: qsTr("3 point")
+                    verticalAlignment: Text.AlignBottom
+                    anchors.right: swTecnique.right
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: 28
+                    font.pointSize: 11
+                    horizontalAlignment: Text.AlignHCenter
+                    fontSizeMode: Text.FixedSize
+                    anchors.bottomMargin: 11
+                }
             }
 
             CircularGauge {
@@ -416,7 +536,7 @@ Window {
                         minorTickmarkCount: 1
 
                         //                     tickmarkCount: 1
-                        textt: "MSEC"
+                        textt: valueSource.secondi
                         //    icon: "qrc:/images/temperature-icon.png"
                         //    minWarningColor: "#b8a521"
                         //    maxWarningColor: "#ef5050"
@@ -426,7 +546,7 @@ Window {
                             color: "white"
                             visible: styleData.value === 0 || styleData.value === 2/*11*/|| styleData.value === 1
                             font.pixelSize: tempGaugeStyle.toPixels(0.225)
-                            text: styleData.value === 0 ? "min" :(styleData.value === 1 ? "x1000" : (styleData.value === 2/*11*/ ? "max" : ""))
+                            text: styleData.value === 0 ? "min" :(styleData.value === 1 ? "MSEC" : (styleData.value === 2/*11*/ ? "max" : ""))
                         }
                     }
 
@@ -509,37 +629,7 @@ Window {
                 pressed: false
                 fillMode: Image.Stretch
             }
-              Row {
-            id: gaugeRow
-            spacing: container.width * 0.02
-            anchors.centerIn: parent
-
-            TurnIndicator {
-                id: leftIndicator
-                anchors.verticalCenter: parent.verticalCenter
-                width: height
-                height: container.height * 0.1 - gaugeRow.spacing
-                visible: false
-
-                direction: Qt.LeftArrow
-                on: valueSource.turnSignal == Qt.LeftArrow
-            }
-
-
-
-
-            TurnIndicator {
-                id: rightIndicator
-                anchors.verticalCenter: parent.verticalCenter
-                width: height
-                height: container.height * 0.1 - gaugeRow.spacing
-                visible: false
-
-                direction: Qt.RightArrow
-                on: valueSource.turnSignal == Qt.RightArrow
-            }
-
-        }*/
+         */
 
 
         }
@@ -856,6 +946,34 @@ Window {
                             speedometer.DashboardGaugeStyle.labelStepSize = 50
                         }
                         errorMessage.visible = false
+                    }else if((data[0] ==="E")&&            // gestione fuoco
+                            (data[1]==="T"))
+                    {
+                        if (data[2]==="0") // Tecnica 2 punti
+                        {
+                            valueSource.tecn = 0
+                            swTecnique.checked = false
+                           threePointPanel.visible = false
+                     //       if (valueSource.fuoco === true) // se Fuoco Grande
+                        //   var calcMas = valueSource.mA * valueSource.secondi
+                           serialTerminal.putPC1cmd("MX00006",1)
+                       //    serialTerminal.putPC1cmd("MX"+itoa(calcMas))//"00006")
+                        }
+                        else // // Tecnica 3 punti
+                        {
+                            valueSource.tecn = 1
+                            swTecnique.checked = true
+                            threePointPanel.visible = true
+                            if (valueSource.fuoco) // se Fuoco Grande
+                            {
+                                serialTerminal.putPC1cmd("MA01600",1)
+                            }
+                            else //fuoco piccolo
+                            {
+                                  serialTerminal.putPC1cmd("MA00800",1)
+                            }
+                        }
+                        errorMessage.visible = false
                     }
                     else if ((data[0] ==="K")&&            // gestione kV
                              (data[1]==="V"))
@@ -1034,11 +1152,9 @@ Window {
                             greenLight.opacity = 1
                             redLight.opacity = 0.3
                             yellowButton.opacity = 0.3
-                            serialTerminal.putPC1cmd("ET?",1)
-                            serialTerminal.putPC1cmd("FO?",1)
-                       /*     serialTerminal.putPC1cmd("KV050")
-                            serialTerminal.putPC1cmd("MA01600")
-                            serialTerminal.putPC1cmd("MS00500")*/
+                        //    serialTerminal.putPC1cmd("ET?",1)
+                         //   serialTerminal.putPC1cmd("FO?",1)
+                            serialTerminal.putPC1cmd("RS",1)
                             serialTerminal.putPC1cmd("RR",1)
                         }
                     }else {
@@ -1156,17 +1272,21 @@ Window {
 
 /*##^##
 Designer {
-    D{i:8;anchors_y:14}D{i:4;anchors_width:150;anchors_x:700}D{i:13;anchors_x:254;anchors_y:0}
-D{i:12;anchors_x:254;anchors_y:0}D{i:14;anchors_x:254;anchors_y:0}D{i:15;anchors_x:649;anchors_y:0}
-D{i:17;anchors_x:254}D{i:18;anchors_x:254}D{i:20;anchors_x:254}D{i:19;anchors_x:254;anchors_y:0}
-D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}D{i:32;anchors_width:100;anchors_y:0}
-D{i:33;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:36;anchors_width:100;anchors_x:"-50";anchors_y:0}
-D{i:35;anchors_width:100;anchors_x:"-50";anchors_y:35}D{i:37;anchors_width:100;anchors_x:"-50";anchors_y:0}
-D{i:38;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:39;anchors_width:100;anchors_y:40}
-D{i:40;anchors_width:100;anchors_y:40}D{i:34;anchors_width:100;anchors_x:"-95";anchors_y:4}
-D{i:42;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}D{i:43;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:44;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:41;anchors_width:100;anchors_y:40}
-D{i:45;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:46;anchors_width:100;anchors_y:0}
-D{i:2;anchors_height:600;anchors_width:1024}
+    D{i:2;anchors_height:600;anchors_width:1024}D{i:12;anchors_x:254;anchors_y:0}D{i:8;anchors_y:14}
+D{i:14;anchors_x:254;anchors_y:0}D{i:13;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
+D{i:19;anchors_x:254;anchors_y:0}D{i:18;anchors_height:16;anchors_width:14;anchors_x:649;anchors_y:0}
+D{i:20;anchors_x:254;anchors_y:0}D{i:21;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254;anchors_y:0}
+D{i:24;anchors_x:254;anchors_y:0}D{i:26;anchors_x:254}D{i:25;anchors_x:254;anchors_y:0}
+D{i:28;anchors_x:254}D{i:27;anchors_x:254;anchors_y:0}D{i:22;anchors_x:254;anchors_y:0}
+D{i:4;anchors_width:150;anchors_x:700}D{i:34;anchors_width:100;anchors_y:0}D{i:36;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:4}D{i:38;anchors_width:100;anchors_x:"-50";anchors_y:35}
+D{i:35;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:39;anchors_width:100;anchors_x:"-50";anchors_y:0}
+D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:44;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:45;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}D{i:46;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:40;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:48;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:47;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
 }
 ##^##*/
