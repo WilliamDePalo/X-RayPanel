@@ -78,18 +78,18 @@ Window {
 
     Timer{
         id: afterFocusTimer
-           running: false
-           repeat: false
+        running: false
+        repeat: false
 
-           property var callback
+        property var callback
 
-           onTriggered: callback()
+        onTriggered: callback()
     }
 
     function setTimeout(callback, delay)
     {
         if (afterFocusTimer.running) {
-      //      console.error("nested calls to setTimeout are not supported!");
+            //      console.error("nested calls to setTimeout are not supported!");
             return;
         }
         afterFocusTimer.callback = callback;
@@ -97,18 +97,18 @@ Window {
         afterFocusTimer.interval = delay + 1;
         afterFocusTimer.running = true;
     }
-     function sendMinMaFp()
-     {
-          serialTerminal.putPC1cmd("MA00800",1)
-     }
+    function sendMinMaFp()
+    {
+        serialTerminal.putPC1cmd("MA00800",1)
+    }
     function sendMaxMaFp(){
-     serialTerminal.putPC1cmd("MA01600",1)
+        serialTerminal.putPC1cmd("MA01600",1)
     }
     // Dashboards are typically in a landscape orientation, so we need to ensure
     // our height is never greater than our width.
     Item {
         id: container
-        y: 0
+        y: 6
         width: 1024
         height: 600
         anchors.rightMargin: 0
@@ -164,7 +164,7 @@ Window {
 
                                 serialTerminal.putPC1cmd("FO0",1)
                                 // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco piccolo
-                             //   setTimeout(sendMinMaFp,2000)
+                                //   setTimeout(sendMinMaFp,2000)
                                 serialTerminal.putPC1cmd("MA00800",1)
 
 
@@ -175,9 +175,9 @@ Window {
                                 serialTerminal.putPC1cmd("FO1",1)
                                 // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco grande
 
-                             //   setTimeout(sendMaxMaFp,2000)
+                                //   setTimeout(sendMaxMaFp,2000)
 
-                                 serialTerminal.putPC1cmd("MA01600",1)
+                                serialTerminal.putPC1cmd("MA01600",1)
 
                             }
                         }
@@ -203,7 +203,7 @@ Window {
                                 text: qsTr("SEC")
                             }
                             textt: "FOCUS"
-                            icon: "qrc:/images/fuel-icon.png"
+                           // icon: "qrc:/images/fuel-icon.png" Icona fuoco
                             minWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
                             tickmarkLabel: Text {
@@ -217,7 +217,7 @@ Window {
                     }
                 }
 
-    /*            Row {
+                /*            Row {
                     id: tecniqueRow
                     y: 282
                     height: 118
@@ -360,6 +360,7 @@ Window {
                 id: kvPlus
                 width: 20
                 height: 20
+                smooth: false
                 anchors.left: tachometer.left
                 anchors.leftMargin: 332
                 antialiasing: true
@@ -519,7 +520,7 @@ Window {
                     maximumValue: 2 //12
                     anchors.right: parent.right
                     anchors.rightMargin: 0
-                    value: valueSource.secondi
+                    value: valueSource.msec/1000
                     stepSize: 0//11
                     minimumValue: 0
                     clip: false
@@ -536,7 +537,7 @@ Window {
                         minorTickmarkCount: 1
 
                         //                     tickmarkCount: 1
-                        textt: valueSource.secondi
+                        textt: valueSource.msec/10
                         //    icon: "qrc:/images/temperature-icon.png"
                         //    minWarningColor: "#b8a521"
                         //    maxWarningColor: "#ef5050"
@@ -625,29 +626,85 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: -100
                 anchors.horizontalCenter: parent.horizontalCenter
-          MasGauge{
-               id:masGa
-                property bool accelerating
-                width: 285
-                anchors.left: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-                anchors.top: parent.top
-                anchors.leftMargin: 0
-                minimumValue: 0.6
-                value: valueSource.mas//accelerating ? maximumValue : 0 //MasGauge.value
-                maximumValue: 250
+                MasGauge{
+                    id:masGa
+                    property bool accelerating
+                    width: 285
+                    anchors.left: parent.horizontalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.top: parent.top
+                    anchors.leftMargin: 0
+                    minimumValue: 0.6
+                    value: valueSource.mas
+                    maximumValue: 250
 
-                  // Component.onCompleted: forceActiveFocus()
+                    // Component.onCompleted: forceActiveFocus()
 
-                //   Behavior on value { NumberAnimation { duration: 1000 }}
+                    //   Behavior on value { NumberAnimation { duration: 1000 }}
 
-              //     Keys.onSpacePressed: accelerating = true
-              //     Keys.onReleased: {
-              //         if (event.key === Qt.Key_Space) {
-              //             accelerating = false;
-               //            event.accepted = true;
-               //        }
-               //    }
+                    //     Keys.onSpacePressed: accelerating = true
+                    //     Keys.onReleased: {
+                    //         if (event.key === Qt.Key_Space) {
+                    //             accelerating = false;
+                    //            event.accepted = true;
+                    //        }
+                    //    }
+                }
+
+                PressAndHoldButton {
+                    id: masMinus
+                    x: 272
+                    y: 94
+                    width: 20
+                    height: 20
+                    scale: 3.859
+                    sourceSize.height: 24
+                    anchors.right: masGa.left
+                    anchors.rightMargin: 42
+                    z: 1.63
+                    transformOrigin: Item.Top
+                    source: "../images/minus-sign.png"
+                    antialiasing: true
+                    sourceSize.width: 23
+                    anchors.verticalCenter: masGa.verticalCenter
+                    anchors.verticalCenterOffset: -32
+                    pressed: false
+                    fillMode: Image.Stretch
+                    onClicked:
+                    {
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("MX-",1)
+                        }
+                    }
+                }
+
+                PressAndHoldButton {
+                    id: masPlus
+                    x: 734
+                    y: 94
+                    width: 20
+                    height: 20
+                    anchors.leftMargin: 332
+                    scale: 3.859
+                    sourceSize.height: 24
+                    z: 1.63
+                    transformOrigin: Item.Top
+                    source: "../images/plus-sign.png"
+                    antialiasing: true
+                    sourceSize.width: 23
+                    anchors.verticalCenter: masGa.verticalCenter
+                    anchors.verticalCenterOffset: -32
+                    pressed: false
+                    fillMode: Image.Stretch
+                    anchors.left: masGa.left
+                    onClicked:
+                    {
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("MX+",1)
+                        }
+                    }
                 }
             }
         }
@@ -965,16 +1022,37 @@ Window {
                         }
                         errorMessage.visible = false
                     }else if((data[0] ==="E")&&            // gestione fuoco
-                            (data[1]==="T"))
+                             (data[1]==="T"))
                     {
                         if (data[2]==="0") // Tecnica 2 punti
                         {
                             valueSource.tecn = 0
                             swTecnique.checked = false
-                           threePointPanel.visible = false
-                           twoPointPanel.visible = true
-                        //   var calcMas = valueSource.mA * valueSource.secondi
-                           serialTerminal.putPC1cmd("MX00006",1)
+                            threePointPanel.visible = false
+                            twoPointPanel.visible = true
+                            // se e' la prima volta
+                            if((valueSource.mA!== 0)||(valueSource.msec !== 0))
+                            {
+                                var calcMas = valueSource.mA * (valueSource.msec/1000)
+                                // calcolo quanti zeri devo aggiungere all'inizio
+                                // i mas vengono scritti in 5 cifre di cui l'ultima è il
+                                // decimale quindi 4 + 1
+                                var strcMas = calcMas.toString() // converto in stringa
+                                var str0Mas = ""        // definisco la stringa che conterrà gli zeri
+                                var maxlen
+                                if (calcMas<10) maxlen = 5 - 1              // numero zeri massimi meno numero cifre
+                                else if (calcMas<100)maxlen = 5 - 2
+                                else if (calcMas<1000)maxlen = 5 - 3
+                                else if (calcMas<10000)maxlen = 5 - 4
+                                else if (calcMas<100000)maxlen = 5 - 5
+                                for (var cf = 0;cf<maxlen;cf ++)
+                                    str0Mas += '0'
+                                str0Mas += strcMas
+                                var mas2Send = "MX" + str0Mas
+                            serialTerminal.putPC1cmd(mas2Send,1)
+                            }else if(valueSource.mas===0)
+                                serialTerminal.putPC1cmd("MX00006",1)
+
 
                         }
                         else // // Tecnica 3 punti
@@ -989,7 +1067,7 @@ Window {
                             }
                             else //fuoco piccolo
                             {
-                                  serialTerminal.putPC1cmd("MA00800",1)
+                                serialTerminal.putPC1cmd("MA00800",1)
                             }
                         }
                         errorMessage.visible = false
@@ -1036,7 +1114,7 @@ Window {
                         tmp1 = data[6]-"0";
                         tmp2 = tmp;
                         tmp = tmp1+tmp2;
-                        valueSource.secondi = tmp/1000; // in secondi
+                        valueSource.msec = tmp; // in secondi /1000
                         errorMessage.visible = false
                     }else if ((data[0] ==="M")&&            // gestione MAs
                               (data[1]==="X"))
@@ -1044,7 +1122,7 @@ Window {
                         // dato che nel comando di init MAS e' lultimo ad arrivare, se parte vuoto e tutti sono vuoti
                         // Discriminare in base alla tecnica
                         // allora devo dargli i primi parametri
-                        if((valueSource.kv && valueSource.mA && valueSource.secondi/* || valueSource.mas*/ ) === 0)
+                        if((valueSource.kv && valueSource.mA && valueSource.msec/* || valueSource.mas*/ ) === 0)
                         {// invio i default
                             serialTerminal.putPC1cmd("ET1",0)
                             serialTerminal.putPC1cmd("FO0",0)
@@ -1097,6 +1175,18 @@ Window {
                              (data[1]==="L"))
                     {
                         serialTerminal.putPC1cmd(data,0);
+                        if((data[2] === "0"))
+                        {
+                            if(data[3]==="0")
+                            {
+                                if(data[4]==="1")
+                                    errorMessage.text = qsTr("GENERATOR KW LIMIT !!!")
+                                if(data[4]==="2")
+                                    errorMessage.text = qsTr("OPERATOR TIMEOUT")
+
+                            }
+                        }
+
                         errorMessage.text = qsTr("LATCHING ERROR !!!")
                         errorMessage.visible = true
                     }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
@@ -1171,8 +1261,8 @@ Window {
                             greenLight.opacity = 1
                             redLight.opacity = 0.3
                             yellowButton.opacity = 0.3
-                        //    serialTerminal.putPC1cmd("ET?",1)
-                         //   serialTerminal.putPC1cmd("FO?",1)
+                            //    serialTerminal.putPC1cmd("ET?",1)
+                            //   serialTerminal.putPC1cmd("FO?",1)
                             serialTerminal.putPC1cmd("RS",1)
                             serialTerminal.putPC1cmd("RR",1)
                         }
@@ -1215,6 +1305,7 @@ Window {
                 value: 0
                 indeterminate: false
                 maximumValue: 2
+
             }
 
             Text {
@@ -1291,23 +1382,24 @@ Window {
 
 /*##^##
 Designer {
-    D{i:2;anchors_height:600;anchors_width:1024}D{i:12;anchors_x:254;anchors_y:0}D{i:8;anchors_y:14}
+    D{i:2;anchors_height:600;anchors_width:1024}D{i:8;anchors_y:14}D{i:12;anchors_x:254;anchors_y:0}
 D{i:14;anchors_x:254;anchors_y:0}D{i:13;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
 D{i:19;anchors_x:254;anchors_y:0}D{i:18;anchors_height:16;anchors_width:14;anchors_x:649;anchors_y:0}
 D{i:20;anchors_x:254;anchors_y:0}D{i:21;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254;anchors_y:0}
 D{i:24;anchors_x:254;anchors_y:0}D{i:26;anchors_x:254}D{i:25;anchors_x:254;anchors_y:0}
 D{i:28;anchors_x:254}D{i:27;anchors_x:254;anchors_y:0}D{i:22;anchors_x:254;anchors_y:0}
-D{i:4;anchors_width:150;anchors_x:700}D{i:36;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:38;anchors_width:100;anchors_x:"-95";anchors_y:4}D{i:39;anchors_width:100;anchors_x:"-50";anchors_y:35}
-D{i:40;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:35;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:34;anchors_width:100;anchors_y:0}D{i:44;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
-D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:45;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
-D{i:46;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}D{i:47;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:48;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:40}
-D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:53;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:54;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:34;anchors_x:254;anchors_y:0}D{i:35;anchors_width:100;anchors_x:254;anchors_y:0}
+D{i:4;anchors_width:150;anchors_x:700}D{i:38;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:40;anchors_width:100;anchors_x:"-50";anchors_y:35}
+D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:39;anchors_width:100;anchors_x:"-95";anchors_y:4}
+D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:36;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:46;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:45;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:47;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}
+D{i:48;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:44;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:53;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:54;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:55;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:56;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
 D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
 }
 ##^##*/

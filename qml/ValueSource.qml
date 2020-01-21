@@ -82,9 +82,9 @@ Item {
     property bool start: true
     property real kv:30
     property real mA: 50
-    property real secondi: 0.2
+    property real msec: 40
     property bool fuoco:false
-    property real mas:0
+    property real mas:0.6
     property int tecn : 1
 //! [0]
 /*
