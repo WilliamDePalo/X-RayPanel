@@ -127,12 +127,12 @@ void SerialTerminal::readFromSerialPort(){
   //  if (serialPort->canReadLine()){
        static QByteArray rcvByte;// = serialPort->readAll();
          rcvByte.append(serialPort->readAll());
-          logger->write( "<- serial " + rcvByte +"\n");
+  //        logger->write( "<- serial " + rcvByte +"\n");
         // gestione pacchetti spezzati
         while (serialPort->waitForReadyRead(MAX_TIME_WAIT_MS)) // se aspetto meno di 500 milli
         {
             rcvByte.append(serialPort->readAll());
-            logger->write( "<- waitForReadyRead" + rcvByte +"\n");
+     //       logger->write( "<- waitForReadyRead" + rcvByte +"\n");
         }
           // Se non ho l'ETX nel pacchetto allora esco e aspetto il successivo
 

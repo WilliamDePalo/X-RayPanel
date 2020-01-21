@@ -414,7 +414,7 @@ Window {
                 x: 9
                 width: 783
                 height: 285
-                visible: true
+                visible: false
                 anchors.verticalCenterOffset: 145
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: -100
@@ -612,26 +612,44 @@ Window {
 
 
             }
-            /*           PressAndHoldButton {
-                id: speedPlus1
-                width: 18
-                height: 23
-                transformOrigin: Item.Top
-                anchors.left: speedometer.right
-                anchors.verticalCenterOffset: -30
-                anchors.leftMargin: -350
-                sourceSize.width: 23
-                sourceSize.height: 24
-                z: 1.63
-                anchors.verticalCenter: speedometer.verticalCenter
-                scale: 3.859
-                source: "../images/plus-sign.png"
-                pressed: false
-                fillMode: Image.Stretch
+
+
+
+            Item {
+                id: twoPointPanel
+                x: 9
+                width: 783
+                height: 285
+                visible: true
+                anchors.verticalCenterOffset: 145
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenterOffset: -100
+                anchors.horizontalCenter: parent.horizontalCenter
+          MasGauge{
+               id:masGa
+                property bool accelerating
+                width: 285
+                anchors.left: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.top: parent.top
+                anchors.leftMargin: 0
+                minimumValue: 0.6
+                value: valueSource.mas//accelerating ? maximumValue : 0 //MasGauge.value
+                maximumValue: 250
+
+                  // Component.onCompleted: forceActiveFocus()
+
+                //   Behavior on value { NumberAnimation { duration: 1000 }}
+
+              //     Keys.onSpacePressed: accelerating = true
+              //     Keys.onReleased: {
+              //         if (event.key === Qt.Key_Space) {
+              //             accelerating = false;
+               //            event.accepted = true;
+               //        }
+               //    }
+                }
             }
-         */
-
-
         }
 
         Image {
@@ -954,16 +972,17 @@ Window {
                             valueSource.tecn = 0
                             swTecnique.checked = false
                            threePointPanel.visible = false
-                     //       if (valueSource.fuoco === true) // se Fuoco Grande
+                           twoPointPanel.visible = true
                         //   var calcMas = valueSource.mA * valueSource.secondi
                            serialTerminal.putPC1cmd("MX00006",1)
-                       //    serialTerminal.putPC1cmd("MX"+itoa(calcMas))//"00006")
+
                         }
                         else // // Tecnica 3 punti
                         {
                             valueSource.tecn = 1
                             swTecnique.checked = true
                             threePointPanel.visible = true
+                            twoPointPanel.visible = false
                             if (valueSource.fuoco) // se Fuoco Grande
                             {
                                 serialTerminal.putPC1cmd("MA01600",1)
@@ -1278,15 +1297,17 @@ D{i:19;anchors_x:254;anchors_y:0}D{i:18;anchors_height:16;anchors_width:14;ancho
 D{i:20;anchors_x:254;anchors_y:0}D{i:21;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254;anchors_y:0}
 D{i:24;anchors_x:254;anchors_y:0}D{i:26;anchors_x:254}D{i:25;anchors_x:254;anchors_y:0}
 D{i:28;anchors_x:254}D{i:27;anchors_x:254;anchors_y:0}D{i:22;anchors_x:254;anchors_y:0}
-D{i:4;anchors_width:150;anchors_x:700}D{i:34;anchors_width:100;anchors_y:0}D{i:36;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:4}D{i:38;anchors_width:100;anchors_x:"-50";anchors_y:35}
-D{i:35;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:39;anchors_width:100;anchors_x:"-50";anchors_y:0}
-D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:40}
-D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:44;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
-D{i:45;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}D{i:46;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:40;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:48;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:47;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
+D{i:4;anchors_width:150;anchors_x:700}D{i:36;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:38;anchors_width:100;anchors_x:"-95";anchors_y:4}D{i:39;anchors_width:100;anchors_x:"-50";anchors_y:35}
+D{i:40;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:35;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:34;anchors_width:100;anchors_y:0}D{i:44;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:45;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:46;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}D{i:47;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:48;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:53;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:54;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
 }
 ##^##*/

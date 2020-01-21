@@ -16,10 +16,10 @@
         <file>images/green.png</file>
         <file>images/red.png</file>
         <file>images/yellow.png</file>
-        <file>qml/MasGauge.qml</file>
         <file>images/background.png</file>
+        <file>qml/MasGauge.qml</file>
         <file>images/background.svg</file>
-        <file>images/tickmark.svg</file>
         <file>images/needle.svg</file>
+        <file>images/tickmark.svg</file>
     </qresource>
 </RCC>

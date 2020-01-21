@@ -6,7 +6,7 @@ import QtQuick.Extras.Private 1.0
 import QtGraphicalEffects 1.0
 
 CircularGauge {
-    id: gauge
+    id: masGauge
 
     style: CircularGaugeStyle {
         labelStepSize: 10
@@ -17,15 +17,15 @@ CircularGauge {
         maximumValueAngle: 144
 
         background: Rectangle {
-            implicitHeight: gauge.height
-            implicitWidth: gauge.width
+   //         implicitHeight: MasGauge.height
+   //         implicitWidth: MasGauge.width
             color: "black"
             anchors.centerIn: parent
             radius: 360
 
             Image {
                 anchors.fill: parent
-                source: "qrc:/img/background.svg"
+                source:"../images/background.svg"
                 asynchronous: true
                 sourceSize {
                     width: width
@@ -33,7 +33,7 @@ CircularGauge {
             }
 
             Canvas {
-                property int value: gauge.value
+              property int value: MasGauge.value//valueSource.mas//
 
                 anchors.fill: parent
                 onValueChanged: requestPaint()
@@ -51,8 +51,8 @@ CircularGauge {
                     ctx.arc(outerRadius,
                           outerRadius,
                           outerRadius - ctx.lineWidth / 2,
-                          degreesToRadians(valueToAngle(gauge.value) - 90),
-                          degreesToRadians(valueToAngle(gauge.maximumValue + 1) - 90));
+                          degreesToRadians(valueToAngle(MasGauge.value) - 90),
+                          degreesToRadians(valueToAngle(MasGauge.maximumValue + 1) - 90));
                     ctx.stroke();
                 }
             }
@@ -63,7 +63,7 @@ CircularGauge {
             height: outerRadius * 0.27
             Image {
                 id: needle
-                source: "qrc:/img/needle.svg"
+                source: "../images/needle.svg"
                 height: parent.height
                 width: height * 0.1
                 asynchronous: true
@@ -81,24 +81,31 @@ CircularGauge {
 
         foreground: Item {
             Text {
-                id: speedLabel
+                id: masLabel
                 anchors.centerIn: parent
-                text: gauge.value.toFixed(0)
+                text: masGauge.value.toFixed(0)
                 font.pixelSize: outerRadius * 0.3
                 color: "white"
                 antialiasing: true
+            }
+            Text {
+                text: "MAS"
+                color: "white"
+                font.pixelSize: masGauge.toPixels(0.1)
+                anchors.top: masLabel.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
             }
         }
 
         tickmarkLabel:  Text {
             font.pixelSize: Math.max(6, outerRadius * 0.05)
             text: styleData.value
-            color: styleData.value <= gauge.value ? "white" : "#777776"
+            color: styleData.value <= MasGauge.value ? "white" : "#777776"
             antialiasing: true
         }
 
         tickmark: Image {
-            source: "qrc:/img/tickmark.svg"
+            source: "../images/tickmark.svg"
             width: outerRadius * 0.018
             height: outerRadius * 0.15
             antialiasing: true
@@ -111,7 +118,7 @@ CircularGauge {
 
             antialiasing: true
             smooth: true
-            color: styleData.value <= gauge.value ? "white" : "darkGray"
+            color: styleData.value <= MasGauge.value ? "white" : "darkGray"
         }
     }
 }
