@@ -55,6 +55,7 @@ DISTFILES += \
     ../X-RayPanel/qml/Button.qml \
     ../X-RayPanel/qml/DashboardGaugeStyle.qml \
     ../X-RayPanel/qml/IconGaugeStyle.qml \
+    ../X-RayPanel/qml/MasGauge.qml \
     ../X-RayPanel/qml/PressAndHoldButton.qml \
     ../X-RayPanel/qml/TachometerStyle.qml \
     ../X-RayPanel/qml/TurnIndicator.qml \

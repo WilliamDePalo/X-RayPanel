@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RCC>
+    <qresource prefix="/">
+        <file alias="fonts/DejaVuSans.ttf">../X-RayPanel/fonts/DejaVuSans.ttf</file>
+        <file alias="images/fuel-icon.png">../X-RayPanel/images/fuel-icon.png</file>
+        <file alias="images/temperature-icon.png">../X-RayPanel/images/temperature-icon.png</file>
+        <file alias="images/minus-sign.png">../X-RayPanel/images/minus-sign.png</file>
+        <file alias="images/plus-sign.png">../X-RayPanel/images/plus-sign.png</file>
+        <file alias="images/green.png">../X-RayPanel/images/green.png</file>
+        <file alias="images/red.png">../X-RayPanel/images/red.png</file>
+        <file alias="images/yellow.png">../X-RayPanel/images/yellow.png</file>
+        <file alias="images/background.png">../X-RayPanel/images/background.png</file>
+        <file alias="images/background.svg">../X-RayPanel/images/background.svg</file>
+        <file alias="images/needle.svg">../X-RayPanel/images/needle.svg</file>
+        <file alias="images/tickmark.svg">../X-RayPanel/images/tickmark.svg</file>
+    </qresource>
+</RCC>
