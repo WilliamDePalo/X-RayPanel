@@ -77,25 +77,26 @@ Window {
     }
 
     Timer{
-        id: afterFocusTimer
+        id: pollingTimer
         running: false
         repeat: false
 
         property var callback
 
         onTriggered: callback()
+
     }
 
     function setTimeout(callback, delay)
     {
-        if (afterFocusTimer.running) {
+        if (pollingTimer.running) {
             //      console.error("nested calls to setTimeout are not supported!");
             return;
         }
-        afterFocusTimer.callback = callback;
+        pollingTimer.callback = callback;
         // note: an interval of 0 is directly triggered, so add a little padding
-        afterFocusTimer.interval = delay + 1;
-        afterFocusTimer.running = true;
+        pollingTimer.interval = delay + 1;
+        pollingTimer.running = true;
     }
     function sendMinMaFp()
     {
@@ -104,6 +105,11 @@ Window {
     function sendMaxMaFp(){
         serialTerminal.putPC1cmd("MA01600",1)
     }
+    function sendStatusRqst(){
+        serialTerminal.putPC1cmd("ST",1)
+
+    }
+
     // Dashboards are typically in a landscape orientation, so we need to ensure
     // our height is never greater than our width.
     Item {
@@ -116,6 +122,7 @@ Window {
         anchors.left: parent.left
         anchors.right: parent.right
         // Math.min(root.width, root.height)
+
         Column{
             id: gaugeColumn
             anchors.leftMargin: -200
@@ -124,7 +131,6 @@ Window {
             rotation: 0
             anchors.fill: parent
             spacing: 0
-
             Item {
                 id: rigthColumn
                 x: 700
@@ -159,25 +165,21 @@ Window {
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
+
                             if (valueSource.fuoco) // Se fuoco grande
                             {
 
                                 serialTerminal.putPC1cmd("FO0",1)
-                                // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco piccolo
-                                //   setTimeout(sendMinMaFp,2000)
-                                serialTerminal.putPC1cmd("MA00800",1)
-
-
-
-
+                                // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco piccolo
+                                if (valueSource.tecn)
+                                    serialTerminal.putPC1cmd("MA00800",1)
                             }else // se piccolo
                             {
                                 serialTerminal.putPC1cmd("FO1",1)
-                                // se tecnica a 2 punti imposto il valore iniziale di MA Fuoco grande
+                                // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco grande
+                                if (valueSource.tecn)
+                                    serialTerminal.putPC1cmd("MA01600",1)
 
-                                //   setTimeout(sendMaxMaFp,2000)
-
-                                serialTerminal.putPC1cmd("MA01600",1)
 
                             }
                         }
@@ -212,6 +214,53 @@ Window {
                                 font.pixelSize: fuelGaugeStyle.toPixels(0.225)
                                 text: styleData.value === 0 ? "SMALL" : (styleData.value === 1 ? "LARGE" : "")
                             }
+
+                        }
+
+                        Text {
+                            id: statusTitle
+                            y: 168
+                            height: 34
+                            color: "#fdfdfd"
+                            text: qsTr("STATUS")
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            textFormat: Text.AutoText
+                            fontSizeMode: Text.HorizontalFit
+                            font.letterSpacing: 0.6
+                            font.wordSpacing: 1
+                            style: Text.Sunken
+                            font.weight: Font.Bold
+                            styleColor: "#16161616"
+                            anchors.left: parent.left
+                            anchors.leftMargin: 0
+                            anchors.right: parent.right
+                            anchors.rightMargin: 0
+                            font.pixelSize: 18
+                        }
+
+                        Text {
+                            id: status
+                            x: 5
+                            height: 34
+                            color: "#fdfdfd"
+                            text: qsTr("DISCONNECT")
+                            anchors.top: parent.top
+                            anchors.topMargin: 200
+                            anchors.rightMargin: 0
+                            font.pixelSize: 18
+                            anchors.left: parent.left
+                            fontSizeMode: Text.HorizontalFit
+                            font.weight: Font.Bold
+                            anchors.leftMargin: 0
+                            verticalAlignment: Text.AlignVCenter
+                            anchors.right: parent.right
+                            horizontalAlignment: Text.AlignHCenter
+                            font.wordSpacing: 1
+                            styleColor: "#16161616"
+                            style: Text.Sunken
+                            textFormat: Text.AutoText
+                            font.letterSpacing: 0.6
 
                         }
                     }
@@ -537,7 +586,7 @@ Window {
                         minorTickmarkCount: 1
 
                         //                     tickmarkCount: 1
-                        textt: valueSource.msec/10
+                        textt: valueSource.msec
                         //    icon: "qrc:/images/temperature-icon.png"
                         //    minWarningColor: "#b8a521"
                         //    maxWarningColor: "#ef5050"
@@ -1002,240 +1051,325 @@ Window {
                     //    while (data[tmp]!==0)
                     //         textlog1.text += cStr() data[tmp] ;
                     //    textlog1.text = "<-APP " + rcv;
-                    errorMessage.visible = false
-                    if((data[0] ==="F")&&            // gestione fuoco
-                            (data[1]==="O"))
-                    {
-                        if (data[2]==="0") // fuoco piccolo
-                        {
-                            valueSource.fuoco = false
-                            speedometer.minimumValue = 80
-                            speedometer.maximumValue = 160
-                            speedometer.DashboardGaugeStyle.labelStepSize = 20
-                        }
-                        else
-                        {
-                            valueSource.fuoco = true
-                            speedometer.minimumValue= 160
-                            speedometer.maximumValue= 400
-                            speedometer.DashboardGaugeStyle.labelStepSize = 50
-                        }
-                        errorMessage.visible = false
-                    }else if((data[0] ==="E")&&            // gestione fuoco
-                             (data[1]==="T"))
-                    {
-                        if (data[2]==="0") // Tecnica 2 punti
-                        {
-                            valueSource.tecn = 0
-                            swTecnique.checked = false
-                            threePointPanel.visible = false
-                            twoPointPanel.visible = true
-                            // se e' la prima volta
-                            if((valueSource.mA!== 0)||(valueSource.msec !== 0))
-                            {
-                                var calcMas = valueSource.mA * (valueSource.msec/1000)
-                                // calcolo quanti zeri devo aggiungere all'inizio
-                                // i mas vengono scritti in 5 cifre di cui l'ultima è il
-                                // decimale quindi 4 + 1
-                                var strcMas = calcMas.toString() // converto in stringa
-                                var str0Mas = ""        // definisco la stringa che conterrà gli zeri
-                                var maxlen
-                                if (calcMas<10) maxlen = 5 - 1              // numero zeri massimi meno numero cifre
-                                else if (calcMas<100)maxlen = 5 - 2
-                                else if (calcMas<1000)maxlen = 5 - 3
-                                else if (calcMas<10000)maxlen = 5 - 4
-                                else if (calcMas<100000)maxlen = 5 - 5
-                                for (var cf = 0;cf<maxlen;cf ++)
-                                    str0Mas += '0'
-                                str0Mas += strcMas
-                                var mas2Send = "MX" + str0Mas
-                            serialTerminal.putPC1cmd(mas2Send,1)
-                            }else if(valueSource.mas===0)
-                                serialTerminal.putPC1cmd("MX00006",1)
 
-
-                        }
-                        else // // Tecnica 3 punti
+                    if ((data[0] ==="S")&&            // gestione fuoco
+                         (data[1]==="T"))
+                    {
+                        if ((data[2]==="0") &&
+                                (data[3]==="0"))
                         {
-                            valueSource.tecn = 1
-                            swTecnique.checked = true
-                            threePointPanel.visible = true
-                            twoPointPanel.visible = false
-                            if (valueSource.fuoco) // se Fuoco Grande
+                            if (data[4]==="1")
                             {
-                                serialTerminal.putPC1cmd("MA01600",1)
-                            }
-                            else //fuoco piccolo
+                                status.text=qsTr("INITIALIZATION")
+
+                            }else if (data[4]==="2")
                             {
-                                serialTerminal.putPC1cmd("MA00800",1)
+                                status.text=qsTr("STANDBY")
+
+                            }else if (data[4]==="3")
+                            {
+                                status.text=qsTr("RAD PREPARATION")
+
+                            }else if (data[4]==="4")
+                            {
+                                status.text=qsTr("RAD EXPOSURE")
+
+                            }else if (data[4]==="5")
+                            {
+                                status.text=qsTr("ERROR")
+
+                            }else
+                            {
+                                status.text=qstr("UNKNOW")
                             }
                         }
-                        errorMessage.visible = false
-                    }
-                    else if ((data[0] ==="K")&&            // gestione kV
-                             (data[1]==="V"))
+                    }else // se non e' un polling
                     {
-                        tmp = (data[2]-"0")*100;
-                        tmp += (data[3]-"0")*10;
-                        tmp += data[4]-"0";
-                        valueSource.kv = tmp;
                         errorMessage.visible = false
+                        if((data[0] ==="F")&&            // gestione fuoco
+                                (data[1]==="O"))
+                        {
+                            if (data[2]==="0") // fuoco piccolo
+                            {
+                                valueSource.fuoco = false
+                                speedometer.minimumValue = 80
+                                speedometer.maximumValue = 160
+                                speedometer.DashboardGaugeStyle.labelStepSize = 20
+                            }
+                            else
+                            {
+                                valueSource.fuoco = true
+                                speedometer.minimumValue= 160
+                                speedometer.maximumValue= 400
+                                speedometer.DashboardGaugeStyle.labelStepSize = 50
+                            }
+                            errorMessage.visible = false
+                        }else if((data[0] ==="E")&&            // gestione fuoco
+                                 (data[1]==="T"))
+                        {
+                            if (data[2]==="0") // Tecnica 2 punti
+                            {
+                                valueSource.tecn = 0
+                                swTecnique.checked = false
+                                threePointPanel.visible = false
+                                twoPointPanel.visible = true
+                                // se e' la prima volta
+                                if((valueSource.mA!== 0)||(valueSource.msec !== 0))
+                                {
+                                    var calcMas = valueSource.mA * (valueSource.msec/1000)
+                                    var strMas =  masStrFormat(calcMas)
+                                    // calcolo quanti zeri devo aggiungere all'inizio
+                                    // i mas vengono scritti in 5 cifre di cui l'ultima è il
+                                    // decimale quindi 4 + 1
+                                   var maxlen// numero zeri massimi meno numero cifre
+                                    var maxLenNum
+                                    if (calcMas<10) {maxlen = 5 - 1
+                                                    maxLenNum = 1}
+                                    else if (calcMas<100){maxlen = 5 - 2
+                                        maxLenNum = 2}
+                                    else if (calcMas<1000){maxlen = 5 - 3
+                                        maxLenNum = 3}
+                                    else if (calcMas<10000){maxlen = 5 - 4
+                                        maxLenNum = 4}
+                                    else if (calcMas<100000){maxlen = 5 - 5
+                                        maxLenNum = 5}
 
-                    }else if ((data[0] ==="M")&&            // gestione Ma
-                              (data[1]==="A"))
-                    {
-                        tmp =  (data[2]-"0")*1000;
-                        tmp += (data[3]-"0")*100;
-                        tmp += (data[4]-"0")*10;//0;
-                        tmp += (data[5]-"0");//*10;
-                        // tmp +=  data[6]-"0";
-                        valueSource.mA = tmp;
-                        errorMessage.visible = false
-                    }else if ((data[0] ==="M")&&            // gestione Ms
-                              (data[1]==="S"))
-                    {
-                        /*     tmp =  (data[2]-"0")*10000;
+                                     var strcMas = calcMas.toString() // converto in stringa
+                                    // solo se e' presente la virgola
+                                    if ((strcMas[maxLenNum]===".") || (strcMas[maxLenNum]===","))
+                                    {
+                                        // calcolo la virgola e la sposto
+                                        for (var i =0; i<= maxLenNum;i++)
+                                        {
+                                            if ((strcMas[i]===".") || (strcMas[i]===","))
+                                            {
+                                                // i e' la posizione della virgola
+                                                var tmp = strcMas[i+1]
+                                                // tolgo la virgola
+                                                strcMas.at(i) = tmp
+                                                //fermo la stringa ad un decimale
+                                                strcMas[i+1] = ""
+                                            }
+                                        }
+                                    }
+                                    var str0Mas = ""        // definisco la stringa che conterrà gli zeri
+
+
+                                    for (var cf = 0;cf<maxlen;cf ++)
+                                        str0Mas += '0'
+                                    str0Mas += strcMas
+                                    var mas2Send = "MX" + str0Mas
+                                    serialTerminal.putPC1cmd(mas2Send,1)
+                                }else if(valueSource.mas===0)
+                                    serialTerminal.putPC1cmd("MX00006",1)
+
+
+                            }
+                            else // // Tecnica 3 punti
+                            {
+                                valueSource.tecn = 1
+                                swTecnique.checked = true
+                                threePointPanel.visible = true
+                                twoPointPanel.visible = false
+                                if (valueSource.fuoco) // se Fuoco Grande
+                                {
+                                    serialTerminal.putPC1cmd("MA01600",1)
+                                }
+                                else //fuoco piccolo
+                                {
+                                    serialTerminal.putPC1cmd("MA00800",1)
+                                }
+                            }
+                            errorMessage.visible = false
+                        }
+                        else if ((data[0] ==="K")&&            // gestione kV
+                                 (data[1]==="V"))
+                        {
+                            tmp = (data[2]-"0")*100;
+                            tmp += (data[3]-"0")*10;
+                            tmp += data[4]-"0";
+                            valueSource.kv = tmp;
+                            errorMessage.visible = false
+
+                        }else if ((data[0] ==="M")&&            // gestione Ma
+                                  (data[1]==="A"))
+                        {
+                            tmp =  (data[2]-"0")*1000;
+                            tmp += (data[3]-"0")*100;
+                            tmp += (data[4]-"0")*10;//0;
+                            tmp += (data[5]-"0");//*10;
+                            // tmp +=  data[6]-"0";
+                            valueSource.mA = tmp;
+                            errorMessage.visible = false
+                        }else if ((data[0] ==="M")&&            // gestione Ms
+                                  (data[1]==="S"))
+                        {
+                            /*     tmp =  (data[2]-"0")*10000;
                         tmp += (data[3]-"0")*1000;
                         tmp += (data[4]-"0")*100;
                         tmp += (data[5]-"0")*10;
                         tmp +=  data[6]-"0";*/
-                        tmp1 = (data[2]-"0");
-                        tmp2 = tmp1*10000
-                        tmp =  tmp2;
-                        tmp1= (data[3]-"0");
-                        tmp2= tmp1*1000;
-                        tmp+=tmp2;
-                        tmp1 = (data[4]-"0");
-                        tmp2= tmp1*100;
-                        tmp+=tmp2;
-                        tmp1 = (data[5]-"0");
-                        tmp2= tmp1*10;
-                        tmp+=tmp2;
-                        tmp1 = data[6]-"0";
-                        tmp2 = tmp;
-                        tmp = tmp1+tmp2;
-                        valueSource.msec = tmp; // in secondi /1000
-                        errorMessage.visible = false
-                    }else if ((data[0] ==="M")&&            // gestione MAs
-                              (data[1]==="X"))
-                    {
-                        // dato che nel comando di init MAS e' lultimo ad arrivare, se parte vuoto e tutti sono vuoti
-                        // Discriminare in base alla tecnica
-                        // allora devo dargli i primi parametri
-                        if((valueSource.kv && valueSource.mA && valueSource.msec/* || valueSource.mas*/ ) === 0)
-                        {// invio i default
-                            serialTerminal.putPC1cmd("ET1",0)
-                            serialTerminal.putPC1cmd("FO0",0)
-                            serialTerminal.putPC1cmd("KV050",0)
-                            serialTerminal.putPC1cmd("MA01600",0)
-                            serialTerminal.putPC1cmd("MS01500",1)
-                            errorMessage.text = qsTr("DEFAULT PARAM !!!")
-                            errorMessage.visible = true
+                            tmp1 = (data[2]-"0");
+                            tmp2 = tmp1*10000
+                            tmp =  tmp2;
+                            tmp1= (data[3]-"0");
+                            tmp2= tmp1*1000;
+                            tmp+=tmp2;
+                            tmp1 = (data[4]-"0");
+                            tmp2= tmp1*100;
+                            tmp+=tmp2;
+                            tmp1 = (data[5]-"0");
+                            tmp2= tmp1*10;
+                            tmp+=tmp2;
+                            tmp1 = data[6]-"0";
+                            tmp2 = tmp;
+                            tmp = tmp1+tmp2;
+                            valueSource.msec = tmp; // in secondi /1000
+                            errorMessage.visible = false
+                        }else if ((data[0] ==="M")&&            // gestione MAs
+                                  (data[1]==="X"))
+                        {
+                            // dato che nel comando di init MAS e' lultimo ad arrivare, se parte vuoto e tutti sono vuoti
+                            // Discriminare in base alla tecnica
+                            // allora devo dargli i primi parametri
+                            if((valueSource.kv && valueSource.mA && valueSource.msec/* || valueSource.mas*/ ) === 0)
+                            {// invio i default
+                                serialTerminal.putPC1cmd("ET1",0)
+                                serialTerminal.putPC1cmd("FO0",0)
+                                serialTerminal.putPC1cmd("KV050",0)
+                                serialTerminal.putPC1cmd("MA01600",0)
+                                serialTerminal.putPC1cmd("MS01500",1)
+                                errorMessage.text = qsTr("DEFAULT PARAM !!!")
+                                errorMessage.visible = true
+                            }
+                            tmp =  (data[2]-"0")*1000;
+                            tmp += (data[3]-"0")*100;
+                            tmp += (data[4]-"0")*10;//0;
+                            tmp += (data[5]-"0");//*10;
+                            // tmp +=  data[6]-"0";
+                            valueSource.mas = tmp;
+                            errorMessage.visible = false
                         }
-                        tmp =  (data[2]-"0")*1000;
-                        tmp += (data[3]-"0")*100;
-                        tmp += (data[4]-"0")*10;//0;
-                        tmp += (data[5]-"0");//*10;
-                        // tmp +=  data[6]-"0";
-                        valueSource.mas = tmp;
-                        errorMessage.visible = false
-                    }
-                    else if ((data[0] ==="P")&&            // gestione PRONTO
-                             (data[1]==="R"))
-                    {
+                        else if ((data[0] ==="P")&&            // gestione PRONTO
+                                 (data[1]==="R"))
+                        {
 
-                        prState.value = data[2]-"0";
-                        if (data[2] === "0")
-                            prStatus.text = "IDLE"
-                        else if (data[2]=== "1")
-                        {
-                            serialTerminal.putPC1cmd(data,1);
-                            prStatus.text = "ACTIVE !!"
-                        }
-                        else if(data[2]==="2")
-                        {
-                            serialTerminal.putPC1cmd(data,1);
-                            prStatus.text = "READY !!!"
-                        }
-                    }else if ((data[0] ==="X")&&            // gestione PRONTO
-                              (data[1]==="R"))
-                    {
-
-                        if (data[2] === "0")
-                            emissionSts.active = false;
-                        else if (data[2]=== "1")
-                        {
-                            serialTerminal.putPC1cmd(data,1);
-                            emissionSts.active = true;
-                            prState.value =0;
-                            prStatus.text = "IDLE"
-                        }
-                    }
-                    else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
-                             (data[1]==="L"))
-                    {
-                        serialTerminal.putPC1cmd(data,0);
-                        if((data[2] === "0"))
-                        {
-                            if(data[3]==="0")
+                            prState.value = data[2]-"0";
+                            if (data[2] === "0")
+                                prStatus.text = "IDLE"
+                            else if (data[2]=== "1")
                             {
-                                if(data[4]==="1")
-                                    errorMessage.text = qsTr("GENERATOR KW LIMIT !!!")
-                                if(data[4]==="2")
-                                    errorMessage.text = qsTr("OPERATOR TIMEOUT")
+                                serialTerminal.putPC1cmd(data,1);
+                                prStatus.text = "ACTIVE !!"
+                            }
+                            else if(data[2]==="2")
+                            {
+                                serialTerminal.putPC1cmd(data,1);
+                                prStatus.text = "READY !!!"
+                            }
+                        }else if ((data[0] ==="X")&&            // gestione PRONTO
+                                  (data[1]==="R"))
+                        {
 
+                            if (data[2] === "0")
+                                emissionSts.active = false;
+                            else if (data[2]=== "1")
+                            {
+                                serialTerminal.putPC1cmd(data,1);
+                                emissionSts.active = true;
+                                prState.value =0;
+                                prStatus.text = "IDLE"
                             }
                         }
-
-                        errorMessage.text = qsTr("LATCHING ERROR !!!")
-                        errorMessage.visible = true
-                    }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
-                              (data[1]==="R"))
-                    {
-                        //       serialTerminal.putPC1cmd(data);
-                        if (data[3] === "0")
+                        else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
+                                 (data[1]==="L"))
                         {
-                            if (data[4] === "1")
+                            serialTerminal.putPC1cmd(data,0);
+                            errorMessage.text = qsTr("LATCHING ERROR !!!")
+                            if((data[2] === "0"))
                             {
-                                errorMessage.text = qsTr("INVALID COMMAND !!!")
-                            }else if (data[4] === "2")
+                                if(data[3]==="0")
+                                {
+                                    if(data[4]==="1")
+                                        errorMessage.text = qsTr("GENERATOR KW LIMIT !!!")
+                                    if(data[4]==="2")
+                                        errorMessage.text = qsTr("TIMEOUT OPERATOR !!!")
+                                    if(data[4]==="3")
+                                        errorMessage.text = qsTr("TIMEOUT FPD ")
+                                    if(data[4]==="4")
+                                        errorMessage.text = qsTr("TIMEOUT ANODE")
+                                    if(data[4]==="5")
+                                        errorMessage.text = qsTr("FEEDING ALARM")
+                                    if(data[4]==="6")
+                                        errorMessage.text = qsTr("FILAMENT ALARM")
+                                    if(data[4]==="7")
+                                        errorMessage.text = qsTr("SYSTEM SAFETY ALARM")
+                                    if(data[4]==="8")
+                                        errorMessage.text = qsTr("OVERCHARGE ALARM")
+                                    if(data[4]==="9")
+                                        errorMessage.text = qsTr("OVERCHARGE ALARM")
+                                }else if (data[3]==="1")
+                                {
+                                    if(data[4]==="0")
+                                        errorMessage.text = qsTr("NO EMISSION ALARM")
+                                    if(data[4]==="1")
+                                        errorMessage.text = qsTr("PR1 ACKNOWLEDGEMENT TIMEOUT")
+                                    if(data[4]==="2")
+                                        errorMessage.text = qsTr("PR2 ACKNOWLEDGEMENT TIMEOUT")
+                                    if(data[4]==="3")
+                                        errorMessage.text = qsTr("XR1 ACKNOWLEDGEMENT TIMEOUT")
+                                }
+                            }
+
+
+                            errorMessage.visible = true
+                        }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
+                                  (data[1]==="R"))
+                        {
+                            //       serialTerminal.putPC1cmd(data);
+                            if (data[3] === "0")
                             {
-                                errorMessage.text = qsTr("COMMAND NOT ALLOWED!!!")
-                            }else if (data[4] === "3")
-                            {
-                                errorMessage.text = qsTr("GENERATOR KV LIMIT EXCEDEED !!!")
-                            }else if (data[4] === "4")
-                            {
-                                errorMessage.text = qsTr("GENERATOR MA LIMIT EXCEDEED !!!")
-                            }else if (data[4] === "5")
-                            {
-                                errorMessage.text = qsTr("GENERATOR MS LIMIT EXCEDEED !!!")
-                            }else if (data[4] === "6")
-                            {
-                                errorMessage.text = qsTr("GENERATOR MAS LIMIT EXCEDEED !!!")
-                            }else if (data[4] === "7")
-                            {
-                                errorMessage.text = qsTr("TIMEOUT GENERATION !!!")
+                                if (data[4] === "1")
+                                {
+                                    errorMessage.text = qsTr("INVALID COMMAND !!!")
+                                }else if (data[4] === "2")
+                                {
+                                    errorMessage.text = qsTr("COMMAND NOT ALLOWED!!!")
+                                }else if (data[4] === "3")
+                                {
+                                    errorMessage.text = qsTr("GENERATOR KV LIMIT EXCEDEED !!!")
+                                }else if (data[4] === "4")
+                                {
+                                    errorMessage.text = qsTr("GENERATOR MA LIMIT EXCEDEED !!!")
+                                }else if (data[4] === "5")
+                                {
+                                    errorMessage.text = qsTr("GENERATOR MS LIMIT EXCEDEED !!!")
+                                }else if (data[4] === "6")
+                                {
+                                    errorMessage.text = qsTr("GENERATOR MAS LIMIT EXCEDEED !!!")
+                                }else if (data[4] === "7")
+                                {
+                                    errorMessage.text = qsTr("TIMEOUT GENERATION !!!")
+                                }else
+                                {
+                                    errorMessage.text = qsTr("GENERIC ERROR !!!")
+                                }
                             }else
                             {
                                 errorMessage.text = qsTr("GENERIC ERROR !!!")
                             }
-                        }else
-                        {
-                            errorMessage.text = qsTr("GENERIC ERROR !!!")
-                        }
-                        errorMessage.visible = true
-                    }
-                    else
-                    {
-                        if (data === "ERROR")
-                        {// errore connessione
-                            errorMessage.text = qsTr("Connection ERROR !!!")
                             errorMessage.visible = true
                         }
-                        // poi ci sono i parametri non gestiti tipo ET 0/1
+                        else
+                        {
+                            if (data === "ERROR")
+                            {// errore connessione
+                                errorMessage.text = qsTr("Connection ERROR !!!")
+                                errorMessage.visible = true
+                            }
+                            // poi ci sono i parametri non gestiti tipo ET 0/1
+                        }
                     }
-
                 }
             }
             Button {
@@ -1265,6 +1399,8 @@ Window {
                             //   serialTerminal.putPC1cmd("FO?",1)
                             serialTerminal.putPC1cmd("RS",1)
                             serialTerminal.putPC1cmd("RR",1)
+                            pollingTimer.repeat = 1
+                            setTimeout(sendStatusRqst,1000)
                         }
                     }else {
                         errorMessage.visible = false;
@@ -1383,23 +1519,25 @@ Window {
 /*##^##
 Designer {
     D{i:2;anchors_height:600;anchors_width:1024}D{i:8;anchors_y:14}D{i:12;anchors_x:254;anchors_y:0}
-D{i:14;anchors_x:254;anchors_y:0}D{i:13;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
-D{i:19;anchors_x:254;anchors_y:0}D{i:18;anchors_height:16;anchors_width:14;anchors_x:649;anchors_y:0}
-D{i:20;anchors_x:254;anchors_y:0}D{i:21;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254;anchors_y:0}
-D{i:24;anchors_x:254;anchors_y:0}D{i:26;anchors_x:254}D{i:25;anchors_x:254;anchors_y:0}
-D{i:28;anchors_x:254}D{i:27;anchors_x:254;anchors_y:0}D{i:22;anchors_x:254;anchors_y:0}
-D{i:34;anchors_x:254;anchors_y:0}D{i:35;anchors_width:100;anchors_x:254;anchors_y:0}
-D{i:4;anchors_width:150;anchors_x:700}D{i:38;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:40;anchors_width:100;anchors_x:"-50";anchors_y:35}
-D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:39;anchors_width:100;anchors_x:"-95";anchors_y:4}
-D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:36;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:46;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
-D{i:45;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:47;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}
-D{i:48;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:44;anchors_width:100;anchors_x:"-50";anchors_y:40}
-D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:53;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:54;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:55;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:56;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:13;anchors_x:54}D{i:14;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
+D{i:16;anchors_x:254;anchors_y:0}D{i:15;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
+D{i:19;anchors_height:16;anchors_width:14;anchors_x:649;anchors_y:0}D{i:21;anchors_x:254;anchors_y:0}
+D{i:20;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:22;anchors_x:254;anchors_y:0}
+D{i:23;anchors_x:254;anchors_y:0}D{i:25;anchors_x:254;anchors_y:0}D{i:26;anchors_x:254;anchors_y:0}
+D{i:28;anchors_x:254;anchors_y:0}D{i:27;anchors_x:254;anchors_y:0}D{i:30;anchors_x:254}
+D{i:29;anchors_x:254;anchors_y:0}D{i:24;anchors_x:254;anchors_y:0}D{i:35;anchors_x:254;anchors_y:0}
+D{i:36;anchors_width:100;anchors_x:254;anchors_y:0}D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:4;anchors_width:150;anchors_x:700}D{i:40;anchors_width:100;anchors_x:"-95";anchors_y:4}
+D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:0}
+D{i:44;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:35}
+D{i:45;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:39;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:38;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:48;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}
+D{i:47;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:46;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:54;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:55;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:56;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:53;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:57;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:58;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
 D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
 }
 ##^##*/
