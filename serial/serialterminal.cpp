@@ -7,14 +7,14 @@
 #define MAX_TIME_WAIT_MS 100
 
 
- /*   Q_INVOKABLE QString StringParsing::process(QString a){
+    Q_INVOKABLE QString StringParsing::process(QString a){
         QString  status =  a;
 
         // copip
 
         mErrorMessage = status;//status? "": QString("error message: %1 + %2 is different to %3").arg(a).arg(b).arg(res);
         return status;
-    }*/
+    }
 
 
 

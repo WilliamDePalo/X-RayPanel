@@ -54,7 +54,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Extras 1.4
 import Qt.labs.calendar 1.0
 import QtQuick 2.7
-//import WdpClass 1.0
+import WdpClass 1.0
 
 Window {
     id: root
@@ -1031,7 +1031,7 @@ Window {
                 //  Text: "19200"
             }
 
-            //StringParsing{ id: strPars }
+            StringParsing{ id: strPars }
             Connections {
 
                 target: serialTerminal
@@ -1117,7 +1117,7 @@ Window {
                                 if((valueSource.mA!== 0)||(valueSource.msec !== 0))
                                 {
                                     var calcMas = valueSource.mA * (valueSource.msec/1000)
-                                    var strMas =  masStrFormat(calcMas)
+                                    var strMas =  strPars.process(calcMas)
                                     // calcolo quanti zeri devo aggiungere all'inizio
                                     // i mas vengono scritti in 5 cifre di cui l'ultima è il
                                     // decimale quindi 4 + 1

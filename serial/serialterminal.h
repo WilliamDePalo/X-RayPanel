@@ -6,7 +6,7 @@
 #include <QObject>
 #include "serialLogger.h"
 #include <QTimer>
-/*
+
 class StringParsing: public QObject{
     Q_OBJECT
     Q_PROPERTY(QString errorMessage READ errorMessage)
@@ -18,7 +18,7 @@ public:
     }
 private:
     QString mErrorMessage;
-};*/
+};
 
 
 

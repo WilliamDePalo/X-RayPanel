@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 
     QFontDatabase::addApplicationFont(":/fonts/DejaVuSans.ttf");
         app.setFont(QFont("DejaVu Sans"));
- //   qmlRegisterType<StringParsing>("WdpClass", 1, 0, "StringParsing");
+    qmlRegisterType<StringParsing>("WdpClass", 1, 0, "StringParsing");
     //    QQmlApplicationEngine engine(QUrl("qrc:/qml/dashboard.qml"));
         engine.load(QUrl(QLatin1String("qrc:/qml/dashboard.qml")));
 
