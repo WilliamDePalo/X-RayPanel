@@ -217,7 +217,7 @@ Window {
 
                         }
 
-                        Text {
+  /*                      Text {
                             id: statusTitle
                             y: 168
                             height: 34
@@ -262,7 +262,7 @@ Window {
                             textFormat: Text.AutoText
                             font.letterSpacing: 0.6
 
-                        }
+                        }*/
                     }
                 }
 
@@ -683,7 +683,7 @@ Window {
                     anchors.bottom: parent.bottom
                     anchors.top: parent.top
                     anchors.leftMargin: 0
-                    minimumValue: 0.6
+                    minimumValue: 0
                     value: valueSource.mas
                     maximumValue: 250
 
@@ -1055,6 +1055,7 @@ Window {
                     if ((data[0] ==="S")&&            // gestione fuoco
                          (data[1]==="T"))
                     {
+                        /* STATUS DISABLE
                         if ((data[2]==="0") &&
                                 (data[3]==="0"))
                         {
@@ -1082,7 +1083,7 @@ Window {
                             {
                                 status.text=qstr("UNKNOW")
                             }
-                        }
+                        }*/
                     }else // se non e' un polling
                     {
                         errorMessage.visible = false
@@ -1136,7 +1137,7 @@ Window {
 
                                      var strcMas = calcMas.toString() // converto in stringa
                                     // solo se e' presente la virgola
-                                    if ((strcMas[maxLenNum]===".") || (strcMas[maxLenNum]===","))
+                /*                    if ((strcMas[maxLenNum]===".") || (strcMas[maxLenNum]===","))
                                     {
                                         // calcolo la virgola e la sposto
                                         for (var i =0; i<= maxLenNum;i++)
@@ -1151,7 +1152,7 @@ Window {
                                                 strcMas[i+1] = ""
                                             }
                                         }
-                                    }
+                                    }*/
                                     var str0Mas = ""        // definisco la stringa che conterrà gli zeri
 
 
@@ -1224,7 +1225,7 @@ Window {
                             tmp1 = data[6]-"0";
                             tmp2 = tmp;
                             tmp = tmp1+tmp2;
-                            valueSource.msec = tmp; // in secondi /1000
+                            valueSource.msec = tmp/10; // in secondi /1000
                             errorMessage.visible = false
                         }else if ((data[0] ==="M")&&            // gestione MAs
                                   (data[1]==="X"))
@@ -1246,7 +1247,7 @@ Window {
                             tmp += (data[3]-"0")*100;
                             tmp += (data[4]-"0")*10;//0;
                             tmp += (data[5]-"0");//*10;
-                            // tmp +=  data[6]-"0";
+                            tmp += ( data[6]-"0")/10;
                             valueSource.mas = tmp;
                             errorMessage.visible = false
                         }
@@ -1307,7 +1308,7 @@ Window {
                                     if(data[4]==="8")
                                         errorMessage.text = qsTr("OVERCHARGE ALARM")
                                     if(data[4]==="9")
-                                        errorMessage.text = qsTr("OVERCHARGE ALARM")
+                                        errorMessage.text = qsTr("FEEDBACK UNCONNECTED")
                                 }else if (data[3]==="1")
                                 {
                                     if(data[4]==="0")
@@ -1394,13 +1395,12 @@ Window {
                             serialSettings.visible = false
                             greenLight.opacity = 1
                             redLight.opacity = 0.3
-                            yellowButton.opacity = 0.3
-                            //    serialTerminal.putPC1cmd("ET?",1)
-                            //   serialTerminal.putPC1cmd("FO?",1)
+                            yellowButton.opacity = 0.3                          
                             serialTerminal.putPC1cmd("RS",1)
                             serialTerminal.putPC1cmd("RR",1)
-                            pollingTimer.repeat = 1
-                            setTimeout(sendStatusRqst,1000)
+             //  QUI PER ABILITARE IL polling
+                            //pollingTimer.repeat = 1
+            //                setTimeout(sendStatusRqst,1000)
                         }
                     }else {
                         errorMessage.visible = false;

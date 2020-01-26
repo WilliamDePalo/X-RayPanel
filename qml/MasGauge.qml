@@ -33,7 +33,7 @@ CircularGauge {
             }
 
             Canvas {
-              property int value: MasGauge.value//valueSource.mas//
+              property real value: masGauge.value//valueSource.mas//
 
                 anchors.fill: parent
                 onValueChanged: requestPaint()
@@ -83,9 +83,9 @@ CircularGauge {
             Text {
                 id: masLabel
                 anchors.centerIn: parent
-                text: masGauge.value.toFixed(0)
                 font.pixelSize: outerRadius * 0.3
                 color: "white"
+                text: value.toString()
                 antialiasing: true
             }
             Text {
