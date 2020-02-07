@@ -85,7 +85,7 @@ Item {
     property real msec: 40
     property bool fuoco:false
     property real mas:0.6
-    property int tecn : 1
+    property int tecn : 4 //valore di unknow per il default
 //! [0]
 /*
     function randomDirection() {

@@ -7,13 +7,26 @@
 #define MAX_TIME_WAIT_MS 100
 
 
-    Q_INVOKABLE QString StringParsing::process(QString a){
-        QString  status =  a;
+Q_INVOKABLE QString StringParsing::process(QString a){
+     //   QString  status;
+     QString strValue;
+        bool ok;
+// trasformo la stringa xxx.yyyy in numero
+        double fNumValue = a.toDouble(&ok);
 
-        // copip
-
-        mErrorMessage = status;//status? "": QString("error message: %1 + %2 is different to %3").arg(a).arg(b).arg(res);
-        return status;
+// moltiplico per 10 (sposto la virgola a dx)
+            fNumValue *= 10;
+// salvo la stringa
+        strValue.setNum(fNumValue,'g',6);
+//        QString::asprintf(&status.(),"%d",fNumValue);
+        // taglio il tutto dopo la virgola
+        int newlen = strValue.indexOf('.');
+        if (newlen >=0)
+            strValue = strValue.left(newlen);
+        // restituisco la stringa modificata
+        return strValue;
+        // mErrorMessage e' un'eventuale altra proprietà (variabile) a disposizione in qml
+        //mErrorMessage = status;//status? "": QString("error message: %1 + %2 is different to %3").arg(a).arg(b).arg(res);
     }
 
 
@@ -83,7 +96,7 @@ void SerialTerminal::writeToSerialPCIMode(QString message,int flush){
         {
             waitForAnAck = ACK_WAITING;
             serialPort->flush();
-            waitAckTimer->start(1000);
+            waitAckTimer->start(750);
         }
     }
 }
@@ -113,7 +126,6 @@ bool SerialTerminal::getConnectionStatusSlot(){
 
     return this->getConnectionStatus();
 }
-
 void SerialTerminal::readFromSerialPort(){
    static unsigned char idx = 0;
    unsigned char idToSend = 0;
@@ -127,7 +139,7 @@ void SerialTerminal::readFromSerialPort(){
   //  if (serialPort->canReadLine()){
        static QByteArray rcvByte;// = serialPort->readAll();
          rcvByte.append(serialPort->readAll());
-  //        logger->write( "<- serial " + rcvByte +"\n");
+       //   logger->write( "<- serial " + rcvByte +"\n");
         // gestione pacchetti spezzati
         while (serialPort->waitForReadyRead(MAX_TIME_WAIT_MS)) // se aspetto meno di 500 milli
         {

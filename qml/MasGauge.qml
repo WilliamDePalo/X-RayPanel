@@ -91,7 +91,7 @@ CircularGauge {
             Text {
                 text: "MAS"
                 color: "white"
-                font.pixelSize: masGauge.toPixels(0.1)
+                font.pixelSize: 0.1 * outerRadius
                 anchors.top: masLabel.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
             }

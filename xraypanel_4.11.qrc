@@ -21,5 +21,8 @@
         <file>images/background.svg</file>
         <file>images/needle.svg</file>
         <file>images/tickmark.svg</file>
+        <file>images/LargeFocus.png</file>
+        <file>images/logoRxR.jpg</file>
+        <file>images/smallFocus.png</file>
     </qresource>
 </RCC>
