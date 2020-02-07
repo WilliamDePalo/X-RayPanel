@@ -55,6 +55,7 @@ import QtQuick.Extras 1.4
 import Qt.labs.calendar 1.0
 import QtQuick 2.7
 import WdpClass 1.0
+import QtGraphicalEffects 1.0
 
 Window {
     id: root
@@ -63,6 +64,7 @@ Window {
     height: 600
 
     color: "#161616"
+    property alias btnyellImage: btnyellImage
 
     property alias yellowButtonIconSource: yellowButton.iconSource
     //property alias elementAnchorsverticalCenterOffset: element.anchors.verticalCenterOffset
@@ -87,6 +89,17 @@ Window {
 
     }
 
+    Timer{
+        id: statusTimer
+        running: false
+        repeat: false
+
+        property var callback
+
+        onTriggered: callback()
+
+    }
+
     function setTimeout(callback, delay)
     {
         if (pollingTimer.running) {
@@ -98,30 +111,71 @@ Window {
         pollingTimer.interval = delay + 1;
         pollingTimer.running = true;
     }
+
+
+    function setStatusTo(callback, delay)
+    {
+        if(statusTimer.running){
+            // error
+            return;
+        }
+        statusTimer.callback = callback;
+        statusTimer.interval = delay + 1;
+        statusTimer.running = true;
+    }
+
     function sendMinMaFp()
     {
-        serialTerminal.putPC1cmd("MA00800",1)
+        if (serialTerminal.getConnectionStatusSlot() !== false)
+        {
+            serialTerminal.putPC1cmd("MA00800",1)
+        }
     }
     function sendMaxMaFp(){
-        serialTerminal.putPC1cmd("MA01600",1)
+        if (serialTerminal.getConnectionStatusSlot() !== false)
+        {
+            serialTerminal.putPC1cmd("MA01600",1)
+        }
     }
     function sendStatusRqst(){
-        serialTerminal.putPC1cmd("ST",1)
+        if (serialTerminal.getConnectionStatusSlot() !== false)
+        {
+            serialTerminal.putPC1cmd("ST",1)
+        }
+    }
+    function sendAlignRqst(){
+        if (serialTerminal.getConnectionStatusSlot() !== false)
+        {
+            serialTerminal.putPC1cmd("RS",1)
+            serialTerminal.putPC1cmd("RR",1)
 
+        }
+        // si potrebbe aggiungere anche lo stato "ST"
     }
 
     // Dashboards are typically in a landscape orientation, so we need to ensure
     // our height is never greater than our width.
     Item {
         id: container
-        y: 6
+        y: 0
         width: 1024
         height: 600
-        anchors.rightMargin: 0
-        anchors.leftMargin: 0
+        anchors.rightMargin: -6
+        anchors.leftMargin: 6
         anchors.left: parent.left
         anchors.right: parent.right
         // Math.min(root.width, root.height)
+        Image{
+            id: backGroundImg
+            anchors.rightMargin: 8
+            anchors.bottomMargin: 0
+            anchors.leftMargin: -8
+            anchors.topMargin: 0
+            fillMode: Image.TileVertically
+            source: "../images/logoRxR.jpg"
+            anchors.fill: parent
+            //Image:"qrc:image/logoRxR.jpg"
+        }
 
         Column{
             id: gaugeColumn
@@ -156,7 +210,8 @@ Window {
 
                         background:Rectangle{
                             antialiasing: true
-                            color: control.pressed ? "#d1d1d1" : control.hovered ? "#666" : "transparent"
+                            color: control.pressed ? "#d1d1d1" : control.hovered ? "transparent":"transparent"
+                                                         //"#666" : "transparent"
                             border.color: "transparent"
                             radius: height/2
                             border.width: 1
@@ -170,12 +225,14 @@ Window {
                             {
 
                                 serialTerminal.putPC1cmd("FO0",1)
+                                 fuelGaugeStyle.icon = "qrc:/images/smallFocus.png"
                                 // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco piccolo
                                 if (valueSource.tecn)
                                     serialTerminal.putPC1cmd("MA00800",1)
                             }else // se piccolo
                             {
                                 serialTerminal.putPC1cmd("FO1",1)
+                                 fuelGaugeStyle.icon = "qrc:/images/LargeFocus.png"
                                 // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco grande
                                 if (valueSource.tecn)
                                     serialTerminal.putPC1cmd("MA01600",1)
@@ -205,6 +262,7 @@ Window {
                                 text: qsTr("SEC")
                             }
                             textt: "FOCUS"
+                             icon: "qrc:/images/smallFocus.png"
                            // icon: "qrc:/images/fuel-icon.png" Icona fuoco
                             minWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
@@ -217,7 +275,25 @@ Window {
 
                         }
 
-  /*                      Text {
+                        RadioButton {
+                            id: touchSynchro
+                            x: 8
+                            y: 144
+                            text: qsTr("Panel Synchro")
+                            onCheckedChanged: {
+                               if (touchSynchro.checked)
+                               {
+                                   //  QUI PER ABILITARE IL polling
+                                   pollingTimer.repeat = 1
+                                   setTimeout(sendAlignRqst,2000)
+                               }else
+                               {
+                                   pollingTimer.repeat = 0
+                               }
+                            }
+                        }
+
+                        Text {
                             id: statusTitle
                             y: 168
                             height: 34
@@ -246,7 +322,7 @@ Window {
                             color: "#fdfdfd"
                             text: qsTr("DISCONNECT")
                             anchors.top: parent.top
-                            anchors.topMargin: 200
+                            anchors.topMargin: 199
                             anchors.rightMargin: 0
                             font.pixelSize: 18
                             anchors.left: parent.left
@@ -262,7 +338,7 @@ Window {
                             textFormat: Text.AutoText
                             font.letterSpacing: 0.6
 
-                        }*/
+                        }
                     }
                 }
 
@@ -587,7 +663,7 @@ Window {
 
                         //                     tickmarkCount: 1
                         textt: valueSource.msec
-                        //    icon: "qrc:/images/temperature-icon.png"
+                           // icon: "qrc:/images/smallFocus.png"
                         //    minWarningColor: "#b8a521"
                         //    maxWarningColor: "#ef5050"
                         maxWarningColor: Qt.rgba(0.5, 0, 0, 1)
@@ -683,7 +759,7 @@ Window {
                     anchors.bottom: parent.bottom
                     anchors.top: parent.top
                     anchors.leftMargin: 0
-                    minimumValue: 0
+                    minimumValue: 0.6
                     value: valueSource.mas
                     maximumValue: 250
 
@@ -868,7 +944,7 @@ Window {
                         width: 38
                         height: 38
                         visible: true
-                        rotation: 180
+                        rotation: 0
                         sourceSize.height: 0
                         sourceSize.width: 0
                         fillMode: Image.Stretch
@@ -1041,21 +1117,10 @@ Window {
                 property string  rcv: ""
 
                 onGetData: {
-                    //                var dt;
-                    //                dt =  strPars.process(data)
-                    //                dt =  data;
-
-
-                    //textlog1.text = "<-APP " + data.ToString;
-                    //  textlog1.text = data->element;
-                    //    while (data[tmp]!==0)
-                    //         textlog1.text += cStr() data[tmp] ;
-                    //    textlog1.text = "<-APP " + rcv;
-
-                    if ((data[0] ==="S")&&            // gestione fuoco
+                    if ((data[0] ==="S")&&            // gestione STATI
                          (data[1]==="T"))
                     {
-                        /* STATUS DISABLE
+
                         if ((data[2]==="0") &&
                                 (data[3]==="0"))
                         {
@@ -1083,7 +1148,7 @@ Window {
                             {
                                 status.text=qstr("UNKNOW")
                             }
-                        }*/
+                        }
                     }else // se non e' un polling
                     {
                         errorMessage.visible = false
@@ -1110,75 +1175,95 @@ Window {
                         {
                             if (data[2]==="0") // Tecnica 2 punti
                             {
-                                valueSource.tecn = 0
-                                swTecnique.checked = false
-                                threePointPanel.visible = false
-                                twoPointPanel.visible = true
-                                // se e' la prima volta
-                                if((valueSource.mA!== 0)||(valueSource.msec !== 0))
+                                if ((valueSource.tecn==1)||
+                                    (valueSource.tecn == 4))// se è già impostata allora potrebbe essere
+                                                      // una risposta al polling
                                 {
-                                    var calcMas = valueSource.mA * (valueSource.msec/1000)
-                                    var strMas =  strPars.process(calcMas)
-                                    // calcolo quanti zeri devo aggiungere all'inizio
-                                    // i mas vengono scritti in 5 cifre di cui l'ultima è il
-                                    // decimale quindi 4 + 1
-                                   var maxlen// numero zeri massimi meno numero cifre
-                                    var maxLenNum
-                                    if (calcMas<10) {maxlen = 5 - 1
-                                                    maxLenNum = 1}
-                                    else if (calcMas<100){maxlen = 5 - 2
-                                        maxLenNum = 2}
-                                    else if (calcMas<1000){maxlen = 5 - 3
-                                        maxLenNum = 3}
-                                    else if (calcMas<10000){maxlen = 5 - 4
-                                        maxLenNum = 4}
-                                    else if (calcMas<100000){maxlen = 5 - 5
-                                        maxLenNum = 5}
-
-                                     var strcMas = calcMas.toString() // converto in stringa
-                                    // solo se e' presente la virgola
-                /*                    if ((strcMas[maxLenNum]===".") || (strcMas[maxLenNum]===","))
+                                    valueSource.tecn = 0
+                                    swTecnique.checked = false
+                                    threePointPanel.visible = false
+                                    twoPointPanel.visible = true
+                                    // se e' la prima volta
+                                    if((valueSource.mA!== 0)||(valueSource.msec !== 0))
                                     {
-                                        // calcolo la virgola e la sposto
-                                        for (var i =0; i<= maxLenNum;i++)
+                                        var calcMas = valueSource.mA * (valueSource.msec/1000)
+                                        var strMas =  strPars.process(calcMas)
+                                        // calcolo quanti zeri devo aggiungere all'inizio
+                                        // i mas vengono scritti in 5 cifre di cui l'ultima è il
+                                        // decimale quindi 4 + 1
+                                        var maxlen// numero zeri massimi meno numero cifre
+                                        var maxLenNum
+
+                                        if (calcMas<1) {maxlen = 5 - 1
+                                                        maxLenNum = 1}
+                                        else if (calcMas<10){maxlen = 5 - 2
+                                            maxLenNum = 2}
+                                        else if (calcMas<100){maxlen = 5 - 3
+                                            maxLenNum = 3}
+                                        else if (calcMas<1000){maxlen = 5 - 4
+                                            maxLenNum = 4}
+                                        else if (calcMas<10000){maxlen = 5 - 5
+                                            maxLenNum = 5}
+
+                       /*                   var strcMas = calcMas.toString() // converto in stringa
+                                        // solo se e' presente la virgola
+                                       if ((strcMas[maxLenNum]===".") || (strcMas[maxLenNum]===","))
                                         {
-                                            if ((strcMas[i]===".") || (strcMas[i]===","))
+                                            // calcolo la virgola e la sposto
+                                            for (var i =0; i<= maxLenNum;i++)
                                             {
-                                                // i e' la posizione della virgola
-                                                var tmp = strcMas[i+1]
-                                                // tolgo la virgola
-                                                strcMas.at(i) = tmp
-                                                //fermo la stringa ad un decimale
-                                                strcMas[i+1] = ""
+                                                if ((strcMas[i]===".") || (strcMas[i]===","))
+                                                {
+                                                    // i e' la posizione della virgola
+                                                    var tmp = strcMas[i+1]
+                                                    // tolgo la virgola
+                                                    strcMas.at(i) = tmp
+                                                    //fermo la stringa ad un decimale
+                                                    strcMas[i+1] = ""
+                                                }
                                             }
+                                     } */
+                                        var str0Mas = ""        // definisco la stringa che conterrà gli zeri
+
+
+                                        for (var cf = 0;cf<maxlen;cf ++)
+                                            str0Mas += '0'
+                                        str0Mas += strMas
+                                        var mas2Send = "MX" + str0Mas
+                                        serialTerminal.putPC1cmd(mas2Send,1)
+                                    }else if(valueSource.mas===0)
+                                    {
+                                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                                        {
+                                            serialTerminal.putPC1cmd("MX00006",1)
                                         }
-                                    }*/
-                                    var str0Mas = ""        // definisco la stringa che conterrà gli zeri
-
-
-                                    for (var cf = 0;cf<maxlen;cf ++)
-                                        str0Mas += '0'
-                                    str0Mas += strcMas
-                                    var mas2Send = "MX" + str0Mas
-                                    serialTerminal.putPC1cmd(mas2Send,1)
-                                }else if(valueSource.mas===0)
-                                    serialTerminal.putPC1cmd("MX00006",1)
-
-
+                                    }
+                                }
                             }
                             else // // Tecnica 3 punti
                             {
-                                valueSource.tecn = 1
-                                swTecnique.checked = true
-                                threePointPanel.visible = true
-                                twoPointPanel.visible = false
-                                if (valueSource.fuoco) // se Fuoco Grande
+                                if ((valueSource.tecn == 0) ||
+                                    (valueSource.tecn == 4))// se è già impostata allora potrebbe essere
+                                                      // una risposta al polling
                                 {
-                                    serialTerminal.putPC1cmd("MA01600",1)
-                                }
-                                else //fuoco piccolo
-                                {
-                                    serialTerminal.putPC1cmd("MA00800",1)
+                                    valueSource.tecn = 1
+                                    swTecnique.checked = true
+                                    threePointPanel.visible = true
+                                    twoPointPanel.visible = false
+                                    if (valueSource.fuoco) // se Fuoco Grande
+                                    {
+                                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                                        {
+                                            serialTerminal.putPC1cmd("MA01600",1)
+                                        }
+                                    }
+                                    else //fuoco piccolo
+                                    {
+                                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                                        {
+                                            serialTerminal.putPC1cmd("MA00800",1)
+                                        }
+                                    }
                                 }
                             }
                             errorMessage.visible = false
@@ -1235,13 +1320,16 @@ Window {
                             // allora devo dargli i primi parametri
                             if((valueSource.kv && valueSource.mA && valueSource.msec/* || valueSource.mas*/ ) === 0)
                             {// invio i default
-                                serialTerminal.putPC1cmd("ET1",0)
-                                serialTerminal.putPC1cmd("FO0",0)
-                                serialTerminal.putPC1cmd("KV050",0)
-                                serialTerminal.putPC1cmd("MA01600",0)
-                                serialTerminal.putPC1cmd("MS01500",1)
-                                errorMessage.text = qsTr("DEFAULT PARAM !!!")
-                                errorMessage.visible = true
+                                if (serialTerminal.getConnectionStatusSlot() !== false)
+                                {
+                                    serialTerminal.putPC1cmd("ET1",0)
+                                    serialTerminal.putPC1cmd("FO0",0)
+                                    serialTerminal.putPC1cmd("KV050",0)
+                                    serialTerminal.putPC1cmd("MA01600",0)
+                                    serialTerminal.putPC1cmd("MS01500",1)
+                                    errorMessage.text = qsTr("DEFAULT PARAM !!!")
+                                    errorMessage.visible = true
+                                }
                             }
                             tmp =  (data[2]-"0")*1000;
                             tmp += (data[3]-"0")*100;
@@ -1257,11 +1345,29 @@ Window {
 
                             prState.value = data[2]-"0";
                             if (data[2] === "0")
+                            {
                                 prStatus.text = "IDLE"
+                                serialTerminal.putPC1cmd("AP?",1);
+                                serialTerminal.putPC1cmd("AT?",1);
+                                // riabilito il pollingTimer
+                                if (touchSynchro.checked)
+                                {
+                                    //pollingTimer.repeat = 1
+                                    //setTimeout(sendAlignRqst,500)
+                                    pollingTimer.start()                                    
+                                }
+                                statusTimer.start()
+                            }
                             else if (data[2]=== "1")
                             {
+                                 //se attivo disabilito il pollingTimer
+                                if (touchSynchro.checked)
+                                    //pollingTimer.repeat = 0
+                                    pollingTimer.stop()
+                                statusTimer.stop()
                                 serialTerminal.putPC1cmd(data,1);
                                 prStatus.text = "ACTIVE !!"
+
                             }
                             else if(data[2]==="2")
                             {
@@ -1281,6 +1387,15 @@ Window {
                                 prState.value =0;
                                 prStatus.text = "IDLE"
                             }
+                        }else if((data[0]=== "A") &&
+                                  (data[1]=== "P"))
+                        {
+                            pMAS.text = "Last MAS " + data[2]+data[3]+data[4]+data[5]+"."+data[6]
+                        }
+                        else if((data[0]=== "A") &&
+                                (data[1]=== "T"))
+                        {
+                            pMs.text = "Last MS " + data[2]+data[3]+data[4]+data[5]+"."+data[6]
                         }
                         else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
                                  (data[1]==="L"))
@@ -1308,7 +1423,7 @@ Window {
                                     if(data[4]==="8")
                                         errorMessage.text = qsTr("OVERCHARGE ALARM")
                                     if(data[4]==="9")
-                                        errorMessage.text = qsTr("FEEDBACK UNCONNECTED")
+                                        errorMessage.text = qsTr("OVERCHARGE ALARM")
                                 }else if (data[3]==="1")
                                 {
                                     if(data[4]==="0")
@@ -1398,13 +1513,15 @@ Window {
                             yellowButton.opacity = 0.3                          
                             serialTerminal.putPC1cmd("RS",1)
                             serialTerminal.putPC1cmd("RR",1)
-             //  QUI PER ABILITARE IL polling
-                            //pollingTimer.repeat = 1
-            //                setTimeout(sendStatusRqst,1000)
+                            //  QUI PER ABILITARE IL polling STATI
+                            statusTimer.repeat = 1
+                            setStatusTo(sendStatusRqst,1500)
                         }
                     }else {
-                        errorMessage.visible = false;
-                        serialTerminal.closeSerialPortSlot();
+                        errorMessage.visible = false;                        
+                        serialTerminal.closeSerialPortSlot();                       
+                        serialTerminal.resetAck();
+
                         connectBtn.text = "Connect"
                         greenLight.opacity = 0.3
                         redLight.opacity = 1
@@ -1448,7 +1565,7 @@ Window {
                 id: prTitle
                 width: 111
                 height: 24
-                color: "#fbfbfb"
+                color: "#0b0b0d"
                 text: qsTr("Generator State :")
                 anchors.top: parent.top
                 anchors.topMargin: 0
@@ -1460,7 +1577,7 @@ Window {
                 id: prStatus
                 width: 111
                 height: 24
-                color: "#fbfbfb"
+                color: "#0b0b0d"
                 text: qsTr("INACTIVE")
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
@@ -1477,11 +1594,11 @@ Window {
             color: "#feec63"
             z: 19.022
             anchors.left: parent.left
-            anchors.leftMargin: 609
+            anchors.leftMargin: 544
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 442
+            anchors.bottomMargin: 437
             anchors.top: parent.top
-            anchors.topMargin: 110
+            anchors.topMargin: 115
             antialiasing: true
             enabled: false
             active: false
@@ -1493,8 +1610,9 @@ Window {
             y: 16
             width: 380
             height: 60
-            color: "#ef5050"
+            color: "#08080c"
             text: qsTr("Error Example !!")
+            styleColor: "#4343eb"
             visible: false
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 48
@@ -1512,32 +1630,56 @@ Window {
             anchors.bottomMargin: 524
         }
 
+        Text {
+            id: pMAS
+            x: 641
+            y: 115
+            width: 92
+            height: 23
+            color: "#08080c"
+            text: qsTr("Mas ")
+            font.pixelSize: 12
+        }
+
+        Text {
+            id: pMs
+            x: 641
+            y: 148
+            width: 92
+            height: 23
+            color: "#08080c"
+            text: qsTr("Msec")
+            font.pixelSize: 12
+        }
+
         //  Text { id: time }
     }
 }
 
 /*##^##
 Designer {
-    D{i:2;anchors_height:600;anchors_width:1024}D{i:8;anchors_y:14}D{i:12;anchors_x:254;anchors_y:0}
-D{i:13;anchors_x:54}D{i:14;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
-D{i:16;anchors_x:254;anchors_y:0}D{i:15;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
-D{i:19;anchors_height:16;anchors_width:14;anchors_x:649;anchors_y:0}D{i:21;anchors_x:254;anchors_y:0}
-D{i:20;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:22;anchors_x:254;anchors_y:0}
-D{i:23;anchors_x:254;anchors_y:0}D{i:25;anchors_x:254;anchors_y:0}D{i:26;anchors_x:254;anchors_y:0}
-D{i:28;anchors_x:254;anchors_y:0}D{i:27;anchors_x:254;anchors_y:0}D{i:30;anchors_x:254}
-D{i:29;anchors_x:254;anchors_y:0}D{i:24;anchors_x:254;anchors_y:0}D{i:35;anchors_x:254;anchors_y:0}
-D{i:36;anchors_width:100;anchors_x:254;anchors_y:0}D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:4;anchors_width:150;anchors_x:700}D{i:40;anchors_width:100;anchors_x:"-95";anchors_y:4}
-D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:0}
-D{i:44;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:35}
-D{i:45;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:39;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:38;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:48;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}
-D{i:47;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:46;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
+    D{i:2;anchors_height:600;anchors_width:1024}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
+D{i:12;anchors_x:254;anchors_y:0}D{i:14;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
+D{i:13;anchors_x:54}D{i:15;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
+D{i:16;anchors_x:254;anchors_y:0}D{i:8;anchors_y:14}D{i:19;anchors_height:16;anchors_width:14;anchors_x:649;anchors_y:0}
+D{i:20;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:18;anchors_x:254;anchors_y:0}
+D{i:21;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:22;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
+D{i:24;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254;anchors_y:0}D{i:25;anchors_x:254;anchors_y:0}
+D{i:26;anchors_x:254;anchors_y:0}D{i:28;anchors_x:254;anchors_y:0}D{i:29;anchors_x:254;anchors_y:0}
+D{i:31;anchors_x:254;anchors_y:0}D{i:30;anchors_x:254;anchors_y:0}D{i:35;anchors_x:254;anchors_y:0}
+D{i:36;anchors_width:100;anchors_x:254;anchors_y:0}D{i:32;anchors_x:254}D{i:27;anchors_x:254;anchors_y:0}
+D{i:38;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:39;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:40;anchors_width:100;anchors_x:"-95";anchors_y:4}D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}
+D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:45;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:46;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:47;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
+D{i:44;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:48;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}
+D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:35}
+D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:53;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
 D{i:54;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:55;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:56;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:53;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:57;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:58;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
+D{i:56;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:58;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:59;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:60;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:57;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:4;anchors_height:600;anchors_width:909;anchors_x:700}
 }
 ##^##*/
