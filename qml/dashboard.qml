@@ -211,7 +211,7 @@ Window {
                         background:Rectangle{
                             antialiasing: true
                             color: control.pressed ? "#d1d1d1" : control.hovered ? "transparent":"transparent"
-                                                         //"#666" : "transparent"
+                            //"#666" : "transparent"
                             border.color: "transparent"
                             radius: height/2
                             border.width: 1
@@ -225,14 +225,14 @@ Window {
                             {
 
                                 serialTerminal.putPC1cmd("FO0",1)
-                                 fuelGaugeStyle.icon = "qrc:/images/smallFocus.png"
+                                fuelGaugeStyle.icon = "qrc:/images/smallFocus.png"
                                 // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco piccolo
                                 if (valueSource.tecn)
                                     serialTerminal.putPC1cmd("MA00800",1)
                             }else // se piccolo
                             {
                                 serialTerminal.putPC1cmd("FO1",1)
-                                 fuelGaugeStyle.icon = "qrc:/images/LargeFocus.png"
+                                fuelGaugeStyle.icon = "qrc:/images/LargeFocus.png"
                                 // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco grande
                                 if (valueSource.tecn)
                                     serialTerminal.putPC1cmd("MA01600",1)
@@ -262,8 +262,8 @@ Window {
                                 text: qsTr("SEC")
                             }
                             textt: "FOCUS"
-                             icon: "qrc:/images/smallFocus.png"
-                           // icon: "qrc:/images/fuel-icon.png" Icona fuoco
+                            icon: "qrc:/images/smallFocus.png"
+                            // icon: "qrc:/images/fuel-icon.png" Icona fuoco
                             minWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
                             tickmarkLabel: Text {
@@ -281,15 +281,15 @@ Window {
                             y: 144
                             text: qsTr("Panel Synchro")
                             onCheckedChanged: {
-                               if (touchSynchro.checked)
-                               {
-                                   //  QUI PER ABILITARE IL polling
-                                   pollingTimer.repeat = 1
-                                   setTimeout(sendAlignRqst,2000)
-                               }else
-                               {
-                                   pollingTimer.repeat = 0
-                               }
+                                if (touchSynchro.checked)
+                                {
+                                    //  QUI PER ABILITARE IL polling
+                                    pollingTimer.repeat = 1
+                                    setTimeout(sendAlignRqst,2000)
+                                }else
+                                {
+                                    pollingTimer.repeat = 0
+                                }
                             }
                         }
 
@@ -499,15 +499,24 @@ Window {
                 sourceSize.width: 23
                 pressed: false
                 source: "../images/plus-sign.png"
-                onClicked:
-                {
+                property int cntr : 0
+                onClicked:{
                     if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
-                        serialTerminal.putPC1cmd("KV+",1)
+                        if (cntr <= 4)
+                            serialTerminal.putPC1cmd("KV+",1)
+                        else
+                            serialTerminal.putPC1cmd("KV++",1)
+                        cntr++
                     }
+                }
+                onPressedChanged:  {
+                    if (!pressed)
+                        cntr = 0
                 }
             }
             PressAndHoldButton {
+                property int cntr : 0
                 id: kvMinus
                 x: 254
                 width: 20
@@ -528,8 +537,16 @@ Window {
                 onClicked:{
                     if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
-                        serialTerminal.putPC1cmd("KV-",1)
+                        if (cntr <= 4)
+                            serialTerminal.putPC1cmd("KV-",1)
+                        else
+                            serialTerminal.putPC1cmd("KV--",1)
+                        cntr++
                     }
+                }
+                onPressedChanged:  {
+                    if (!pressed)
+                        cntr = 0
                 }
             }
             anchors.centerIn: parent
@@ -540,7 +557,7 @@ Window {
                 x: 9
                 width: 783
                 height: 285
-                visible: false
+                visible: true
                 anchors.verticalCenterOffset: 145
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: -100
@@ -663,7 +680,7 @@ Window {
 
                         //                     tickmarkCount: 1
                         textt: valueSource.msec
-                           // icon: "qrc:/images/smallFocus.png"
+                        // icon: "qrc:/images/smallFocus.png"
                         //    minWarningColor: "#b8a521"
                         //    maxWarningColor: "#ef5050"
                         maxWarningColor: Qt.rgba(0.5, 0, 0, 1)
@@ -696,12 +713,21 @@ Window {
                         anchors.verticalCenter: tachometer.verticalCenter
                         anchors.leftMargin: 16
                         antialiasing: true
+                        property int  cntr: 0
                         onClicked:
                         {
                             if (serialTerminal.getConnectionStatusSlot() !== false)
                             {
-                                serialTerminal.putPC1cmd("MS-",1)
+                                if (cntr <= 4)
+                                    serialTerminal.putPC1cmd("MS-",1)
+                                else
+                                    serialTerminal.putPC1cmd("MS--",1)
+                                cntr++
                             }
+                        }
+                        onPressedChanged:  {
+                            if (!pressed)
+                                cntr = 0
                         }
                     }
 
@@ -726,113 +752,135 @@ Window {
                         sourceSize.width: 23
                         sourceSize.height: 24
                         pressed: false
+                        property int  cntr: 0
                         onClicked:
                         {
                             if (serialTerminal.getConnectionStatusSlot() !== false)
                             {
-                                serialTerminal.putPC1cmd("MS+",1)
+                                if (cntr <= 4)
+                                    serialTerminal.putPC1cmd("MS+",1)
+                                else
+                                    serialTerminal.putPC1cmd("MS++",1)
+                                cntr++
                             }
+                        }
+                        onPressedChanged:  {
+                            if (!pressed)
+                                cntr = 0
                         }
                     }
                 }
+            }
 
+
+        }
+
+
+
+        Item {
+            id: twoPointPanel
+            x: 9
+            width: 783
+            height: 285
+            visible: false
+            anchors.verticalCenterOffset: 145
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenterOffset: -100
+            anchors.horizontalCenter: parent.horizontalCenter
+            MasGauge{
+                id:masGa
+                property bool accelerating
+                width: 285
+                anchors.left: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.top: parent.top
+                anchors.leftMargin: 0
+                minimumValue: 0.6
+                value: valueSource.mas
+                maximumValue: 250
+
+                // Component.onCompleted: forceActiveFocus()
+
+                //   Behavior on value { NumberAnimation { duration: 1000 }}
+
+                //     Keys.onSpacePressed: accelerating = true
+                //     Keys.onReleased: {
+                //         if (event.key === Qt.Key_Space) {
+                //             accelerating = false;
+                //            event.accepted = true;
+                //        }
+                //    }
+            }
+
+            PressAndHoldButton {
+                id: masMinus
+                x: 272
+                y: 94
+                width: 20
+                height: 20
+                scale: 3.859
+                sourceSize.height: 24
+                anchors.right: masGa.left
+                anchors.rightMargin: 42
+                z: 1.63
+                transformOrigin: Item.Top
+                source: "../images/minus-sign.png"
+                antialiasing: true
+                sourceSize.width: 23
+                anchors.verticalCenter: masGa.verticalCenter
+                anchors.verticalCenterOffset: -32
+                pressed: false
+                fillMode: Image.Stretch
+                property int  cntr: 0
+                onClicked:
+                {
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        if (cntr <= 4)
+                            serialTerminal.putPC1cmd("MX-",1)
+                        else
+                            serialTerminal.putPC1cmd("MX--",1)
+                        cntr++
+                    }
+                }
+                onPressedChanged:  {
+                    if (!pressed)
+                        cntr = 0
+                }
 
             }
 
 
-
-            Item {
-                id: twoPointPanel
-                x: 9
-                width: 783
-                height: 285
-                visible: true
-                anchors.verticalCenterOffset: 145
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenterOffset: -100
-                anchors.horizontalCenter: parent.horizontalCenter
-                MasGauge{
-                    id:masGa
-                    property bool accelerating
-                    width: 285
-                    anchors.left: parent.horizontalCenter
-                    anchors.bottom: parent.bottom
-                    anchors.top: parent.top
-                    anchors.leftMargin: 0
-                    minimumValue: 0.6
-                    value: valueSource.mas
-                    maximumValue: 250
-
-                    // Component.onCompleted: forceActiveFocus()
-
-                    //   Behavior on value { NumberAnimation { duration: 1000 }}
-
-                    //     Keys.onSpacePressed: accelerating = true
-                    //     Keys.onReleased: {
-                    //         if (event.key === Qt.Key_Space) {
-                    //             accelerating = false;
-                    //            event.accepted = true;
-                    //        }
-                    //    }
-                }
-
-                PressAndHoldButton {
-                    id: masMinus
-                    x: 272
-                    y: 94
-                    width: 20
-                    height: 20
-                    scale: 3.859
-                    sourceSize.height: 24
-                    anchors.right: masGa.left
-                    anchors.rightMargin: 42
-                    z: 1.63
-                    transformOrigin: Item.Top
-                    source: "../images/minus-sign.png"
-                    antialiasing: true
-                    sourceSize.width: 23
-                    anchors.verticalCenter: masGa.verticalCenter
-                    anchors.verticalCenterOffset: -32
-                    pressed: false
-                    fillMode: Image.Stretch
-                    onClicked:
+            PressAndHoldButton {
+                id: masPlus
+                x: 734
+                y: 94
+                width: 20
+                height: 20
+                anchors.leftMargin: 332
+                scale: 3.859
+                sourceSize.height: 24
+                z: 1.63
+                transformOrigin: Item.Top
+                source: "../images/plus-sign.png"
+                antialiasing: true
+                sourceSize.width: 23
+                anchors.verticalCenter: masGa.verticalCenter
+                anchors.verticalCenterOffset: -32
+                pressed: false
+                fillMode: Image.Stretch
+                anchors.left: masGa.left
+                onClicked:
+                {
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
-                        if (serialTerminal.getConnectionStatusSlot() !== false)
-                        {
-                            serialTerminal.putPC1cmd("MX-",1)
-                        }
-                    }
-                }
-
-                PressAndHoldButton {
-                    id: masPlus
-                    x: 734
-                    y: 94
-                    width: 20
-                    height: 20
-                    anchors.leftMargin: 332
-                    scale: 3.859
-                    sourceSize.height: 24
-                    z: 1.63
-                    transformOrigin: Item.Top
-                    source: "../images/plus-sign.png"
-                    antialiasing: true
-                    sourceSize.width: 23
-                    anchors.verticalCenter: masGa.verticalCenter
-                    anchors.verticalCenterOffset: -32
-                    pressed: false
-                    fillMode: Image.Stretch
-                    anchors.left: masGa.left
-                    onClicked:
-                    {
-                        if (serialTerminal.getConnectionStatusSlot() !== false)
-                        {
-                            serialTerminal.putPC1cmd("MX+",1)
-                        }
+                        serialTerminal.putPC1cmd("MX+",1)
                     }
                 }
             }
         }
+
+
 
         Image {
             id: lights
@@ -865,12 +913,12 @@ Window {
                 }
 
                 /*           Image {
-                id: yellowLight
-                width: 38
-                height: 38
-                opacity: 1
-                source: "../images/yellow.png"
-            }*/
+                        id: yellowLight
+                        width: 38
+                        height: 38
+                        opacity: 1
+                        source: "../images/yellow.png"
+                    }*/
                 Button {
                     id: yellowButton
                     x: 0
@@ -917,19 +965,19 @@ Window {
                         }
 
                         /*       background:Image {
-                        id: myRoundButton
-                        width: 38
-                        height: 38
-                        scale: -4.402
-                        anchors.fill: parent
-                        source: "../images/yellow.png"
-                        clip: false
-                        sourceSize.height: 0
-                        sourceSize.width: 0
-                    //    verticalTileMode: BorderImage.Round
-                     //   horizontalTileMode: BorderImage.Round
+                                id: myRoundButton
+                                width: 38
+                                height: 38
+                                scale: -4.402
+                                anchors.fill: parent
+                                source: "../images/yellow.png"
+                                clip: false
+                                sourceSize.height: 0
+                                sourceSize.width: 0
+                            //    verticalTileMode: BorderImage.Round
+                             //   horizontalTileMode: BorderImage.Round
 
-                    }*/
+                            }*/
 
 
 
@@ -980,57 +1028,57 @@ Window {
 
 
             /*       Button {
-            id: button
+                    id: button
 
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.margins: 20
-        //    source: "pause.png"
-        }
-
-        states: [
-            State {
-                name: "Red"
-                when: stateMachine.red
-
-                PropertyChanges {
-                    target: redLight
-                    opacity: 1
-                }
-            },
-            State {
-                name: "RedGoingGreen"
-                when: stateMachine.redGoingGreen
-
-                PropertyChanges {
-                    target: redLight
-                    opacity: 1
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.margins: 20
+                //    source: "pause.png"
                 }
 
-                PropertyChanges {
-                    target: yellowLight
-                    opacity: 1
-                }
-            },
-            State {
-                name: "Yellow"
-                when: stateMachine.yellow || stateMachine.blinking
+                states: [
+                    State {
+                        name: "Red"
+                        when: stateMachine.red
 
-                PropertyChanges {
-                    target: yellowLight
-                    opacity: 1
-                }
-            },
-            State {
-                name: "Green"
-                when: stateMachine.green
+                        PropertyChanges {
+                            target: redLight
+                            opacity: 1
+                        }
+                    },
+                    State {
+                        name: "RedGoingGreen"
+                        when: stateMachine.redGoingGreen
 
-                PropertyChanges {
-                    target: greenLight
-                    opacity: 1
-                }
-            }
-        ]*/
+                        PropertyChanges {
+                            target: redLight
+                            opacity: 1
+                        }
+
+                        PropertyChanges {
+                            target: yellowLight
+                            opacity: 1
+                        }
+                    },
+                    State {
+                        name: "Yellow"
+                        when: stateMachine.yellow || stateMachine.blinking
+
+                        PropertyChanges {
+                            target: yellowLight
+                            opacity: 1
+                        }
+                    },
+                    State {
+                        name: "Green"
+                        when: stateMachine.green
+
+                        PropertyChanges {
+                            target: greenLight
+                            opacity: 1
+                        }
+                    }
+                ]*/
         }
         Column {
             id: serialSettings
@@ -1118,7 +1166,7 @@ Window {
 
                 onGetData: {
                     if ((data[0] ==="S")&&            // gestione STATI
-                         (data[1]==="T"))
+                            (data[1]==="T"))
                     {
 
                         if ((data[2]==="0") &&
@@ -1176,8 +1224,8 @@ Window {
                             if (data[2]==="0") // Tecnica 2 punti
                             {
                                 if ((valueSource.tecn==1)||
-                                    (valueSource.tecn == 4))// se è già impostata allora potrebbe essere
-                                                      // una risposta al polling
+                                        (valueSource.tecn == 4))// se è già impostata allora potrebbe essere
+                                    // una risposta al polling
                                 {
                                     valueSource.tecn = 0
                                     swTecnique.checked = false
@@ -1195,7 +1243,7 @@ Window {
                                         var maxLenNum
 
                                         if (calcMas<1) {maxlen = 5 - 1
-                                                        maxLenNum = 1}
+                                            maxLenNum = 1}
                                         else if (calcMas<10){maxlen = 5 - 2
                                             maxLenNum = 2}
                                         else if (calcMas<100){maxlen = 5 - 3
@@ -1205,24 +1253,24 @@ Window {
                                         else if (calcMas<10000){maxlen = 5 - 5
                                             maxLenNum = 5}
 
-                       /*                   var strcMas = calcMas.toString() // converto in stringa
-                                        // solo se e' presente la virgola
-                                       if ((strcMas[maxLenNum]===".") || (strcMas[maxLenNum]===","))
-                                        {
-                                            // calcolo la virgola e la sposto
-                                            for (var i =0; i<= maxLenNum;i++)
-                                            {
-                                                if ((strcMas[i]===".") || (strcMas[i]===","))
+                                        /*                   var strcMas = calcMas.toString() // converto in stringa
+                                                // solo se e' presente la virgola
+                                               if ((strcMas[maxLenNum]===".") || (strcMas[maxLenNum]===","))
                                                 {
-                                                    // i e' la posizione della virgola
-                                                    var tmp = strcMas[i+1]
-                                                    // tolgo la virgola
-                                                    strcMas.at(i) = tmp
-                                                    //fermo la stringa ad un decimale
-                                                    strcMas[i+1] = ""
-                                                }
-                                            }
-                                     } */
+                                                    // calcolo la virgola e la sposto
+                                                    for (var i =0; i<= maxLenNum;i++)
+                                                    {
+                                                        if ((strcMas[i]===".") || (strcMas[i]===","))
+                                                        {
+                                                            // i e' la posizione della virgola
+                                                            var tmp = strcMas[i+1]
+                                                            // tolgo la virgola
+                                                            strcMas.at(i) = tmp
+                                                            //fermo la stringa ad un decimale
+                                                            strcMas[i+1] = ""
+                                                        }
+                                                    }
+                                             } */
                                         var str0Mas = ""        // definisco la stringa che conterrà gli zeri
 
 
@@ -1243,8 +1291,8 @@ Window {
                             else // // Tecnica 3 punti
                             {
                                 if ((valueSource.tecn == 0) ||
-                                    (valueSource.tecn == 4))// se è già impostata allora potrebbe essere
-                                                      // una risposta al polling
+                                        (valueSource.tecn == 4))// se è già impostata allora potrebbe essere
+                                    // una risposta al polling
                                 {
                                     valueSource.tecn = 1
                                     swTecnique.checked = true
@@ -1291,10 +1339,10 @@ Window {
                                   (data[1]==="S"))
                         {
                             /*     tmp =  (data[2]-"0")*10000;
-                        tmp += (data[3]-"0")*1000;
-                        tmp += (data[4]-"0")*100;
-                        tmp += (data[5]-"0")*10;
-                        tmp +=  data[6]-"0";*/
+                                tmp += (data[3]-"0")*1000;
+                                tmp += (data[4]-"0")*100;
+                                tmp += (data[5]-"0")*10;
+                                tmp +=  data[6]-"0";*/
                             tmp1 = (data[2]-"0");
                             tmp2 = tmp1*10000
                             tmp =  tmp2;
@@ -1354,13 +1402,13 @@ Window {
                                 {
                                     //pollingTimer.repeat = 1
                                     //setTimeout(sendAlignRqst,500)
-                                    pollingTimer.start()                                    
+                                    pollingTimer.start()
                                 }
                                 statusTimer.start()
                             }
                             else if (data[2]=== "1")
                             {
-                                 //se attivo disabilito il pollingTimer
+                                //se attivo disabilito il pollingTimer
                                 if (touchSynchro.checked)
                                     //pollingTimer.repeat = 0
                                     pollingTimer.stop()
@@ -1388,7 +1436,7 @@ Window {
                                 prStatus.text = "IDLE"
                             }
                         }else if((data[0]=== "A") &&
-                                  (data[1]=== "P"))
+                                 (data[1]=== "P"))
                         {
                             pMAS.text = "Last MAS " + data[2]+data[3]+data[4]+data[5]+"."+data[6]
                         }
@@ -1510,7 +1558,7 @@ Window {
                             serialSettings.visible = false
                             greenLight.opacity = 1
                             redLight.opacity = 0.3
-                            yellowButton.opacity = 0.3                          
+                            yellowButton.opacity = 0.3
                             serialTerminal.putPC1cmd("RS",1)
                             serialTerminal.putPC1cmd("RR",1)
                             //  QUI PER ABILITARE IL polling STATI
@@ -1518,8 +1566,8 @@ Window {
                             setStatusTo(sendStatusRqst,1500)
                         }
                     }else {
-                        errorMessage.visible = false;                        
-                        serialTerminal.closeSerialPortSlot();                       
+                        errorMessage.visible = false;
+                        serialTerminal.closeSerialPortSlot();
                         serialTerminal.resetAck();
 
                         connectBtn.text = "Connect"
@@ -1651,17 +1699,18 @@ Window {
             text: qsTr("Msec")
             font.pixelSize: 12
         }
-
-        //  Text { id: time }
     }
 }
+//  Text { id: time }
+
+
 
 /*##^##
 Designer {
     D{i:2;anchors_height:600;anchors_width:1024}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
-D{i:12;anchors_x:254;anchors_y:0}D{i:14;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
-D{i:13;anchors_x:54}D{i:15;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
-D{i:16;anchors_x:254;anchors_y:0}D{i:8;anchors_y:14}D{i:19;anchors_height:16;anchors_width:14;anchors_x:649;anchors_y:0}
+D{i:15;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:16;anchors_x:254;anchors_y:0}
+D{i:12;anchors_x:254;anchors_y:0}D{i:13;anchors_x:54}D{i:14;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
+D{i:8;anchors_y:14}D{i:19;anchors_height:16;anchors_width:14;anchors_x:649;anchors_y:0}
 D{i:20;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:18;anchors_x:254;anchors_y:0}
 D{i:21;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:22;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
 D{i:24;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254;anchors_y:0}D{i:25;anchors_x:254;anchors_y:0}
@@ -1669,17 +1718,7 @@ D{i:26;anchors_x:254;anchors_y:0}D{i:28;anchors_x:254;anchors_y:0}D{i:29;anchors
 D{i:31;anchors_x:254;anchors_y:0}D{i:30;anchors_x:254;anchors_y:0}D{i:35;anchors_x:254;anchors_y:0}
 D{i:36;anchors_width:100;anchors_x:254;anchors_y:0}D{i:32;anchors_x:254}D{i:27;anchors_x:254;anchors_y:0}
 D{i:38;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:39;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:40;anchors_width:100;anchors_x:"-95";anchors_y:4}D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:43;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:45;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
-D{i:46;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:47;anchors_height:50;anchors_width:100;anchors_x:"-50";anchors_y:40}
-D{i:44;anchors_width:100;anchors_x:"-50";anchors_y:40}D{i:48;anchors_height:50;anchors_width:50;anchors_x:757;anchors_y:312}
-D{i:42;anchors_width:100;anchors_x:"-50";anchors_y:0}D{i:41;anchors_width:100;anchors_x:"-50";anchors_y:35}
-D{i:51;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:50;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:52;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:53;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:54;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:55;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:56;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:49;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:58;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:59;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:60;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}D{i:57;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
+D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:57;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
 D{i:4;anchors_height:600;anchors_width:909;anchors_x:700}
 }
 ##^##*/

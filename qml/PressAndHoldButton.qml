@@ -53,6 +53,7 @@ import QtQuick 2.0
 Image {
     id: container
 
+
     property int repeatDelay: 300
     property int repeatDuration: 75
     property bool pressed: false
@@ -64,6 +65,8 @@ Image {
     function release() {
         autoRepeatClicks.stop()
         container.pressed = false
+
+
     }
 
     SequentialAnimation on pressed {
@@ -73,6 +76,9 @@ Image {
         PropertyAction { target: container; property: "pressed"; value: true }
         ScriptAction { script: container.clicked() }
         PauseAnimation { duration: repeatDelay }
+
+
+
 
         SequentialAnimation {
             loops: Animation.Infinite
