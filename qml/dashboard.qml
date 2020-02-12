@@ -836,7 +836,7 @@ Window {
                 {
                     if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
-                        if (cntr <= 4)
+                        if (cntr <= 2)
                             serialTerminal.putPC1cmd("MX-",1)
                         else
                             serialTerminal.putPC1cmd("MX--",1)
@@ -870,12 +870,23 @@ Window {
                 pressed: false
                 fillMode: Image.Stretch
                 anchors.left: masGa.left
+                property int  cntr: 0
                 onClicked:
                 {
                     if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
-                        serialTerminal.putPC1cmd("MX+",1)
+                        {
+                            if (cntr <= 2)
+                                serialTerminal.putPC1cmd("MX+",1)
+                            else
+                                serialTerminal.putPC1cmd("MX++",1)
+                            cntr++
+                        }
                     }
+                }
+                onPressedChanged:  {
+                    if (!pressed)
+                        cntr = 0
                 }
             }
         }
@@ -1366,7 +1377,7 @@ Window {
                             // dato che nel comando di init MAS e' lultimo ad arrivare, se parte vuoto e tutti sono vuoti
                             // Discriminare in base alla tecnica
                             // allora devo dargli i primi parametri
-                            if((valueSource.kv && valueSource.mA && valueSource.msec/* || valueSource.mas*/ ) === 0)
+                            if((valueSource.kv==0) && (valueSource.mA==0) && (valueSource.msec==0))
                             {// invio i default
                                 if (serialTerminal.getConnectionStatusSlot() !== false)
                                 {
@@ -1471,7 +1482,7 @@ Window {
                                     if(data[4]==="8")
                                         errorMessage.text = qsTr("OVERCHARGE ALARM")
                                     if(data[4]==="9")
-                                        errorMessage.text = qsTr("OVERCHARGE ALARM")
+                                        errorMessage.text = qsTr("FEEDBACK UNCONNECTED")
                                 }else if (data[3]==="1")
                                 {
                                     if(data[4]==="0")
