@@ -231,6 +231,7 @@ debug\qrc_xraypanel_4.11.cpp: ..\X-RayPanel\xraypanel_4.11.qrc \
 		..\X-RayPanel\qml\MasGauge.qml \
 		..\X-RayPanel\qml\ValueSource.qml \
 		..\X-RayPanel\qml\PressAndHoldButton.qml \
+		..\X-RayPanel\images\logoRxR.jpg \
 		..\X-RayPanel\images\plus-sign.png \
 		..\X-RayPanel\images\needle.svg \
 		..\X-RayPanel\images\temperature-icon.png \
@@ -240,8 +241,10 @@ debug\qrc_xraypanel_4.11.cpp: ..\X-RayPanel\xraypanel_4.11.qrc \
 		..\X-RayPanel\images\background.png \
 		..\X-RayPanel\images\background.svg \
 		..\X-RayPanel\images\tickmark.svg \
+		..\X-RayPanel\images\LargeFocus.png \
 		..\X-RayPanel\images\red.png \
 		..\X-RayPanel\images\fuel-icon.png \
+		..\X-RayPanel\images\smallFocus.png \
 		..\X-RayPanel\fonts\DejaVuSans.ttf
 	C:\Qt\5.12.6\msvc2017_64\bin\rcc.exe -name xraypanel_4.11 ..\X-RayPanel\xraypanel_4.11.qrc -o debug\qrc_xraypanel_4.11.cpp
 
@@ -1221,12 +1224,49 @@ debug\settingsdialog.obj: ..\X-RayPanel\serial\settingsdialog.cpp ..\X-RayPanel\
 		C:\Qt\5.12.6\msvc2017_64\include\QtSerialPort\qserialportinfo.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtCore\QVariant \
 		ui_settingsdialog.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtGui\QIntValidator \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QApplication \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qapplication.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qcoreapplication.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qeventloop.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qdesktopwidget.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qguiapplication.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qinputmethod.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QCheckBox \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qcheckbox.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractbutton.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qicon.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QComboBox \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qcombobox.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractitemdelegate.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qstyleoption.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractspinbox.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qvalidator.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qregularexpression.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qslider.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractslider.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qstyle.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qtabbar.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qtabwidget.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qrubberband.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qframe.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qabstractitemmodel.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QGridLayout \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qgridlayout.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlayout.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlayoutitem.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qboxlayout.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QGroupBox \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qgroupbox.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QHBoxLayout \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QLabel \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlabel.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QPushButton \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qpushbutton.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QSpacerItem \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QVBoxLayout \
+		C:\Qt\5.12.6\msvc2017_64\include\QtGui\QIntValidator \
 		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QLineEdit \
 		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlineedit.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qframe.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qtextcursor.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qtextformat.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qpen.h \
