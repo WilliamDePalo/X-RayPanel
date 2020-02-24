@@ -24,5 +24,7 @@
         <file>images/LargeFocus.png</file>
         <file>images/logoRxR.jpg</file>
         <file>images/smallFocus.png</file>
+        <file>images/logoWhite.jpg</file>
+        <file>images/logoGray.jpg</file>
     </qresource>
 </RCC>

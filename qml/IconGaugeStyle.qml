@@ -123,7 +123,7 @@ DashboardGaugeStyle {
         Text {
             id: focusText
             text: textt
-            color: "white"
+            color: "black"//"white"
             font.pixelSize: toPixels(0.2)
             horizontalAlignment: Text.AlignRight
             anchors.horizontalCenter: parent.horizontalCenter

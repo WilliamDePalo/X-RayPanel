@@ -56,6 +56,7 @@ Item {
   //  property real kph: 0
  //   property real rpm: 1
  //   property real fuel: 0.85
+
 /*    property string gear: {
         var g;
         if (kph == 0) {
@@ -91,7 +92,9 @@ Item {
     function randomDirection() {
         return Math.random() > 0.5 ? Qt.LeftArrow : Qt.RightArrow;
     }
+*/
 
+    //  WIL FIERA
     SequentialAnimation {
         running: true
         loops: 1
@@ -111,6 +114,17 @@ Item {
             loops: Animation.Infinite
 //! [1]
 
+            ParallelAnimation{
+                NumberAnimation {
+                    target: valueSource
+                    property: "mA"
+                    easing.type: Easing.linear
+                    from: 80
+                    to: 80 //160
+                    duration: 200
+                }
+            }
+
 
             ParallelAnimation {
                 NumberAnimation {
@@ -118,21 +132,113 @@ Item {
                     property: "kv"
 
                     easing.type: Easing.InOutSine
-                    from: 0
-                    to: 30
-                    duration: 3000
+                    from: 40
+                    to: 100 //125
+                    duration: 15000
                 }
- /*               NumberAnimation {
-                    target: valueSource
-                    property: "rpm"
-                    easing.type: Easing.InOutSine
-                    from: 1
-                    to: 6.1
-                    duration: 3000
-                }
+
+
             }
 //! [1]
+
+            ParallelAnimation{
+                NumberAnimation {
+                    target: valueSource
+                    property: "mA"
+                    easing.type: Easing.InOutSine
+                    from: 80
+                    to: 100 //160
+                    duration: 200
+                }
+            }
+
+            PauseAnimation {
+                duration: 1000
+            }
+
+            ParallelAnimation{
+                NumberAnimation {
+                    target: valueSource
+                    property: "mA"
+                    easing.type: Easing.InOutSine
+                    from: 100
+                    to: 125 //160
+                    duration: 200
+                }
+            }
             ParallelAnimation {
+                PauseAnimation {
+                    duration: 2000
+                }
+            }
+            ParallelAnimation {
+                   NumberAnimation {
+                       target: prState
+                       property: "value"
+                       easing.type: "Linear"
+                       from: 0
+                       to: 1
+                       duration: 3000
+                   }
+
+}
+   ParallelAnimation {
+                   PauseAnimation {
+                       duration: 1000
+                   }
+   }
+      ParallelAnimation {
+                   NumberAnimation {
+                       target: prState
+                       property: "value"
+                       easing.type: "Linear"
+                       from: 1
+                       to: 2
+                       duration: 3000
+                   }
+            }
+            ParallelAnimation {
+                PauseAnimation {
+                    duration: 2000
+                }
+            }
+            ParallelAnimation {
+
+                   NumberAnimation {
+                       target: emissionSts
+                       property: "active"
+                       easing.type: Easing.Linear
+                       from: 0
+                       to: 1
+                       duration: 1000
+                   }
+            }
+   ParallelAnimation {
+                   PauseAnimation {
+                       duration: 3000
+                   }
+   }
+      ParallelAnimation {
+                   NumberAnimation {
+                       target: emissionSts
+                       property: "active"
+                       easing.type: Easing.Linear
+                       from: 1
+                       to: 0
+                       duration: 1000
+                  }
+            }
+ParallelAnimation {
+    NumberAnimation {
+        target: prState
+        property: "value"
+        easing.type: "Linear"
+        from: 2
+        to: 0
+        duration: 1000
+    }
+}
+ /*           ParallelAnimation {
                 // We changed gears so we lost a bit of speed.
                 NumberAnimation {
                     target: valueSource
@@ -332,13 +438,13 @@ Item {
                     to: 1
                     duration: 4500
                 }
-            }
+            }*/
 
             PauseAnimation {
                 duration: 5000
             }
         }
-    }*/
+    }
 }
 
 /*##^##
