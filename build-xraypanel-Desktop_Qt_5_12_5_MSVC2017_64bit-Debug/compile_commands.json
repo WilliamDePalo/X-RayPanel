@@ -446,10 +446,10 @@
         "-DQT_NETWORK_LIB",
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
-        "C:\\Users\\user\\Desktop\\QT_sv_Notouch7.0\\build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug\\ui_mainwindow.h"
+        "C:\\Users\\user\\Desktop\\QT_sv_Notouch7.0\\build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug\\ui_settingsdialog.h"
     ],
     "directory": "C:/Users/user/Desktop/QT_sv_Notouch7.0/build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/QT_sv_Notouch7.0/build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug/ui_mainwindow.h"
+    "file": "C:/Users/user/Desktop/QT_sv_Notouch7.0/build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug/ui_settingsdialog.h"
 },
 {
     "arguments": [
@@ -502,9 +502,9 @@
         "-DQT_NETWORK_LIB",
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
-        "C:\\Users\\user\\Desktop\\QT_sv_Notouch7.0\\build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug\\ui_settingsdialog.h"
+        "C:\\Users\\user\\Desktop\\QT_sv_Notouch7.0\\build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug\\ui_mainwindow.h"
     ],
     "directory": "C:/Users/user/Desktop/QT_sv_Notouch7.0/build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/QT_sv_Notouch7.0/build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug/ui_settingsdialog.h"
+    "file": "C:/Users/user/Desktop/QT_sv_Notouch7.0/build-xraypanel-Desktop_Qt_5_12_5_MSVC2017_64bit-Debug/ui_mainwindow.h"
 }
 ]
