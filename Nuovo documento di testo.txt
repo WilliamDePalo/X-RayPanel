@@ -1,7 +1,5 @@
 copiare il file release da solo in un'altra cartella 
 
-C:\Users\user\Desktop\QT_sv_Notouch7.0\release>C:\Qt\5.12.6\msvc2017_64\bin\wind
-eployqt.exe --quick .
+C:\Users\user\Desktop\QT_sv_Notouch7.0\release>C:\Qt\5.12.6\msvc2017_64\bin\wineployqt.exe --quick .
 
-C:\Users\user\Desktop\QT_sv_Notouch7.0\release>c:\QT\5.12.6\msvc2015_64\bin\wind
-eployqt.exe --qmldir ..\X-RayPanel\qml .
+C:\Users\user\Desktop\QT_sv_Notouch7.0\release>c:\QT\5.12.6\msvc2015_64\bin\windeployqt.exe --qmldir ..\X-RayPanel\qml .
