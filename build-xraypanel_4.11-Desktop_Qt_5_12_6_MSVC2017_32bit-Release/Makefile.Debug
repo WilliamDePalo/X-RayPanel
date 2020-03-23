@@ -240,22 +240,28 @@ compiler_rcc_clean:
 	-$(DEL_FILE) debug\qrc_xraypanel_4.11_qmlcache.cpp
 debug\qrc_xraypanel_4.11_qmlcache.cpp: xraypanel_4.11_qmlcache.qrc \
 		C:\Qt\5.12.6\msvc2017\bin\rcc.exe \
-		..\X-RayPanel\images\logoRxR.jpg \
-		..\X-RayPanel\images\plus-sign.png \
-		..\X-RayPanel\images\needle.svg \
-		..\X-RayPanel\images\temperature-icon.png \
-		..\X-RayPanel\images\green.png \
-		..\X-RayPanel\images\minus-sign.png \
-		..\X-RayPanel\images\yellow.png \
-		..\X-RayPanel\images\background.png \
-		..\X-RayPanel\images\background.svg \
-		..\X-RayPanel\images\smallFocus_FULL.png \
 		..\X-RayPanel\images\tickmark.svg \
-		..\X-RayPanel\images\LargeFocus.png \
+		..\X-RayPanel\images\background.png \
 		..\X-RayPanel\images\red.png \
-		..\X-RayPanel\images\largeFocus_Full.png \
-		..\X-RayPanel\images\fuel-icon.png \
+		..\X-RayPanel\images\minus-sign.png \
+		..\X-RayPanel\images\smallFocus_FULL.png \
+		..\X-RayPanel\images\logoRxRwhite.png \
 		..\X-RayPanel\images\smallFocus.png \
+		..\X-RayPanel\images\yellow.png \
+		..\X-RayPanel\images\plus-sign.png \
+		..\X-RayPanel\images\fuel-icon.png \
+		..\X-RayPanel\images\logoRxR.jpg \
+		..\X-RayPanel\images\largeFocus_Full.png \
+		..\X-RayPanel\images\temperature-icon.png \
+		..\X-RayPanel\images\needle.svg \
+		..\X-RayPanel\images\background.svg \
+		..\X-RayPanel\images\LargeFocus.png \
+		..\X-RayPanel\images\whitetramp.png \
+		..\X-RayPanel\images\whitetrasp.png \
+		..\X-RayPanel\images\green.png \
+		..\X-RayPanel\images\sfondo\neon-background.jpg \
+		..\X-RayPanel\images\sfondo\raggi.jpg \
+		..\X-RayPanel\images\sfondo\line_violet_color.jpg \
 		..\X-RayPanel\fonts\DejaVuSans.ttf
 	C:\Qt\5.12.6\msvc2017\bin\rcc.exe -name xraypanel_4.11_qmlcache xraypanel_4.11_qmlcache.qrc -o debug\qrc_xraypanel_4.11_qmlcache.cpp
 
