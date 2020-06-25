@@ -63,12 +63,12 @@ Window {
     width: 1024
     height: 600
 
-    color: "#161616"
-    property alias btnyellImage: btnyellImage
+    color: "#d3eccb"
+   // property alias touchSynchroText: touchSynchro.text
 
     property alias yellowButtonIconSource: yellowButton.iconSource
     //property alias elementAnchorsverticalCenterOffset: element.anchors.verticalCenterOffset
-    property alias fuelGaugeY: focusGauge.y
+    //  property alias fuelGaugeY: focusGauge.y
     title: "X-Ray Manager"
 
     ValueSource {
@@ -140,15 +140,18 @@ Window {
     function sendStatusRqst(){
         if (serialTerminal.getConnectionStatusSlot() !== false)
         {
-            serialTerminal.putPC1cmd("ST",1)
+            //  decommentare serialTerminal.putPC1cmd("ST",1)
+            serialTerminal.putPC1cmd("VC?",1)
+            serialTerminal.putPC1cmd("PA?",1)
         }
     }
     function sendAlignRqst(){
         if (serialTerminal.getConnectionStatusSlot() !== false)
         {
+            serialTerminal.putPC1cmd("ST",1)
             serialTerminal.putPC1cmd("RS",1)
             serialTerminal.putPC1cmd("RR",1)
-
+            serialTerminal.putPC1cmd("PV?",1)
         }
         // si potrebbe aggiungere anche lo stato "ST"
     }
@@ -167,19 +170,19 @@ Window {
         // Math.min(root.width, root.height)
         Image{
             id: backGroundImg
-            anchors.rightMargin: 8
+            anchors.rightMargin: 0
             anchors.bottomMargin: 0
-            anchors.leftMargin: -8
+            anchors.leftMargin: -7
             anchors.topMargin: 0
             fillMode: Image.TileVertically
-            source: "../images/logoRxR.jpg"
+            source: "../images/sfondo/line_violet_color.jpg"
             anchors.fill: parent
             //Image:"qrc:image/logoRxR.jpg"
         }
 
         Column{
             id: gaugeColumn
-            anchors.leftMargin: -200
+            anchors.leftMargin: 0
             visible: true
             transformOrigin: Item.Center
             rotation: 0
@@ -189,26 +192,28 @@ Window {
                 id: rigthColumn
                 x: 700
                 y: 0
-                width: 150
-                height: 400
-                anchors.verticalCenterOffset: 90
-                anchors.right: parent.horizontalCenter
-                anchors.rightMargin: -574
+                width: 230
+                height: 420
+                anchors.rightMargin: 4
+                anchors.verticalCenterOffset: 85
+                anchors.right: parent.right
                 clip: false
                 transformOrigin: Item.Right
                 anchors.verticalCenter: parent.verticalCenter
                 Button {
                     id:focusBtn
-                    width: parent.width
-                    height: 95
-                    anchors.top: parent.top
-                    anchors.topMargin: 46
-                    anchors.right: parent.right
+                    y: 14
+                    width: 60
+                    height: 60
+                    iconSource: ""
+                    tooltip: "Small"
+                    anchors.left: focusTitle.right
+                    anchors.leftMargin: 0
+                    anchors.verticalCenter: focusTitle.verticalCenter
                     checkable: false
-                    anchors.rightMargin: 0
                     style:ButtonStyle{
-
                         background:Rectangle{
+
                             antialiasing: true
                             color: control.pressed ? "#d1d1d1" : control.hovered ? "transparent":"transparent"
                             //"#666" : "transparent"
@@ -216,32 +221,32 @@ Window {
                             radius: height/2
                             border.width: 1
                         }
+
                     }
-                    onClicked:{
-                        if (serialTerminal.getConnectionStatusSlot() !== false)
-                        {
-
-                            if (valueSource.fuoco) // Se fuoco grande
-                            {
-
-                                serialTerminal.putPC1cmd("FO0",1)
-                                fuelGaugeStyle.icon = "qrc:/images/smallFocus.png"
-                                // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco piccolo
-                                if (valueSource.tecn)
-                                    serialTerminal.putPC1cmd("MA00800",1)
-                            }else // se piccolo
-                            {
-                                serialTerminal.putPC1cmd("FO1",1)
-                                fuelGaugeStyle.icon = "qrc:/images/LargeFocus.png"
-                                // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco grande
-                                if (valueSource.tecn)
-                                    serialTerminal.putPC1cmd("MA01600",1)
-
-
-                            }
-                        }
+                    Image {
+                        id: focusImage
+                        x: 0
+                        y: 0
+                        width: 55
+                        height: 55
+                        opacity: 1
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        visible: true
+                        rotation: 0
+                        sourceSize.height: 0
+                        sourceSize.width: 0
+                        fillMode: Image.Stretch
+                        anchors.rightMargin: 0
+                        anchors.bottomMargin: 0
+                        anchors.leftMargin: 0
+                        anchors.topMargin: 0
+                        scale: 1
+                        source: "../images/smallFocus.png"
                     }
-                    CircularGauge {
+                    /*                  CircularGauge {
                         id: focusGauge
                         x: 0
                         value: valueSource.fuoco
@@ -257,13 +262,12 @@ Window {
 
                         style: IconGaugeStyle {
                             id: fuelGaugeStyle
+                            icon: "qrc:/images/smallFocus_FULL.png"
                             Text {
                                 id: textSec
                                 text: qsTr("SEC")
                             }
                             textt: "FOCUS"
-                            icon: "qrc:/images/smallFocus.png"
-                            // icon: "qrc:/images/fuel-icon.png" Icona fuoco
                             minWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
                             tickmarkLabel: Text {
@@ -272,75 +276,94 @@ Window {
                                 font.pixelSize: fuelGaugeStyle.toPixels(0.225)
                                 text: styleData.value === 0 ? "SMALL" : (styleData.value === 1 ? "LARGE" : "")
                             }
-
                         }
 
-                        RadioButton {
-                            id: touchSynchro
-                            x: 8
-                            y: 144
-                            text: qsTr("Panel Synchro")
-                            onCheckedChanged: {
-                                if (touchSynchro.checked)
-                                {
-                                    //  QUI PER ABILITARE IL polling
-                                    pollingTimer.repeat = 1
-                                    setTimeout(sendAlignRqst,2000)
-                                }else
-                                {
-                                    pollingTimer.repeat = 0
-                                }
+                        Image {
+                            id: largeFocusImage
+                            x: 64
+                            y: 59
+                            width: 23
+                            height: 24
+                            visible: false
+                            fillMode: Image.PreserveAspectFit
+                            source: "../images/largeFocus_Full.png"
+                        }
+                    }*/
+                    onClicked:{
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+
+                            if (valueSource.fuoco) // Se fuoco grande
+                            {
+                                serialTerminal.putPC1cmd("MA01600",1) // serve per evitare l'errore kw max
+
+                                serialTerminal.putPC1cmd("FO0",1)
+
+                                largeFocusImage.visible = false
+                                // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco piccolo
+                                if (valueSource.tecn)
+                                    serialTerminal.putPC1cmd("MA00800",1)
+                            }else // se piccolo
+                            {
+                                serialTerminal.putPC1cmd("FO1",1)
+                                largeFocusImage.visible = true
+
+                                // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco grande
+                                if (valueSource.tecn)
+                                    serialTerminal.putPC1cmd("MA01600",1)
                             }
                         }
-
-                        Text {
-                            id: statusTitle
-                            y: 168
-                            height: 34
-                            color: "#fdfdfd"
-                            text: qsTr("STATUS")
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            textFormat: Text.AutoText
-                            fontSizeMode: Text.HorizontalFit
-                            font.letterSpacing: 0.6
-                            font.wordSpacing: 1
-                            style: Text.Sunken
-                            font.weight: Font.Bold
-                            styleColor: "#16161616"
-                            anchors.left: parent.left
-                            anchors.leftMargin: 0
-                            anchors.right: parent.right
-                            anchors.rightMargin: 0
-                            font.pixelSize: 18
-                        }
-
-                        Text {
-                            id: status
-                            x: 5
-                            height: 34
-                            color: "#fdfdfd"
-                            text: qsTr("DISCONNECT")
-                            anchors.top: parent.top
-                            anchors.topMargin: 199
-                            anchors.rightMargin: 0
-                            font.pixelSize: 18
-                            anchors.left: parent.left
-                            fontSizeMode: Text.HorizontalFit
-                            font.weight: Font.Bold
-                            anchors.leftMargin: 0
-                            verticalAlignment: Text.AlignVCenter
-                            anchors.right: parent.right
-                            horizontalAlignment: Text.AlignHCenter
-                            font.wordSpacing: 1
-                            styleColor: "#16161616"
-                            style: Text.Sunken
-                            textFormat: Text.AutoText
-                            font.letterSpacing: 0.6
-
-                        }
                     }
+
                 }
+
+                Text {
+                    id: statusTitle
+                    height: 35
+                    color: "#fdfdfd"
+                    text: qsTr("STATUS:")
+                    anchors.leftMargin: 0
+                    font.family: "Tahoma"
+                    anchors.top: parent.top
+                    anchors.topMargin: 0
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignLeft
+                    textFormat: Text.AutoText
+                    fontSizeMode: Text.HorizontalFit
+                    font.letterSpacing: 0.6
+                    font.wordSpacing: 1
+                    style: Text.Sunken
+                    font.weight: Font.Normal
+                    styleColor: "#16161616"
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.rightMargin: 155
+                    font.pixelSize: 18
+                }
+
+                Text {
+                    id: status
+                    y: 196
+                    height: 34
+                    color: "#5cb6e5"
+                    text: qsTr("DISCONNECT")
+                    anchors.verticalCenter: statusTitle.verticalCenter
+                    anchors.left: statusTitle.right
+                    anchors.leftMargin: 0
+                    font.pixelSize: 18
+                    fontSizeMode: Text.HorizontalFit
+                    font.weight: Font.Bold
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.wordSpacing: 1
+                    styleColor: "#16161616"
+                    style: Text.Sunken
+                    textFormat: Text.AutoText
+                    font.letterSpacing: 0.6
+
+                }
+
+
 
                 /*            Row {
                     id: tecniqueRow
@@ -383,32 +406,38 @@ Window {
                     }
 
           }*/
+
                 Switch{
                     id: swTecnique
                     x: 0
-                    y: 335
-                    width: 150
-                    height: 22
+                    y: 375
+                    width: 203
+                    height: 37
+                    layer.textureSize.width: 1
+                    layer.textureSize.height: 2
                     checked: true
                     activeFocusOnPress: false
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 35
+                    anchors.bottomMargin: 8
 
                     style: SwitchStyle{
                         groove: Rectangle {
                             id: guida
-                            height: 20
-                            color: "#62626a"
+                            x: 0
+                            width: 200
+                            height: 30
+                            color: "#424545"
                             //     width: 80
                             //     height: 22
-                            implicitWidth: 130
+                            implicitWidth: 200
                             implicitHeight: 20
                             radius: 1
-                            border.color: "#161616"
+                            border.color: "#000000"
+                            opacity: 1
                             visible: true
                             //    border.color: "#62626a"
                             scale: 1
-                            border.width: 9
+                            border.width: 12
 
                         }
                     }
@@ -430,17 +459,17 @@ Window {
                 }
                 Text {
                     id: tecLabel2
-                    x: 8
-                    y: 371
+                    y: 355
                     height: 18
-                    color: "#fdfdfd"
-                    anchors.right: swTecnique.right
+                    color: "#5bb2e5"
 
-                    text: qsTr("2 point")
-                    anchors.rightMargin: 96
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 11
-                    font.pointSize: 11
+                    text: qsTr("2 POINT")
+                    font.pixelSize: 18
+                    anchors.left: swTecnique.left
+                    anchors.leftMargin: 17
+                    font.family: "Verdana"
+                    anchors.bottom: swTecnique.top
+                    anchors.bottomMargin: 2
                     fontSizeMode: Text.FixedSize
                     verticalAlignment: Text.AlignBottom
                     horizontalAlignment: Text.AlignHCenter
@@ -449,32 +478,159 @@ Window {
 
                 Text {
                     id: tecLabel3
-                    x: 76
-                    y: 371
+                    x: 111
+                    y: 355
                     height: 18
-                    color: "#fdfdfd"
-                    text: qsTr("3 point")
-                    verticalAlignment: Text.AlignBottom
+                    color: "#5bb2e5"
+                    text: qsTr("3 POINT")
+                    font.pixelSize: 18
+                    font.family: "Verdana"
+                    anchors.verticalCenter: tecLabel2.verticalCenter
                     anchors.right: swTecnique.right
-                    anchors.bottom: parent.bottom
-                    anchors.rightMargin: 28
-                    font.pointSize: 11
+                    anchors.rightMargin: 17
+                    verticalAlignment: Text.AlignBottom
                     horizontalAlignment: Text.AlignHCenter
                     fontSizeMode: Text.FixedSize
-                    anchors.bottomMargin: 11
                 }
+
+                Gauge {
+                    id: capacitorPerc
+                    x: 159
+                    width: 63
+                    height: 217
+                    anchors.top: status.top
+                    anchors.topMargin: 101
+                    value:  valueSource.cap
+                    anchors.right: parent.right
+                    anchors.rightMargin: 8
+                }
+
+                Text {
+                    id: focusTitle
+                    height: 35
+                    color: "#fdfdfd"
+                    text: qsTr("FOCUS:")
+                    anchors.leftMargin: 8
+                    anchors.left: parent.left
+                    font.weight: Font.Normal
+                    verticalAlignment: Text.AlignVCenter
+                    font.letterSpacing: 0.6
+                    fontSizeMode: Text.HorizontalFit
+                    styleColor: "#16161616"
+                    anchors.rightMargin: 147
+                    anchors.right: parent.right
+                    anchors.topMargin: 69
+                    textFormat: Text.AutoText
+                    font.family: "Tahoma"
+                    font.wordSpacing: 1
+                    style: Text.Sunken
+                    anchors.top: parent.verticalCenter
+                    horizontalAlignment: Text.AlignLeft
+                    font.pixelSize: 18
+                }
+
+                Column {
+                    id: prContainer
+                    x: 4
+                    y: 47
+                    width: 200
+                    height: 71
+                    anchors.right: parent.right
+                    anchors.rightMargin: 27
+                    anchors.top: parent.verticalCenter
+                    anchors.topMargin: -160
+
+                    ProgressBar {
+                        id: prState
+                        y: 22
+                        width: 200
+                        height: 17
+                        anchors.verticalCenterOffset: -4
+                        anchors.verticalCenter: parent.verticalCenter
+                        value: 0
+                        indeterminate: false
+                        maximumValue: 2
+                        style:ProgressBarStyle{
+
+
+                            background: Rectangle {
+                                width: 800
+                                height: 400
+
+                                visible: true
+                                color:"#e6e6e6"
+                                radius: 3
+                            }
+
+                            progress: Rectangle {
+                                width: prState.visualPosition * parent.width
+                                height: parent.height
+                                radius: 2
+                                color: "#17a81a"
+
+                                gradient: Gradient {
+                                    GradientStop {
+                                        position: 0.0
+                                        SequentialAnimation on color {
+                                            loops: Animation.Infinite
+                                            ColorAnimation { from: "green"; to: "lightgreen"; duration: 2000 }
+                                            ColorAnimation { from: "lightgreen"; to: "green"; duration: 2000 }
+                                        }
+                                    }
+                                    GradientStop {
+                                        position: 1.0
+                                        color: "#23ae16"
+                                        SequentialAnimation on color {
+                                            loops: Animation.Infinite
+                                            ColorAnimation { from: "#23ae16"; to: "#437284"; duration: 2000 }
+                                            ColorAnimation { from: "#437284"; to: "#23ae16"; duration: 2000 }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Text {
+                        id: prTitle
+                        width: 111
+                        height: 24
+                        color: "#f9f9f9"
+                        text: qsTr("Generator State :")
+                        styleColor: "#f9f9f9"
+                        anchors.top: parent.top
+                        anchors.topMargin: 0
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        font.pixelSize: 12
+                    }
+
+                    Text {
+                        id: prStatus
+                        width: 111
+                        height: 24
+                        color: "#f7f7f7"
+                        text: qsTr("INACTIVE")
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 0
+                        font.pixelSize: 12
+                    }
+                }
+
             }
 
             CircularGauge {
                 id: tachometer
-                x: 319
                 y: 0
                 width: 285
                 height: 285
-                anchors.verticalCenterOffset: -145
+                anchors.verticalCenterOffset: 50
+                anchors.left: parent.left
+                anchors.leftMargin: 30
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenterOffset: -150
-                anchors.horizontalCenter: parent.horizontalCenter//0.25 - gaugeRow.spacing
+                //0.25 - gaugeRow.spacing
                 value: valueSource.kv
                 maximumValue: 125
                 minimumValue: 40
@@ -485,12 +641,12 @@ Window {
                 id: kvPlus
                 width: 20
                 height: 20
+                anchors.left: tachometer.horizontalCenter
+                anchors.leftMargin: 30
+                anchors.top: tachometer.bottom
+                anchors.topMargin: -3
                 smooth: false
-                anchors.left: tachometer.left
-                anchors.leftMargin: 332
                 antialiasing: true
-                anchors.verticalCenterOffset: -32
-                anchors.verticalCenter: tachometer.verticalCenter
                 z: 1.63
                 scale: 3.859
                 transformOrigin: Item.Top
@@ -521,11 +677,11 @@ Window {
                 x: 254
                 width: 20
                 height: 20
-                anchors.right: tachometer.left
-                anchors.rightMargin: 42
+                anchors.top: tachometer.bottom
+                anchors.topMargin: -3
+                anchors.right: tachometer.horizontalCenter
+                anchors.rightMargin: 30
                 antialiasing: true
-                anchors.verticalCenterOffset: -32
-                anchors.verticalCenter: tachometer.verticalCenter
                 z: 1.63
                 scale: 3.859
                 transformOrigin: Item.Top
@@ -555,26 +711,25 @@ Window {
             Item {
                 id: threePointPanel
                 x: 9
-                width: 783
+                width: 445
                 height: 285
+                anchors.right: rigthColumn.left
+                anchors.rightMargin: 30
                 visible: true
-                anchors.verticalCenterOffset: 145
+                anchors.verticalCenterOffset: 50
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenterOffset: -100
-                anchors.horizontalCenter: parent.horizontalCenter
 
                 PressAndHoldButton {
                     id: mAMinus
-                    x: 42
-                    y: 103
+                    x: 435
                     width: 20
                     height: 20
+                    anchors.right: speedometer.horizontalCenter
+                    anchors.rightMargin: 30
+                    anchors.top: speedometer.bottom
+                    anchors.topMargin: -3
                     anchors.horizontalCenterOffset: -52
-                    anchors.left: speedometer.right
                     antialiasing: true
-                    anchors.leftMargin: -345
-                    anchors.verticalCenterOffset: -29
-                    anchors.verticalCenter: speedometer.verticalCenter
                     z: 1.63
                     scale: 3.859
                     transformOrigin: Item.Top
@@ -593,16 +748,14 @@ Window {
 
                 PressAndHoldButton {
                     id: mAPlus
-                    x: 439
-                    y: 113
                     width: 20
                     height: 20
+                    anchors.left: speedometer.horizontalCenter
+                    anchors.leftMargin: 30
+                    anchors.top: speedometer.bottom
+                    anchors.topMargin: -3
                     anchors.horizontalCenterOffset: -52
-                    anchors.left: speedometer.left
-                    anchors.leftMargin: 331
                     antialiasing: true
-                    anchors.verticalCenterOffset: -29
-                    anchors.verticalCenter: speedometer.verticalCenter
                     z: 1.63
                     scale: 3.859
                     transformOrigin: Item.Top
@@ -623,10 +776,8 @@ Window {
                 CircularGauge {
                     id: speedometer
                     x: 107
-                    y: 0
                     width: 285
                     value: valueSource.mA
-                    anchors.verticalCenter: parent.verticalCenter
                     minimumValue: 80
                     maximumValue: 160
                     // We set the width to the height, because the height will always be
@@ -636,13 +787,14 @@ Window {
                     // because they're laid out horizontally, and that would create
                     // large horizontal gaps between gauges on wide screens.
                     height: 285
-                    anchors.horizontalCenterOffset: -52
+                    anchors.top: parent.top
+                    anchors.topMargin: 0
+                    anchors.right: tempGauge.left
+                    anchors.rightMargin: 30
                     stepSize: 1
 
-                    anchors.verticalCenterOffset: 0
                     opacity: 1
                     visible: true
-                    anchors.horizontalCenter: parent.horizontalCenter
                     transformOrigin: Item.Top
 
                     style: DashboardGaugeStyle {
@@ -653,11 +805,11 @@ Window {
 
                 CircularGauge {
                     id: tempGauge
-                    x: 633
-                    y: 104
-                    width: 150
-                    height: 210
-                    anchors.bottomMargin: -29
+                    x: 325
+                    y: 193
+                    width: 120
+                    height: 160
+                    anchors.bottomMargin: -68
                     anchors.bottom: parent.bottom
                     maximumValue: 2 //12
                     anchors.right: parent.right
@@ -777,16 +929,27 @@ Window {
 
 
 
+        Image {
+            id: logo
+            x: 31
+            y: 32
+            width: 317
+            height: 110
+            fillMode: Image.PreserveAspectFit
+            source: "../images/whitetramp.png"
+        }
+
         Item {
             id: twoPointPanel
-            x: 9
-            width: 783
+            width: 325
             height: 285
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 13
+            anchors.left: parent.left
+            anchors.leftMargin: 9
             visible: false
             anchors.verticalCenterOffset: 145
             anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenterOffset: -100
-            anchors.horizontalCenter: parent.horizontalCenter
             MasGauge{
                 id:masGa
                 property bool accelerating
@@ -875,13 +1038,13 @@ Window {
                 {
                     if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
-                        {
-                            if (cntr <= 2)
-                                serialTerminal.putPC1cmd("MX+",1)
-                            else
-                                serialTerminal.putPC1cmd("MX++",1)
-                            cntr++
-                        }
+
+                        if (cntr <= 2)
+                            serialTerminal.putPC1cmd("MX+",1)
+                        else
+                            serialTerminal.putPC1cmd("MX++",1)
+                        cntr++
+
                     }
                 }
                 onPressedChanged:  {
@@ -907,21 +1070,12 @@ Window {
 
             Row {
                 id:rowLights
-                y: -35
-                width: 171
-                height: 41
-                anchors.horizontalCenterOffset: -20
+                y: -40
+                width: 237
+                height: 80
+                anchors.horizontalCenterOffset: -45
                 spacing: 20
                 anchors.horizontalCenter: parent.horizontalCenter
-
-                Image {
-                    id: redLight
-                    width: 38
-                    height: 38
-                    opacity: 1
-                    source: "../images/red.png"
-
-                }
 
                 /*           Image {
                         id: yellowLight
@@ -934,8 +1088,11 @@ Window {
                     id: yellowButton
                     x: 0
                     y: 0
-                    width: 38
-                    height: 38
+                    width: 55
+                    height: 55
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 0
                     antialiasing: true
                     smooth: false
                     iconSource: ""
@@ -945,7 +1102,6 @@ Window {
                     layer.textureSize.height: 0
                     layer.mipmap: false
                     layer.format: ShaderEffectSource.RGBA
-                    anchors.horizontalCenter: parent.horizontalCenter
                     scale: 1
                     layer.enabled: false
                     clip: false
@@ -957,11 +1113,21 @@ Window {
                     checkable: false
                     onClicked:  {
                         if (serialSettings.visible)
+                        {
                             serialSettings.visible = false
-                        else
+                            if (serialTerminal.getConnectionStatusSlot() === false)
+                                btnyellImage.source = "../images/red.png"
+                            else
+                                btnyellImage.source = "../images/green.png"
+                        }else
                         {
                             baudRate.currentIndex = 8
                             serialSettings.visible = true
+                            if (serialTerminal.getConnectionStatusSlot() === false)
+                                btnyellImage.source = "../images/yellow.png"
+                            else
+                                btnyellImage.source = "../images/green.png"
+
                         }
                     }
 
@@ -1000,8 +1166,12 @@ Window {
                         id: btnyellImage
                         x: 0
                         y: 0
-                        width: 38
-                        height: 38
+                        width: 55
+                        height: 55
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+                        anchors.left: parent.left
+                        anchors.top: parent.top
                         visible: true
                         rotation: 0
                         sourceSize.height: 0
@@ -1012,21 +1182,93 @@ Window {
                         anchors.leftMargin: 0
                         anchors.topMargin: 0
                         scale: 1
-                        anchors.fill: parent
-                        source: "../images/yellow.png"
+                        source: "../images/red.png"
                     }
 
                 }
-                Image {
-                    id: greenLight
-                    x: 0
-                    width: 38
-                    height: 38
-                    anchors.right: parent.right
-                    anchors.rightMargin: 0
+
+                StatusIndicator {
+                    id: emissionSts
+                    width: 65
+                    height: 65
+                    color: "#feec63"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    z: 19.022
+                    antialiasing: true
+                    enabled: false
+                    active: false
+                }
+
+                Button {
+                    id: infoButton
+                    y: 0
+                    width: 55
+                    height: 55
+                    anchors.left: parent.left
+                    anchors.leftMargin: 0
+                    layer.textureMirroring: ShaderEffectSource.NoMirroring
+                    isDefault: false
+                    layer.format: ShaderEffectSource.RGBA
+                    layer.samples: 2
+
+
+                    onClicked:  {
+                        if (infoPanel.visible)
+                        {
+                            infoPanel.visible = false
+                        }else
+                        {
+                            infoPanel.visible = true
+                        }
+                             }
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: control.pressed ? "#d1d1d1" : control.hovered ? "#666" : "transparent"
+                            radius: height/2
+                            border.color: "#00000000"
+                            border.width: 1
+                            antialiasing: true
+                        }
+                    }
                     visible: true
-                    opacity: 0.3
-                    source: "../images/green.png"
+                    antialiasing: true
+                    opacity: 1
+                    layer.mipmap: false
+                    layer.textureSize.width: 0
+                    enabled: true
+                    activeFocusOnPress: false
+                    scale: 1
+                    layer.textureSize.height: 0
+                    anchors.verticalCenter: parent.verticalCenter
+                    Image {
+                        id: btnInfImage1
+                        x: 0
+                        y: 0
+                        width: 55
+                        height: 55
+                        anchors.topMargin: 0
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        sourceSize.width: 0
+                        visible: true
+                        fillMode: Image.Stretch
+                        anchors.rightMargin: 0
+                        sourceSize.height: 0
+                        scale: 1
+                        anchors.leftMargin: 0
+                        anchors.left: parent.left
+                        rotation: 0
+                        source: "../images/info64.png"
+                        anchors.bottomMargin: 0
+                        anchors.top: parent.top
+                    }
+                    smooth: false
+                    layer.enabled: false
+                    iconSource: ""
+                    layer.wrapMode: ShaderEffectSource.ClampToEdge
+                    clip: false
+                    checkable: false
                 }
 
 
@@ -1047,69 +1289,31 @@ Window {
                 //    source: "pause.png"
                 }
 
-                states: [
-                    State {
-                        name: "Red"
-                        when: stateMachine.red
 
-                        PropertyChanges {
-                            target: redLight
-                            opacity: 1
-                        }
-                    },
-                    State {
-                        name: "RedGoingGreen"
-                        when: stateMachine.redGoingGreen
 
-                        PropertyChanges {
-                            target: redLight
-                            opacity: 1
-                        }
-
-                        PropertyChanges {
-                            target: yellowLight
-                            opacity: 1
-                        }
-                    },
-                    State {
-                        name: "Yellow"
-                        when: stateMachine.yellow || stateMachine.blinking
-
-                        PropertyChanges {
-                            target: yellowLight
-                            opacity: 1
-                        }
-                    },
-                    State {
-                        name: "Green"
-                        when: stateMachine.green
-
-                        PropertyChanges {
-                            target: greenLight
-                            opacity: 1
-                        }
-                    }
                 ]*/
         }
         Column {
             id: serialSettings
-            anchors.top: parent.top
-            anchors.topMargin: 76
+            x: 784
+            y: 68
+            width: 219
+            height: 137
+            anchors.top: lights.bottom
+            anchors.topMargin: 31
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 524
+            anchors.bottomMargin: 418
             anchors.right: parent.right
-            anchors.rightMargin: 115
+            anchors.rightMargin: 21
 
             visible: false
             ComboBox {
 
                 id: serialPorts
+                width: 100
+                height: 25
                 anchors.right: parent.right
-                anchors.rightMargin: -100
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: -20
+                anchors.rightMargin: 0
                 anchors.top: parent.top
                 anchors.topMargin: 0
                 transformOrigin: Item.Top
@@ -1118,6 +1322,7 @@ Window {
 
 
                 Label{
+                    id: spLab
                     color: "#fdfdfd"
 
                     text: qsTr("Serial port: ")
@@ -1133,15 +1338,14 @@ Window {
             }
 
             Label {
+                id: baudLab
+                width: 56
+                height: 18
                 color: "#fbfbfb"
 
                 text: qsTr("Baud: ")
-                anchors.right: parent.right
-                anchors.rightMargin: 19
-                anchors.left: parent.left
-                anchors.leftMargin: -50
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: -48
+                anchors.right: baudRate.left
+                anchors.rightMargin: 10
                 anchors.top: parent.top
                 anchors.topMargin: 35
             }
@@ -1150,14 +1354,11 @@ Window {
 
                 id: baudRate
                 width: 100
-                anchors.right: parent.right
-                anchors.rightMargin: -100
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: -47
-                anchors.top: serialPorts.top
-                anchors.topMargin: 27
+                height: 25
+                anchors.right: serialPorts.right
+                anchors.rightMargin: 0
+                anchors.top: serialPorts.bottom
+                anchors.topMargin: 10
                 scale: 1
                 transformOrigin: Item.Center
                 clip: false
@@ -1210,16 +1411,36 @@ Window {
                         }
                     }else // se non e' un polling
                     {
-                        errorMessage.visible = false
+
+                        if((data[0]=== "A") &&
+                                (data[1]=== "P"))
+                        {
+                            pMAS.text = "Last MAS " + data[2]+data[3]+data[4]+data[5]+"."+data[6]
+                        }
+                        else if((data[0]=== "A") &&
+                                (data[1]=== "T"))
+                        {
+                            pMs.text = "Last MS " + data[2]+data[3]+data[4]+data[5]+"."+data[6]
+                        }
+                        else
+                        {
+
+                            errorMessage.visible = false
+                        }
+
+
                         if((data[0] ==="F")&&            // gestione fuoco
                                 (data[1]==="O"))
                         {
                             if (data[2]==="0") // fuoco piccolo
                             {
-                                valueSource.fuoco = false
                                 speedometer.minimumValue = 80
                                 speedometer.maximumValue = 160
                                 speedometer.DashboardGaugeStyle.labelStepSize = 20
+                                if ((valueSource.tecn == 1) &&  valueSource.fuoco) // solo sul cambio
+                                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                                        serialTerminal.putPC1cmd("MA00800",1)
+                                valueSource.fuoco = false
                             }
                             else
                             {
@@ -1227,6 +1448,9 @@ Window {
                                 speedometer.minimumValue= 160
                                 speedometer.maximumValue= 400
                                 speedometer.DashboardGaugeStyle.labelStepSize = 50
+                                if ((valueSource.tecn == 1) && (valueSource.fuoco === 0))
+                                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                                        serialTerminal.putPC1cmd("MA01600",1)
                             }
                             errorMessage.visible = false
                         }else if((data[0] ==="E")&&            // gestione fuoco
@@ -1264,24 +1488,6 @@ Window {
                                         else if (calcMas<10000){maxlen = 5 - 5
                                             maxLenNum = 5}
 
-                                        /*                   var strcMas = calcMas.toString() // converto in stringa
-                                                // solo se e' presente la virgola
-                                               if ((strcMas[maxLenNum]===".") || (strcMas[maxLenNum]===","))
-                                                {
-                                                    // calcolo la virgola e la sposto
-                                                    for (var i =0; i<= maxLenNum;i++)
-                                                    {
-                                                        if ((strcMas[i]===".") || (strcMas[i]===","))
-                                                        {
-                                                            // i e' la posizione della virgola
-                                                            var tmp = strcMas[i+1]
-                                                            // tolgo la virgola
-                                                            strcMas.at(i) = tmp
-                                                            //fermo la stringa ad un decimale
-                                                            strcMas[i+1] = ""
-                                                        }
-                                                    }
-                                             } */
                                         var str0Mas = ""        // definisco la stringa che conterrà gli zeri
 
 
@@ -1336,7 +1542,15 @@ Window {
                             valueSource.kv = tmp;
                             errorMessage.visible = false
 
-                        }else if ((data[0] ==="M")&&            // gestione Ma
+                        }else if ((data[0]==="V") &&
+                                  (data[1]==="C"))
+                        {
+                            tmp = (data[2]-"0")*100;
+                            tmp += (data[3]-"0")*10;
+                            tmp += data[4]-"0";                            
+                            valueSource.cap = tmp;                           
+                        }
+                        else if ((data[0] ==="M")&&            // gestione Ma
                                   (data[1]==="A"))
                         {
                             tmp =  (data[2]-"0")*1000;
@@ -1377,7 +1591,7 @@ Window {
                             // dato che nel comando di init MAS e' lultimo ad arrivare, se parte vuoto e tutti sono vuoti
                             // Discriminare in base alla tecnica
                             // allora devo dargli i primi parametri
-                            if((valueSource.kv==0) && (valueSource.mA==0) && (valueSource.msec==0))
+                            if((valueSource.kv==0) || (valueSource.mA==0) || (valueSource.msec==0))
                             {// invio i default
                                 if (serialTerminal.getConnectionStatusSlot() !== false)
                                 {
@@ -1446,15 +1660,62 @@ Window {
                                 prState.value =0;
                                 prStatus.text = "IDLE"
                             }
-                        }else if((data[0]=== "A") &&
-                                 (data[1]=== "P"))
-                        {
-                            pMAS.text = "Last MAS " + data[2]+data[3]+data[4]+data[5]+"."+data[6]
                         }
-                        else if((data[0]=== "A") &&
-                                (data[1]=== "T"))
+                        else if   ((data[0] ==="F")&&            // gestione versione Firmware
+                                   (data[1]==="V"))
                         {
-                            pMs.text = "Last MS " + data[2]+data[3]+data[4]+data[5]+"."+data[6]
+                            fVersion.text = "IF-XRAY VER: " +data[2]+data[3]+"."+
+                                    data[4]+data[5]+"."+data[6]+data[7]
+                        }
+                        else if   ((data[0] ==="P")&&            // gestione versione Firmware
+                                   (data[1]==="V"))
+                        {
+                            if (data!=="PV000/")
+                                plVersion.text = "CAP BANK VER: " + data[2]+data[3]+"."+data[4]+data[5]
+                            else
+                                plVersion.text = "CAP BANK VER: " + "PANEL MANAGEMENT"
+
+                        }
+                        else if ((data[0] ==="P")&&            // gestione LATCHING ERROR
+                                 (data[1]==="A"))
+                        {
+                            if((data[9] & 1)) // pos 0
+                            {
+                                errorMessage.text = qsTr("CAPACITOR CHARGE TIMEOUT !!!")
+                                errorMessage.visible = true
+                            }
+                            if (data[9] & 2)
+                            {
+                                errorMessage.text = qsTr("TIMEOUT CHARGE CAPACITORS (during rebalancing) !!!")
+                                errorMessage.visible = true
+                            }
+                            if ((data[9] === "6") && (data[8] === "5")&&
+                                (data[7] === "2") && (data[6] === "0"))
+                            {
+                                errorMessage.text = qsTr("PL02 BUFFER RX OVERFLOW !!!")
+                                errorMessage.visible = true
+                            }
+                            if ((data[9] & 4) && (data[9]!=="6") && (data[7]!=="2"))
+                            {
+                                errorMessage.text = qsTr("CHARGE CAPACITORS TOO SLOW !!!")
+                                errorMessage.visible = true
+                            }
+                            if (data[9] & 8)
+                                   errorMessage.text = qsTr("EXCEEDING CRITICAL THRESHOLD VMAX !!!")
+                            if ((data[9] === "6") && (data[8] === "1"))
+                            {
+                                errorMessage.text = qsTr("CAPACITOR INPUT CALIBRATION !!!")
+                                //  ALLARME_CAL_INGRESSI = ALARM_STATUS & 16 //0x10
+                                errorMessage.visible = true
+                            }
+                            if ((data[9] === "8") && (data[8] === "6")&&
+                                (data[7] === "7") && (data[6] === "2") && (data[5] ==="3"))
+                            {
+                                errorMessage.text = qsTr("WARNING V MAX RESTORED TO BALANCE CAPACITORS !!!")
+                                   //WARNING_CARICA_MAX = ALARM_STATUS & 32768 //0x8000
+                                errorMessage.visible = true
+                            }
+
                         }
                         else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
                                  (data[1]==="L"))
@@ -1493,6 +1754,8 @@ Window {
                                         errorMessage.text = qsTr("PR2 ACKNOWLEDGEMENT TIMEOUT")
                                     if(data[4]==="3")
                                         errorMessage.text = qsTr("XR1 ACKNOWLEDGEMENT TIMEOUT")
+                                    if(data[4]==="4")
+                                        errorMessage.text = qsTr("PREPARATION TIMEOUT")
                                 }
                             }
 
@@ -1552,12 +1815,9 @@ Window {
                 id: connectBtn
                 width: 100
                 text: qsTr("Connect")
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: -79
+                anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: baudRate.bottom
-                anchors.topMargin: 9
+                anchors.topMargin: 7
                 onClicked: {
 
                     if (serialTerminal.getConnectionStatusSlot() === false){
@@ -1567,25 +1827,25 @@ Window {
                         {
                             connectBtn.text = "Disconnect"
                             serialSettings.visible = false
-                            greenLight.opacity = 1
-                            redLight.opacity = 0.3
-                            yellowButton.opacity = 0.3
+                            //  yellowButton.opacity = 0.3
+                            btnyellImage.source = "../images/green.png"
                             serialTerminal.putPC1cmd("RS",1)
                             serialTerminal.putPC1cmd("RR",1)
+                            serialTerminal.putPC1cmd("FV?",1)
+                            serialTerminal.putPC1cmd("PV?",1)
                             //  QUI PER ABILITARE IL polling STATI
                             statusTimer.repeat = 1
-                            setStatusTo(sendStatusRqst,1500)
+                            setStatusTo(sendStatusRqst,2500)
                         }
                     }else {
-                        errorMessage.visible = false;
-                        serialTerminal.closeSerialPortSlot();
-                        serialTerminal.resetAck();
-
                         connectBtn.text = "Connect"
-                        greenLight.opacity = 0.3
-                        redLight.opacity = 1
-                        yellowButton.opacity = 1
+                        //    yellowButton.opacity = 1
+                        btnyellImage.source = "../images/red.png"
                         serialSettings.visible = false
+                        errorMessage.visible = false;
+                        serialTerminal.resetAck();
+                        serialTerminal.closeSerialPortSlot();
+
                     }
                 }
             }
@@ -1601,75 +1861,15 @@ Window {
         //           }
         //       }
 
-        Column {
-            id: prContainer
-            x: 539
-            width: 200
-            height: 71
-            anchors.right: parent.right
-            anchors.rightMargin: 286
-            anchors.top: parent.top
-            anchors.topMargin: 205
 
-            ProgressBar {
-                id: prState
-                anchors.verticalCenter: parent.verticalCenter
-                value: 0
-                indeterminate: false
-                maximumValue: 2
-
-            }
-
-            Text {
-                id: prTitle
-                width: 111
-                height: 24
-                color: "#0b0b0d"
-                text: qsTr("Generator State :")
-                anchors.top: parent.top
-                anchors.topMargin: 0
-                anchors.horizontalCenter: parent.horizontalCenter
-                font.pixelSize: 12
-            }
-
-            Text {
-                id: prStatus
-                width: 111
-                height: 24
-                color: "#0b0b0d"
-                text: qsTr("INACTIVE")
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 0
-                font.pixelSize: 12
-            }
-        }
-
-        StatusIndicator {
-            id: emissionSts
-            width: 59
-            color: "#feec63"
-            z: 19.022
-            anchors.left: parent.left
-            anchors.leftMargin: 544
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 437
-            anchors.top: parent.top
-            anchors.topMargin: 115
-            antialiasing: true
-            enabled: false
-            active: false
-        }
 
         Text {
             id: errorMessage
-            x: 406
-            y: 16
+            x: 343
+            y: 32
             width: 380
             height: 60
-            color: "#08080c"
+            color: "#fb0404"
             text: qsTr("Error Example !!")
             styleColor: "#4343eb"
             visible: false
@@ -1684,32 +1884,122 @@ Window {
             verticalAlignment: Text.AlignVCenter
             font.family: "Arial"
             anchors.right: parent.right
-            anchors.rightMargin: 238
+            anchors.rightMargin: 301
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 524
+            anchors.bottomMargin: 508
         }
 
-        Text {
-            id: pMAS
-            x: 641
-            y: 115
-            width: 92
-            height: 23
-            color: "#08080c"
-            text: qsTr("Mas ")
-            font.pixelSize: 12
+
+
+        Column {
+            id: infoPanel
+            x: 565
+            width: 158
+            height: 149
+            layer.samples: 2
+            scale: 1
+            anchors.topMargin: 110
+
+            StringParsing {
+                id: strPars1
+            }
+
+            Text {
+                id: fVersion
+                color: "#f6f4f4"
+                text: qsTr("IF-XRAY VER :")
+                anchors.left: parent.left
+                anchors.top: parent.top
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignLeft
+                fontSizeMode: Text.FixedSize
+                anchors.leftMargin: 0
+                anchors.topMargin: 0
+                font.pixelSize: 14
+            }
+
+            Text {
+                id: plVersion
+                color: "#f6f4f4"
+                text: qsTr("CAP BANK VER :")
+                anchors.top: fVersion.bottom
+                anchors.right: parent.right
+                anchors.left: parent.left
+                font.pixelSize: 14
+                anchors.rightMargin: 0
+                anchors.leftMargin: 0
+                anchors.topMargin: 5
+                horizontalAlignment: Text.AlignLeft
+                fontSizeMode: Text.FixedSize
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Text {
+                id: pMs
+                width: 92
+                height: 23
+                color: "#f9f9f9"
+                text: qsTr("Msec")
+                anchors.top: pMAS.bottom
+                anchors.topMargin: 1
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                font.pixelSize: 12
+            }
+
+            RadioButton {
+                id: touchSynchro
+                width: 14
+                height: 16
+                text: "Panel Synchro"
+                anchors.top: pMs.bottom
+                anchors.topMargin: 2
+                anchors.left: parent.left
+                // text: "Panel Synchro"
+                onCheckedChanged: {
+                    if (touchSynchro.checked)
+                    {
+                        //  QUI PER ABILITARE IL polling
+                        pollingTimer.repeat = 1
+                        setTimeout(sendAlignRqst,2000)
+                    }else
+                    {
+                        pollingTimer.repeat = 0
+                    }
+                }
+            }
+
+            Text {
+                id: pMAS
+                width: 92
+                height: 23
+                color: "#f9f9f9"
+                text: qsTr("Mas ")
+                anchors.top: plVersion.bottom
+                anchors.topMargin: 5
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                font.pixelSize: 12
+            }
+
+      /*     Connections {
+                target: serialTerminal
+                tmp1: 1000
+                tmp: 5000
+                tmp2: 0
+                rcv: ""
+            }*/
+
+
+
+
+
+            anchors.rightMargin: 301
+            anchors.top: parent.top
+            visible: false
+            anchors.right: parent.right
         }
 
-        Text {
-            id: pMs
-            x: 641
-            y: 148
-            width: 92
-            height: 23
-            color: "#08080c"
-            text: qsTr("Msec")
-            font.pixelSize: 12
-        }
     }
 }
 //  Text { id: time }
@@ -1718,18 +2008,8 @@ Window {
 
 /*##^##
 Designer {
-    D{i:2;anchors_height:600;anchors_width:1024}D{i:3;anchors_height:600;anchors_width:1000;anchors_x:0;anchors_y:0}
-D{i:15;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:16;anchors_x:254;anchors_y:0}
-D{i:12;anchors_x:254;anchors_y:0}D{i:13;anchors_x:54}D{i:14;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
-D{i:8;anchors_y:14}D{i:19;anchors_height:16;anchors_width:14;anchors_x:649;anchors_y:0}
-D{i:20;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:18;anchors_x:254;anchors_y:0}
-D{i:21;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}D{i:22;anchors_height:16;anchors_width:14;anchors_x:254;anchors_y:0}
-D{i:24;anchors_x:254;anchors_y:0}D{i:23;anchors_x:254;anchors_y:0}D{i:25;anchors_x:254;anchors_y:0}
-D{i:26;anchors_x:254;anchors_y:0}D{i:28;anchors_x:254;anchors_y:0}D{i:29;anchors_x:254;anchors_y:0}
-D{i:31;anchors_x:254;anchors_y:0}D{i:30;anchors_x:254;anchors_y:0}D{i:35;anchors_x:254;anchors_y:0}
-D{i:36;anchors_width:100;anchors_x:254;anchors_y:0}D{i:32;anchors_x:254}D{i:27;anchors_x:254;anchors_y:0}
-D{i:38;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:39;anchors_width:100;anchors_x:"-95";anchors_y:0}
-D{i:37;anchors_width:100;anchors_x:"-95";anchors_y:0}D{i:57;anchors_height:50;anchors_width:100;anchors_x:757;anchors_y:0}
-D{i:4;anchors_height:600;anchors_width:909;anchors_x:700}
+    D{i:16;anchors_height:20;anchors_width:98;anchors_x:0}D{i:17;anchors_x:23}D{i:18;anchors_x:111}
+D{i:31;anchors_x:319}D{i:33;anchors_x:100}D{i:36;anchors_y:231}D{i:37;anchors_x:405;anchors_y:208}
+D{i:38;anchors_y:0}D{i:57;anchors_width:55;anchors_x:0}
 }
 ##^##*/

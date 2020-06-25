@@ -24,5 +24,12 @@
         <file>images/LargeFocus.png</file>
         <file>images/logoRxR.jpg</file>
         <file>images/smallFocus.png</file>
+        <file>images/sfondo/line_violet_color.jpg</file>
+        <file>images/sfondo/neon-background.jpg</file>
+        <file>images/sfondo/raggi.jpg</file>
+        <file>images/logoRxRwhite.png</file>
+        <file>images/whitetrasp.png</file>
+        <file>images/whitetramp.png</file>
+        <file>images/info64.png</file>
     </qresource>
 </RCC>

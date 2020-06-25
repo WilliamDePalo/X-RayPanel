@@ -132,8 +132,9 @@ CircularGaugeStyle {
         Text {
             text: "mA"
             color: "white"
-            font.pixelSize: toPixels(0.09)
-            anchors.top: speedText.bottom
+            font.pixelSize: toPixels(0.3)
+            anchors.top: parent.top // speedText.bottom
+            anchors.topMargin: parent.height / 4
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }

@@ -108,19 +108,19 @@ DashboardGaugeStyle {
             readonly property int rpmInt: valueSource.kv
         }
         Text {
-            text: "x1000"
+            text: "KV"
             color: "white"
-            font.pixelSize: tachometerStyle.toPixels(0.1)
+            font.pixelSize: tachometerStyle.toPixels(0.3)
             anchors.top: parent.top
             anchors.topMargin: parent.height / 4
             anchors.horizontalCenter: parent.horizontalCenter
         }
-        Text {
-            text: "KV"
-            color: "white"
-            font.pixelSize: tachometerStyle.toPixels(0.1)
-            anchors.top: rpmText.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
+//        Text {
+//            text: "KV"
+//            color: "white"
+//            font.pixelSize: tachometerStyle.toPixels(0.1)
+//            anchors.top: rpmText.bottom
+//            anchors.horizontalCenter: parent.horizontalCenter
+//        }
     }
 }

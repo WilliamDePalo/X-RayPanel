@@ -37,7 +37,6 @@ Q_INVOKABLE QString StringParsing::process(QString a){
 SerialTerminal::SerialTerminal()
 {
     serialPort = new QSerialPort(this);
-   // QPlainTextEdit *editor = new QPlainTextEdit();//) (this);
     QString fileName = ".\\serial.txt";
     logger = new Logger(this, fileName/*, editor*/);
     logger->setShowDateTime(1);
@@ -63,9 +62,12 @@ void SerialTerminal::openSerialPort(QString comName, int baud){
 }
 
 void SerialTerminal::closeSerialPort(){
-
+    SendBuffer.clear();
+    sendPeriodicTimer->stop();
+    disconnect(waitAckTimer,SIGNAL(timeout()), this, SLOT(resetAck()));
+    disconnect(sendPeriodicTimer, SIGNAL(timeout()), this, SLOT(flushSendBuffer()));
+    disconnect(serialPort,SIGNAL(readyRead()),this,SLOT(readFromSerialPort()));
     serialPort->close();
-
 }
 
 bool SerialTerminal::getConnectionStatus(){
@@ -210,7 +212,7 @@ void SerialTerminal::readFromSerialPort(){
                                     tmp = data.lastIndexOf(QRegExp("E"));
                                     dt = data.right(data.length()-tmp);
                                     data = dt;
-                                }
+                                }                               
                                 emit getData(data);
                                 logger->write( "             EMIT     " + data +"\n");
                                 if ( waitForAnAck == ACK_WAITING)
