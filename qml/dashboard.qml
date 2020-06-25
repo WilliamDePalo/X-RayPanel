@@ -170,12 +170,13 @@ Window {
         // Math.min(root.width, root.height)
         Image{
             id: backGroundImg
+            rotation: 0
             anchors.rightMargin: 0
             anchors.bottomMargin: 0
             anchors.leftMargin: -7
             anchors.topMargin: 0
             fillMode: Image.TileVertically
-            source: "../images/sfondo/line_violet_color.jpg"
+            source: "../images/sfondo/sfondo1"
             anchors.fill: parent
             //Image:"qrc:image/logoRxR.jpg"
         }
@@ -345,7 +346,7 @@ Window {
                     id: status
                     y: 196
                     height: 34
-                    color: "#5cb6e5"
+                    color: "#5eb3e4"
                     text: qsTr("DISCONNECT")
                     anchors.verticalCenter: statusTitle.verticalCenter
                     anchors.left: statusTitle.right
@@ -461,7 +462,7 @@ Window {
                     id: tecLabel2
                     y: 355
                     height: 18
-                    color: "#5bb2e5"
+                    color: "#fbfbfb"
 
                     text: qsTr("2 POINT")
                     font.pixelSize: 18
@@ -495,14 +496,14 @@ Window {
 
                 Gauge {
                     id: capacitorPerc
-                    x: 159
+                    x: -121
                     width: 63
-                    height: 217
+                    height: 200
                     anchors.top: status.top
-                    anchors.topMargin: 101
+                    anchors.topMargin: -1
                     value:  valueSource.cap
                     anchors.right: parent.right
-                    anchors.rightMargin: 8
+                    anchors.rightMargin: 288
                 }
 
                 Text {
@@ -542,11 +543,10 @@ Window {
 
                     ProgressBar {
                         id: prState
-                        y: 22
                         width: 200
-                        height: 17
-                        anchors.verticalCenterOffset: -4
-                        anchors.verticalCenter: parent.verticalCenter
+                        height: 15
+                        anchors.top: prTitle.bottom
+                        anchors.topMargin: 5
                         value: 0
                         indeterminate: false
                         maximumValue: 2
@@ -595,28 +595,55 @@ Window {
                         id: prTitle
                         width: 111
                         height: 24
-                        color: "#f9f9f9"
-                        text: qsTr("Generator State :")
-                        styleColor: "#f9f9f9"
+                        color: "#5eb3e4"
+                        text: qsTr("GENERATOR STATE :")
+                        font.family: "Verdana"
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
                         anchors.top: parent.top
                         anchors.topMargin: 0
                         anchors.horizontalCenter: parent.horizontalCenter
-                        font.pixelSize: 12
+                        font.pixelSize: 18
                     }
 
                     Text {
                         id: prStatus
                         width: 111
                         height: 24
-                        color: "#f7f7f7"
+                        color: "#5eb3e4"
                         text: qsTr("INACTIVE")
+                        font.family: "Verdana"
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 0
-                        font.pixelSize: 12
+                        font.pixelSize: 18
                     }
+                }
+
+                Text {
+                    id: readyTitle
+                    height: 35
+                    color: "#fdfdfd"
+                    text: "READY:"
+                    horizontalAlignment: Text.AlignLeft
+                    anchors.top: prContainer.bottom
+                    textFormat: Text.AutoText
+                    style: Text.Sunken
+                    font.wordSpacing: 1
+                    verticalAlignment: Text.AlignVCenter
+                    anchors.rightMargin: 147
+                    font.letterSpacing: 0.6
+                    anchors.right: parent.right
+                    anchors.left: parent.left
+                    anchors.leftMargin: 8
+                    font.weight: Font.Normal
+                    anchors.topMargin: 55
+                    font.family: "Tahoma"
+                    styleColor: "#16161616"
+                    fontSizeMode: Text.HorizontalFit
+                    font.pixelSize: 18
                 }
 
             }
@@ -808,8 +835,8 @@ Window {
                     x: 325
                     y: 193
                     width: 120
-                    height: 160
-                    anchors.bottomMargin: -68
+                    height: 166
+                    anchors.bottomMargin: -74
                     anchors.bottom: parent.bottom
                     maximumValue: 2 //12
                     anchors.right: parent.right
@@ -821,6 +848,7 @@ Window {
 
                     style: IconGaugeStyle {
                         id: tempGaugeStyle
+                        maxWarningColor: "#5bb2e5"
 
                         minimumValueAngle: -60
                         maximumValueAngle: 60
@@ -835,7 +863,6 @@ Window {
                         // icon: "qrc:/images/smallFocus.png"
                         //    minWarningColor: "#b8a521"
                         //    maxWarningColor: "#ef5050"
-                        maxWarningColor: Qt.rgba(0.5, 0, 0, 1)
 
                         tickmarkLabel: Text {
                             color: "white"
@@ -863,7 +890,7 @@ Window {
                         pressed: false
                         source: "../images/minus-sign.png"
                         anchors.verticalCenter: tachometer.verticalCenter
-                        anchors.leftMargin: 16
+                        anchors.leftMargin: 8
                         antialiasing: true
                         property int  cntr: 0
                         onClicked:
@@ -890,7 +917,7 @@ Window {
                         width: 8
                         height: 8
                         anchors.right: parent.right
-                        anchors.rightMargin: 16
+                        anchors.rightMargin: 8
                         anchors.verticalCenterOffset: -30
                         source: "../images/plus-sign.png"
                         anchors.leftMargin: -350
@@ -1893,12 +1920,12 @@ Window {
 
         Column {
             id: infoPanel
-            x: 565
+            x: 611
             width: 158
             height: 149
             layer.samples: 2
             scale: 1
-            anchors.topMargin: 110
+            anchors.topMargin: 98
 
             StringParsing {
                 id: strPars1
@@ -1994,7 +2021,7 @@ Window {
 
 
 
-            anchors.rightMargin: 301
+            anchors.rightMargin: 255
             anchors.top: parent.top
             visible: false
             anchors.right: parent.right
@@ -2006,10 +2033,4 @@ Window {
 
 
 
-/*##^##
-Designer {
-    D{i:16;anchors_height:20;anchors_width:98;anchors_x:0}D{i:17;anchors_x:23}D{i:18;anchors_x:111}
-D{i:31;anchors_x:319}D{i:33;anchors_x:100}D{i:36;anchors_y:231}D{i:37;anchors_x:405;anchors_y:208}
-D{i:38;anchors_y:0}D{i:57;anchors_width:55;anchors_x:0}
-}
-##^##*/
+

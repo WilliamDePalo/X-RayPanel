@@ -84,7 +84,7 @@ CircularGaugeStyle {
         }
 
         ctx.beginPath();
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "transparent"; //"black";//sfondo quadrante
         ctx.ellipse(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.fill();
 
@@ -96,7 +96,7 @@ CircularGaugeStyle {
 
         ctx.beginPath();
         ctx.lineWidth = tickmarkInset / 2;
-        ctx.strokeStyle = "#222";
+        ctx.strokeStyle = "#5eb3e4";//"#222";
         ctx.arc(xCenter, yCenter, outerRadius - ctx.lineWidth / 2, outerRadius - ctx.lineWidth / 2, 0, Math.PI * 2);
         ctx.stroke();
 

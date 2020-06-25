@@ -21,7 +21,6 @@
         <file>images/background.svg</file>
         <file>images/needle.svg</file>
         <file>images/tickmark.svg</file>
-        <file>images/LargeFocus.png</file>
         <file>images/logoRxR.jpg</file>
         <file>images/smallFocus.png</file>
         <file>images/sfondo/line_violet_color.jpg</file>
@@ -31,5 +30,14 @@
         <file>images/whitetrasp.png</file>
         <file>images/whitetramp.png</file>
         <file>images/info64.png</file>
+        <file>images/fuoco-grande.png</file>
+        <file>images/fuoco-piccolo.png</file>
+        <file>images/logo-rampoldi.png</file>
+        <file>images/meno.png</file>
+        <file>images/piu.png</file>
+        <file>images/xray-bianco.png</file>
+        <file>images/xray-giallo.png</file>
+        <file>images/sfondo/sfondo.png</file>
+        <file>images/sfondo/sfondo1.png</file>
     </qresource>
 </RCC>

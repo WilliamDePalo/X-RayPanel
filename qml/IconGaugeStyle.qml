@@ -88,6 +88,7 @@ DashboardGaugeStyle {
     }
 
     background: Item {
+        id: element
         Canvas {
             anchors.fill: parent
             onPaint: {
@@ -123,14 +124,21 @@ DashboardGaugeStyle {
         Text {
             id: focusText
             text: textt
+            transformOrigin: Item.Top
+           // anchors.verticalCenter: parent.bottom
+            anchors.top:   parent.bottom
+
+            anchors.topMargin: -50
+
+      //      anchors.fill: parent
+           // anchors.topMargin: 0
+            font.family: "Arial"
+            font.bold: true
+            font.pixelSize: 50
             color: "white"
-            font.pixelSize: toPixels(0.2)
-            horizontalAlignment: Text.AlignRight
+            horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.verticalCenter
-            anchors.topMargin: toPixels(0.1)
-
-
+         //   anchors.bottom: parent.bottom
         }
         Image {
             source: icon
