@@ -50,17 +50,7 @@ OBJECTS_DIR   = debug
 SOURCES       = ..\X-RayPanel\main.cpp \
 		..\X-RayPanel\serial\serialLogger.cpp \
 		..\X-RayPanel\serial\serialterminal.cpp \
-		..\X-RayPanel\serial\settingsdialog.cpp debug\qrc_xraypanel_4.11_qmlcache.cpp \
-		debug\qml_Button_qml.cpp \
-		debug\qml_TurnIndicator_qml.cpp \
-		debug\qml_dashboard_qml.cpp \
-		debug\qml_IconGaugeStyle_qml.cpp \
-		debug\qml_DashboardGaugeStyle_qml.cpp \
-		debug\qml_TachometerStyle_qml.cpp \
-		debug\qml_MasGauge_qml.cpp \
-		debug\qml_ValueSource_qml.cpp \
-		debug\qml_PressAndHoldButton_qml.cpp \
-		debug\qmlcache_loader.cpp \
+		..\X-RayPanel\serial\settingsdialog.cpp debug\qrc_xraypanel_4.11.cpp \
 		debug\moc_serialLogger.cpp \
 		debug\moc_serialterminal.cpp \
 		debug\moc_settingsdialog.cpp
@@ -68,17 +58,7 @@ OBJECTS       = debug\main.obj \
 		debug\serialLogger.obj \
 		debug\serialterminal.obj \
 		debug\settingsdialog.obj \
-		debug\qrc_xraypanel_4.11_qmlcache.obj \
-		debug\qml_Button_qml.obj \
-		debug\qml_TurnIndicator_qml.obj \
-		debug\qml_dashboard_qml.obj \
-		debug\qml_IconGaugeStyle_qml.obj \
-		debug\qml_DashboardGaugeStyle_qml.obj \
-		debug\qml_TachometerStyle_qml.obj \
-		debug\qml_MasGauge_qml.obj \
-		debug\qml_ValueSource_qml.obj \
-		debug\qml_PressAndHoldButton_qml.obj \
-		debug\qmlcache_loader.obj \
+		debug\qrc_xraypanel_4.11.obj \
 		debug\moc_serialLogger.obj \
 		debug\moc_serialterminal.obj \
 		debug\moc_settingsdialog.obj
@@ -206,20 +186,20 @@ all: Makefile.Debug  debug\xrayPanel.exe
 
 debug\xrayPanel.exe: C:\Qt\5.12.6\msvc2017_64\lib\Qt5Quickd.lib C:\Qt\5.12.6\msvc2017_64\lib\Qt5Widgetsd.lib C:\Qt\5.12.6\msvc2017_64\lib\Qt5Guid.lib C:\Qt\5.12.6\msvc2017_64\lib\Qt5Qmld.lib C:\Qt\5.12.6\msvc2017_64\lib\Qt5Networkd.lib C:\Qt\5.12.6\msvc2017_64\lib\Qt5SerialPortd.lib C:\Qt\5.12.6\msvc2017_64\lib\Qt5Cored.lib C:\Qt\5.12.6\msvc2017_64\lib\qtmaind.lib ui_mainwindow.h ui_settingsdialog.h $(OBJECTS) 
 	$(LINKER) $(LFLAGS) /MANIFEST:embed /OUT:$(DESTDIR_TARGET) @<<
-debug\main.obj debug\serialLogger.obj debug\serialterminal.obj debug\settingsdialog.obj debug\qrc_xraypanel_4.11_qmlcache.obj debug\qml_Button_qml.obj debug\qml_TurnIndicator_qml.obj debug\qml_dashboard_qml.obj debug\qml_IconGaugeStyle_qml.obj debug\qml_DashboardGaugeStyle_qml.obj debug\qml_TachometerStyle_qml.obj debug\qml_MasGauge_qml.obj debug\qml_ValueSource_qml.obj debug\qml_PressAndHoldButton_qml.obj debug\qmlcache_loader.obj debug\moc_serialLogger.obj debug\moc_serialterminal.obj debug\moc_settingsdialog.obj
+debug\main.obj debug\serialLogger.obj debug\serialterminal.obj debug\settingsdialog.obj debug\qrc_xraypanel_4.11.obj debug\moc_serialLogger.obj debug\moc_serialterminal.obj debug\moc_settingsdialog.obj
 $(LIBS)
 <<
 
 qmake: FORCE
-	@$(QMAKE) -o Makefile.Debug ..\X-RayPanel\xraypanel_4.11.pro -spec win32-msvc "CONFIG+=qtquickcompiler"
+	@$(QMAKE) -o Makefile.Debug ..\X-RayPanel\xraypanel_4.11.pro -spec win32-msvc
 
 qmake_all: FORCE
 
 dist:
-	$(ZIP) xrayPanel.zip $(SOURCES) $(DIST) ..\X-RayPanel\xraypanel_4.11.pro C:\Qt\5.12.6\msvc2017_64\mkspecs\features\spec_pre.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\common\angle.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\win32\windows_vulkan_sdk.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\common\windows-vulkan.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\common\msvc-desktop.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\qconfig.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3danimation.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3danimation_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickanimation.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickscene2d.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_accessibility_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_charts.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_charts_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_core.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_datavisualization.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_datavisualization_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_designer.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_edid_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_egl_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_fb_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_gui.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_help.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_location.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_network.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_networkauth.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_networkauth_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_positioningquick.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_positioningquick_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_purchasing.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_purchasing_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qml.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quick.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickshapes_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quicktemplates2.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_remoteobjects.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_remoteobjects_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_repparser.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_repparser_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_script.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_sql.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_svg.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_texttospeech.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_texttospeech_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_theme_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_virtualkeyboard.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_virtualkeyboard_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_vulkan_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webengine.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webengine_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginecore.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginecore_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginewidgets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webview.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webview_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_xml.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\features\qt_functions.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\qt_config.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\win32-msvc\qmake.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\spec_post.prf .qmake.stash C:\Qt\5.12.6\msvc2017_64\mkspecs\features\exclusive_builds.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\common\msvc-version.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\toolchain.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\default_pre.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\win32\default_pre.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\resolve_config.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\exclusive_builds_post.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\default_post.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\build_pass.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\resources.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\qtquickcompiler.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\precompile_header.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\warn_on.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\qt.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\moc.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\win32\opengl.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\uic.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\qmake_use.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\file_copies.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\win32\windows.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\testcase_targets.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\exceptions.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\yacc.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\lex.prf ..\X-RayPanel\xraypanel_4.11.pro xraypanel_4.11_qmlcache.qrc C:\Qt\5.12.6\msvc2017_64\lib\Qt5Quickd.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Widgetsd.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Guid.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Qmld.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Networkd.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5SerialPortd.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Cored.prl C:\Qt\5.12.6\msvc2017_64\lib\qtmaind.prl  xraypanel_4.11_qmlcache.qrc ..\X-RayPanel\qml\Button.qml ..\X-RayPanel\qml\TurnIndicator.qml ..\X-RayPanel\qml\dashboard.qml ..\X-RayPanel\qml\IconGaugeStyle.qml ..\X-RayPanel\qml\DashboardGaugeStyle.qml ..\X-RayPanel\qml\TachometerStyle.qml ..\X-RayPanel\qml\MasGauge.qml ..\X-RayPanel\qml\ValueSource.qml ..\X-RayPanel\qml\PressAndHoldButton.qml ..\X-RayPanel\xraypanel_4.11.qrc  C:\Qt\5.12.6\msvc2017_64\mkspecs\features\data\dummy.cpp ..\X-RayPanel\serial\serialLogger.h ..\X-RayPanel\serial\serialterminal.h ..\X-RayPanel\serial\settingsdialog.h  ..\X-RayPanel\main.cpp ..\X-RayPanel\serial\serialLogger.cpp ..\X-RayPanel\serial\serialterminal.cpp ..\X-RayPanel\serial\settingsdialog.cpp ..\X-RayPanel\serial\mainwindow.ui ..\X-RayPanel\serial\settingsdialog.ui    
+	$(ZIP) xrayPanel.zip $(SOURCES) $(DIST) ..\X-RayPanel\xraypanel_4.11.pro C:\Qt\5.12.6\msvc2017_64\mkspecs\features\spec_pre.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\common\angle.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\win32\windows_vulkan_sdk.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\common\windows-vulkan.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\common\msvc-desktop.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\qconfig.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3danimation.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3danimation_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickanimation.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickscene2d.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_accessibility_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_charts.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_charts_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_core.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_datavisualization.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_datavisualization_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_designer.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_edid_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_egl_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_fb_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_gui.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_help.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_location.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_network.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_networkauth.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_networkauth_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_positioningquick.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_positioningquick_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_purchasing.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_purchasing_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qml.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quick.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickshapes_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quicktemplates2.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_remoteobjects.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_remoteobjects_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_repparser.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_repparser_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_script.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_sql.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_svg.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_texttospeech.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_texttospeech_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_theme_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_virtualkeyboard.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_virtualkeyboard_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_vulkan_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webengine.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webengine_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginecore.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginecore_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginewidgets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webview.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_webview_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_xml.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt\5.12.6\msvc2017_64\mkspecs\features\qt_functions.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\qt_config.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\win32-msvc\qmake.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\spec_post.prf .qmake.stash C:\Qt\5.12.6\msvc2017_64\mkspecs\features\exclusive_builds.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\common\msvc-version.conf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\toolchain.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\default_pre.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\win32\default_pre.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\resolve_config.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\exclusive_builds_post.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\default_post.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\build_pass.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\precompile_header.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\warn_on.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\qt.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\resources.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\moc.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\win32\opengl.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\uic.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\qmake_use.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\file_copies.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\win32\windows.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\testcase_targets.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\exceptions.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\yacc.prf C:\Qt\5.12.6\msvc2017_64\mkspecs\features\lex.prf ..\X-RayPanel\xraypanel_4.11.pro ..\X-RayPanel\xraypanel_4.11.qrc C:\Qt\5.12.6\msvc2017_64\lib\Qt5Quickd.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Widgetsd.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Guid.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Qmld.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Networkd.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5SerialPortd.prl C:\Qt\5.12.6\msvc2017_64\lib\Qt5Cored.prl C:\Qt\5.12.6\msvc2017_64\lib\qtmaind.prl   ..\X-RayPanel\xraypanel_4.11.qrc C:\Qt\5.12.6\msvc2017_64\mkspecs\features\data\dummy.cpp ..\X-RayPanel\serial\serialLogger.h ..\X-RayPanel\serial\serialterminal.h ..\X-RayPanel\serial\settingsdialog.h  ..\X-RayPanel\main.cpp ..\X-RayPanel\serial\serialLogger.cpp ..\X-RayPanel\serial\serialterminal.cpp ..\X-RayPanel\serial\settingsdialog.cpp ..\X-RayPanel\serial\mainwindow.ui ..\X-RayPanel\serial\settingsdialog.ui    
 
 clean: compiler_clean 
-	-$(DEL_FILE) debug\main.obj debug\serialLogger.obj debug\serialterminal.obj debug\settingsdialog.obj debug\qrc_xraypanel_4.11_qmlcache.obj debug\qml_Button_qml.obj debug\qml_TurnIndicator_qml.obj debug\qml_dashboard_qml.obj debug\qml_IconGaugeStyle_qml.obj debug\qml_DashboardGaugeStyle_qml.obj debug\qml_TachometerStyle_qml.obj debug\qml_MasGauge_qml.obj debug\qml_ValueSource_qml.obj debug\qml_PressAndHoldButton_qml.obj debug\qmlcache_loader.obj debug\moc_serialLogger.obj debug\moc_serialterminal.obj debug\moc_settingsdialog.obj
+	-$(DEL_FILE) debug\main.obj debug\serialLogger.obj debug\serialterminal.obj debug\settingsdialog.obj debug\qrc_xraypanel_4.11.obj debug\moc_serialLogger.obj debug\moc_serialterminal.obj debug\moc_settingsdialog.obj
 	-$(DEL_FILE) debug\xrayPanel.vc.pdb debug\xrayPanel.ilk debug\xrayPanel.idb
 
 distclean: clean 
@@ -235,66 +215,54 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all: debug\qrc_xraypanel_4.11_qmlcache.cpp
-compiler_rcc_clean:
-	-$(DEL_FILE) debug\qrc_xraypanel_4.11_qmlcache.cpp
-debug\qrc_xraypanel_4.11_qmlcache.cpp: xraypanel_4.11_qmlcache.qrc \
-		C:\Qt\5.12.6\msvc2017_64\bin\rcc.exe \
-		..\X-RayPanel\images\logoRxR.jpg \
-		..\X-RayPanel\images\plus-sign.png \
-		..\X-RayPanel\images\needle.svg \
-		..\X-RayPanel\images\temperature-icon.png \
-		..\X-RayPanel\images\green.png \
-		..\X-RayPanel\images\minus-sign.png \
-		..\X-RayPanel\images\yellow.png \
-		..\X-RayPanel\images\background.png \
-		..\X-RayPanel\images\background.svg \
-		..\X-RayPanel\images\tickmark.svg \
-		..\X-RayPanel\images\LargeFocus.png \
-		..\X-RayPanel\images\red.png \
-		..\X-RayPanel\images\fuel-icon.png \
-		..\X-RayPanel\images\smallFocus.png \
-		..\X-RayPanel\fonts\DejaVuSans.ttf
-	C:\Qt\5.12.6\msvc2017_64\bin\rcc.exe -name xraypanel_4.11_qmlcache xraypanel_4.11_qmlcache.qrc -o debug\qrc_xraypanel_4.11_qmlcache.cpp
-
-compiler_qmlcache_make_all: debug\qml_Button_qml.cpp debug\qml_TurnIndicator_qml.cpp debug\qml_dashboard_qml.cpp debug\qml_IconGaugeStyle_qml.cpp debug\qml_DashboardGaugeStyle_qml.cpp debug\qml_TachometerStyle_qml.cpp debug\qml_MasGauge_qml.cpp debug\qml_ValueSource_qml.cpp debug\qml_PressAndHoldButton_qml.cpp
-compiler_qmlcache_clean:
-	-$(DEL_FILE) debug\qml_Button_qml.cpp debug\qml_TurnIndicator_qml.cpp debug\qml_dashboard_qml.cpp debug\qml_IconGaugeStyle_qml.cpp debug\qml_DashboardGaugeStyle_qml.cpp debug\qml_TachometerStyle_qml.cpp debug\qml_MasGauge_qml.cpp debug\qml_ValueSource_qml.cpp debug\qml_PressAndHoldButton_qml.cpp
-debug\qml_Button_qml.cpp: ..\X-RayPanel\qml\Button.qml
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource=C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc -o debug\qml_Button_qml.cpp ..\X-RayPanel\qml\Button.qml
-
-debug\qml_TurnIndicator_qml.cpp: ..\X-RayPanel\qml\TurnIndicator.qml
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource=C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc -o debug\qml_TurnIndicator_qml.cpp ..\X-RayPanel\qml\TurnIndicator.qml
-
-debug\qml_dashboard_qml.cpp: ..\X-RayPanel\qml\dashboard.qml
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource=C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc -o debug\qml_dashboard_qml.cpp ..\X-RayPanel\qml\dashboard.qml
-
-debug\qml_IconGaugeStyle_qml.cpp: ..\X-RayPanel\qml\IconGaugeStyle.qml
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource=C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc -o debug\qml_IconGaugeStyle_qml.cpp ..\X-RayPanel\qml\IconGaugeStyle.qml
-
-debug\qml_DashboardGaugeStyle_qml.cpp: ..\X-RayPanel\qml\DashboardGaugeStyle.qml
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource=C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc -o debug\qml_DashboardGaugeStyle_qml.cpp ..\X-RayPanel\qml\DashboardGaugeStyle.qml
-
-debug\qml_TachometerStyle_qml.cpp: ..\X-RayPanel\qml\TachometerStyle.qml
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource=C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc -o debug\qml_TachometerStyle_qml.cpp ..\X-RayPanel\qml\TachometerStyle.qml
-
-debug\qml_MasGauge_qml.cpp: ..\X-RayPanel\qml\MasGauge.qml
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource=C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc -o debug\qml_MasGauge_qml.cpp ..\X-RayPanel\qml\MasGauge.qml
-
-debug\qml_ValueSource_qml.cpp: ..\X-RayPanel\qml\ValueSource.qml
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource=C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc -o debug\qml_ValueSource_qml.cpp ..\X-RayPanel\qml\ValueSource.qml
-
-debug\qml_PressAndHoldButton_qml.cpp: ..\X-RayPanel\qml\PressAndHoldButton.qml
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource=C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc -o debug\qml_PressAndHoldButton_qml.cpp ..\X-RayPanel\qml\PressAndHoldButton.qml
-
-compiler_qmlcache_loader_make_all: debug\qmlcache_loader.cpp
-compiler_qmlcache_loader_clean:
-	-$(DEL_FILE) debug\qmlcache_loader.cpp
-debug\qmlcache_loader.cpp: ..\X-RayPanel\xraypanel_4.11.qrc 
-	C:\Qt\5.12.6\msvc2017_64\bin\qmlcachegen.exe --resource-file-mapping="C:/Users/user/Desktop/QT_sv_Notouch7.0/X-RayPanel/xraypanel_4.11.qrc=C:/Users/user/Desktop/QT_sv_Notouch7.0/build-xraypanel-Desktop_Qt_5_12_6_MSVC2017_64bit-Release/xraypanel_4.11_qmlcache.qrc" -o debug\qmlcache_loader.cpp ..\X-RayPanel\xraypanel_4.11.qrc
-
 compiler_no_pch_compiler_make_all:
 compiler_no_pch_compiler_clean:
+compiler_rcc_make_all: debug\qrc_xraypanel_4.11.cpp
+compiler_rcc_clean:
+	-$(DEL_FILE) debug\qrc_xraypanel_4.11.cpp
+debug\qrc_xraypanel_4.11.cpp: ..\X-RayPanel\xraypanel_4.11.qrc \
+		C:\Qt\5.12.6\msvc2017_64\bin\rcc.exe \
+		..\X-RayPanel\qml\Button.qml \
+		..\X-RayPanel\qml\TurnIndicator.qml \
+		..\X-RayPanel\qml\dashboard.qml \
+		..\X-RayPanel\qml\IconGaugeStyle.qml \
+		..\X-RayPanel\qml\DashboardGaugeStyle.qml \
+		..\X-RayPanel\qml\TachometerStyle.qml \
+		..\X-RayPanel\qml\MasGauge.qml \
+		..\X-RayPanel\qml\ValueSource.qml \
+		..\X-RayPanel\qml\PressAndHoldButton.qml \
+		..\X-RayPanel\images\tickmark.svg \
+		..\X-RayPanel\images\background.png \
+		..\X-RayPanel\images\red.png \
+		..\X-RayPanel\images\minus-sign.png \
+		..\X-RayPanel\images\piu.png \
+		..\X-RayPanel\images\logoRxRwhite.png \
+		..\X-RayPanel\images\smallFocus.png \
+		..\X-RayPanel\images\yellow.png \
+		..\X-RayPanel\images\xray-giallo.png \
+		..\X-RayPanel\images\plus-sign.png \
+		..\X-RayPanel\images\fuel-icon.png \
+		..\X-RayPanel\images\logoRxR.jpg \
+		..\X-RayPanel\images\meno.png \
+		..\X-RayPanel\images\temperature-icon.png \
+		..\X-RayPanel\images\needle.svg \
+		..\X-RayPanel\images\whitetramp.png \
+		..\X-RayPanel\images\background.svg \
+		..\X-RayPanel\images\whitetrasp.png \
+		..\X-RayPanel\images\green.png \
+		..\X-RayPanel\images\xray-bianco.png \
+		..\X-RayPanel\images\info64.png \
+		..\X-RayPanel\images\fuoco-grande.png \
+		..\X-RayPanel\images\fuoco-piccolo.png \
+		..\X-RayPanel\images\logo-rampoldi.png \
+		..\X-RayPanel\images\sfondo\sfondo.png \
+		..\X-RayPanel\images\sfondo\neon-background.jpg \
+		..\X-RayPanel\images\sfondo\raggi.jpg \
+		..\X-RayPanel\images\sfondo\line_violet_color.jpg \
+		..\X-RayPanel\images\sfondo\sfondo1.png \
+		..\X-RayPanel\fonts\DejaVuSans.ttf
+	C:\Qt\5.12.6\msvc2017_64\bin\rcc.exe -name xraypanel_4.11 ..\X-RayPanel\xraypanel_4.11.qrc -o debug\qrc_xraypanel_4.11.cpp
+
 compiler_moc_predefs_make_all: debug\moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) debug\moc_predefs.h
@@ -702,7 +670,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_rcc_clean compiler_qmlcache_clean compiler_qmlcache_loader_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 
 
@@ -1271,75 +1239,18 @@ debug\settingsdialog.obj: ..\X-RayPanel\serial\settingsdialog.cpp ..\X-RayPanel\
 		C:\Qt\5.12.6\msvc2017_64\include\QtSerialPort\qserialportinfo.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtCore\QVariant \
 		ui_settingsdialog.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QApplication \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qapplication.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qcoreapplication.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qeventloop.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qdesktopwidget.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qguiapplication.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qinputmethod.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QCheckBox \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qcheckbox.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractbutton.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qicon.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QComboBox \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qcombobox.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractitemdelegate.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qstyleoption.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractspinbox.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtGui\QIntValidator \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qvalidator.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qregularexpression.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qslider.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractslider.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qstyle.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qtabbar.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qtabwidget.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qrubberband.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qframe.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qabstractitemmodel.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QGridLayout \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qgridlayout.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlayout.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlayoutitem.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qboxlayout.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QGroupBox \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qgroupbox.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QHBoxLayout \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QLabel \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlabel.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QPushButton \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qpushbutton.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QSpacerItem \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QVBoxLayout \
-		C:\Qt\5.12.6\msvc2017_64\include\QtGui\QIntValidator \
 		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QLineEdit \
 		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlineedit.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qframe.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qtextcursor.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qtextformat.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qpen.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qtextoption.h
 
-debug\qrc_xraypanel_4.11_qmlcache.obj: debug\qrc_xraypanel_4.11_qmlcache.cpp 
-
-debug\qml_Button_qml.obj: debug\qml_Button_qml.cpp 
-
-debug\qml_TurnIndicator_qml.obj: debug\qml_TurnIndicator_qml.cpp 
-
-debug\qml_dashboard_qml.obj: debug\qml_dashboard_qml.cpp 
-
-debug\qml_IconGaugeStyle_qml.obj: debug\qml_IconGaugeStyle_qml.cpp 
-
-debug\qml_DashboardGaugeStyle_qml.obj: debug\qml_DashboardGaugeStyle_qml.cpp 
-
-debug\qml_TachometerStyle_qml.obj: debug\qml_TachometerStyle_qml.cpp 
-
-debug\qml_MasGauge_qml.obj: debug\qml_MasGauge_qml.cpp 
-
-debug\qml_ValueSource_qml.obj: debug\qml_ValueSource_qml.cpp 
-
-debug\qml_PressAndHoldButton_qml.obj: debug\qml_PressAndHoldButton_qml.cpp 
-
-debug\qmlcache_loader.obj: debug\qmlcache_loader.cpp 
+debug\qrc_xraypanel_4.11.obj: debug\qrc_xraypanel_4.11.cpp 
 
 debug\moc_serialLogger.obj: debug\moc_serialLogger.cpp 
 

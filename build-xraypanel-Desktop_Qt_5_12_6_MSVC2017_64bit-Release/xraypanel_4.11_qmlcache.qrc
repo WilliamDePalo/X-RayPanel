@@ -16,5 +16,13 @@
         <file alias="images/LargeFocus.png">../X-RayPanel/images/LargeFocus.png</file>
         <file alias="images/logoRxR.jpg">../X-RayPanel/images/logoRxR.jpg</file>
         <file alias="images/smallFocus.png">../X-RayPanel/images/smallFocus.png</file>
+        <file alias="images/largeFocus_Full.png">../X-RayPanel/images/largeFocus_Full.png</file>
+        <file alias="images/smallFocus_FULL.png">../X-RayPanel/images/smallFocus_FULL.png</file>
+        <file alias="images/sfondo/line_violet_color.jpg">../X-RayPanel/images/sfondo/line_violet_color.jpg</file>
+        <file alias="images/sfondo/neon-background.jpg">../X-RayPanel/images/sfondo/neon-background.jpg</file>
+        <file alias="images/sfondo/raggi.jpg">../X-RayPanel/images/sfondo/raggi.jpg</file>
+        <file alias="images/logoRxRwhite.png">../X-RayPanel/images/logoRxRwhite.png</file>
+        <file alias="images/whitetrasp.png">../X-RayPanel/images/whitetrasp.png</file>
+        <file alias="images/whitetramp.png">../X-RayPanel/images/whitetramp.png</file>
     </qresource>
 </RCC>
