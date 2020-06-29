@@ -84,7 +84,7 @@ CircularGaugeStyle {
         }
 
         ctx.beginPath();
-        ctx.fillStyle = "transparent"; //"black";//sfondo quadrante
+        ctx.fillStyle = "black";//"transparent"; //"black";//sfondo quadrante
         ctx.ellipse(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.fill();
 

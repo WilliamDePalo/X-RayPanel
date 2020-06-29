@@ -64,7 +64,7 @@ Window {
     height: 600
 
     color: "#d3eccb"
-   // property alias touchSynchroText: touchSynchro.text
+    // property alias touchSynchroText: touchSynchro.text
 
     property alias yellowButtonIconSource: yellowButton.iconSource
     //property alias elementAnchorsverticalCenterOffset: element.anchors.verticalCenterOffset
@@ -224,6 +224,7 @@ Window {
                         }
 
                     }
+
                     Image {
                         id: focusImage
                         x: 0
@@ -245,7 +246,7 @@ Window {
                         anchors.leftMargin: 0
                         anchors.topMargin: 0
                         scale: 1
-                        source: "../images/smallFocus.png"
+                        source: "../images/fuoco-piccolo.png"
                     }
                     /*                  CircularGauge {
                         id: focusGauge
@@ -300,14 +301,14 @@ Window {
 
                                 serialTerminal.putPC1cmd("FO0",1)
 
-                                largeFocusImage.visible = false
+                                focusImage.source =  "../images/fuoco-piccolo.png"
                                 // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco piccolo
                                 if (valueSource.tecn)
                                     serialTerminal.putPC1cmd("MA00800",1)
                             }else // se piccolo
                             {
                                 serialTerminal.putPC1cmd("FO1",1)
-                                largeFocusImage.visible = true
+                                focusImage.source = "../images/fuoco-grande.png"
 
                                 // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco grande
                                 if (valueSource.tecn)
@@ -666,22 +667,23 @@ Window {
             }
             PressAndHoldButton {
                 id: kvPlus
-                width: 20
-                height: 20
+                width: 15
+                height: 15
+                visible: true
                 anchors.left: tachometer.horizontalCenter
-                anchors.leftMargin: 30
+                anchors.leftMargin: 40
                 anchors.top: tachometer.bottom
-                anchors.topMargin: -3
+                anchors.topMargin: 10
                 smooth: false
                 antialiasing: true
                 z: 1.63
                 scale: 3.859
                 transformOrigin: Item.Top
-                sourceSize.height: 24
-                fillMode: Image.Stretch
+                sourceSize.height: 23
+                fillMode: Image.PreserveAspectFit
                 sourceSize.width: 23
                 pressed: false
-                source: "../images/plus-sign.png"
+                source: "../images/piu.png"
                 property int cntr : 0
                 onClicked:{
                     if (serialTerminal.getConnectionStatusSlot() !== false)
@@ -702,21 +704,21 @@ Window {
                 property int cntr : 0
                 id: kvMinus
                 x: 254
-                width: 20
-                height: 20
+                width: 15
+                height: 5
                 anchors.top: tachometer.bottom
-                anchors.topMargin: -3
+                anchors.topMargin: 30
                 anchors.right: tachometer.horizontalCenter
-                anchors.rightMargin: 30
+                anchors.rightMargin: 40
                 antialiasing: true
                 z: 1.63
                 scale: 3.859
                 transformOrigin: Item.Top
-                sourceSize.height: 24
+                sourceSize.height: 23
                 fillMode: Image.Stretch
                 sourceSize.width: 23
                 pressed: false
-                source: "../images/minus-sign.png"
+                source: "../images/meno.png"
                 onClicked:{
                     if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
@@ -748,23 +750,23 @@ Window {
 
                 PressAndHoldButton {
                     id: mAMinus
-                    x: 435
-                    width: 20
-                    height: 20
+                    x: 77
+                    width: 15
+                    height: 5
                     anchors.right: speedometer.horizontalCenter
-                    anchors.rightMargin: 30
+                    anchors.rightMargin: 40
                     anchors.top: speedometer.bottom
-                    anchors.topMargin: -3
+                    anchors.topMargin: 30
                     anchors.horizontalCenterOffset: -52
                     antialiasing: true
                     z: 1.63
                     scale: 3.859
                     transformOrigin: Item.Top
-                    sourceSize.height: 24
+                    sourceSize.height: 23
                     fillMode: Image.Stretch
                     sourceSize.width: 23
                     pressed: false
-                    source: "../images/minus-sign.png"
+                    source: "../images/meno.png"
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
@@ -775,22 +777,22 @@ Window {
 
                 PressAndHoldButton {
                     id: mAPlus
-                    width: 20
-                    height: 20
+                    width: 15
+                    height: 15
                     anchors.left: speedometer.horizontalCenter
-                    anchors.leftMargin: 30
+                    anchors.leftMargin: 40
                     anchors.top: speedometer.bottom
-                    anchors.topMargin: -3
+                    anchors.topMargin: 10
                     anchors.horizontalCenterOffset: -52
                     antialiasing: true
                     z: 1.63
                     scale: 3.859
                     transformOrigin: Item.Top
-                    sourceSize.height: 24
-                    fillMode: Image.Stretch
+                    sourceSize.height: 23
+                    fillMode: Image.PreserveAspectFit
                     sourceSize.width: 23
                     pressed: false
-                    source: "../images/plus-sign.png"
+                    source: "../images/piu.png"
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
@@ -874,23 +876,24 @@ Window {
 
                     PressAndHoldButton {
                         id: msecMinus
-                        y: 111
                         width: 8
-                        height: 8
+                        height: 2
+                        anchors.top: parent.bottom
+                        anchors.topMargin: -42
                         anchors.left: parent.left
                         anchors.right: tachometer.left
                         transformOrigin: Item.Top
                         anchors.verticalCenterOffset: -30
                         sourceSize.width: 23
                         anchors.rightMargin: -350
-                        sourceSize.height: 24
+                        sourceSize.height: 15
                         z: 1.63
                         scale: 3.859
                         fillMode: Image.Stretch
                         pressed: false
-                        source: "../images/minus-sign.png"
+                        source: "../images/meno.png"
                         anchors.verticalCenter: tachometer.verticalCenter
-                        anchors.leftMargin: 8
+                        anchors.leftMargin: 2
                         antialiasing: true
                         property int  cntr: 0
                         onClicked:
@@ -913,13 +916,14 @@ Window {
                     PressAndHoldButton {
                         id: msecPlus
                         x: 131
-                        y: 111
                         width: 8
                         height: 8
+                        anchors.top: parent.bottom
+                        anchors.topMargin: -55
                         anchors.right: parent.right
-                        anchors.rightMargin: 8
+                        anchors.rightMargin: 2
                         anchors.verticalCenterOffset: -30
-                        source: "../images/plus-sign.png"
+                        source: "../images/piu.png"
                         anchors.leftMargin: -350
                         antialiasing: true
                         anchors.verticalCenter: tachometer.verticalCenter
@@ -929,7 +933,7 @@ Window {
                         fillMode: Image.Stretch
                         anchors.left: tachometer.right
                         sourceSize.width: 23
-                        sourceSize.height: 24
+                        sourceSize.height: 23
                         pressed: false
                         property int  cntr: 0
                         onClicked:
@@ -963,7 +967,7 @@ Window {
             width: 317
             height: 110
             fillMode: Image.PreserveAspectFit
-            source: "../images/whitetramp.png"
+            source: "../images/logo-rampoldi.png"
         }
 
         Item {
@@ -1098,7 +1102,7 @@ Window {
             Row {
                 id:rowLights
                 y: -40
-                width: 237
+                width: 209
                 height: 80
                 anchors.horizontalCenterOffset: -45
                 spacing: 20
@@ -1117,9 +1121,8 @@ Window {
                     y: 0
                     width: 55
                     height: 55
+                    anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 0
                     antialiasing: true
                     smooth: false
                     iconSource: ""
@@ -1195,36 +1198,15 @@ Window {
                         y: 0
                         width: 55
                         height: 55
-                        anchors.bottom: parent.bottom
-                        anchors.right: parent.right
-                        anchors.left: parent.left
-                        anchors.top: parent.top
                         visible: true
                         rotation: 0
                         sourceSize.height: 0
                         sourceSize.width: 0
                         fillMode: Image.Stretch
-                        anchors.rightMargin: 0
-                        anchors.bottomMargin: 0
-                        anchors.leftMargin: 0
-                        anchors.topMargin: 0
                         scale: 1
                         source: "../images/red.png"
                     }
 
-                }
-
-                StatusIndicator {
-                    id: emissionSts
-                    width: 65
-                    height: 65
-                    color: "#feec63"
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    z: 19.022
-                    antialiasing: true
-                    enabled: false
-                    active: false
                 }
 
                 Button {
@@ -1232,8 +1214,8 @@ Window {
                     y: 0
                     width: 55
                     height: 55
-                    anchors.left: parent.left
-                    anchors.leftMargin: 0
+                    anchors.right: parent.right
+                    anchors.rightMargin: 0
                     layer.textureMirroring: ShaderEffectSource.NoMirroring
                     isDefault: false
                     layer.format: ShaderEffectSource.RGBA
@@ -1248,7 +1230,7 @@ Window {
                         {
                             infoPanel.visible = true
                         }
-                             }
+                    }
                     style: ButtonStyle {
                         background: Rectangle {
                             color: control.pressed ? "#d1d1d1" : control.hovered ? "#666" : "transparent"
@@ -1270,25 +1252,14 @@ Window {
                     anchors.verticalCenter: parent.verticalCenter
                     Image {
                         id: btnInfImage1
-                        x: 0
-                        y: 0
-                        width: 55
-                        height: 55
-                        anchors.topMargin: 0
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
+                        anchors.fill: parent
                         sourceSize.width: 0
                         visible: true
                         fillMode: Image.Stretch
-                        anchors.rightMargin: 0
                         sourceSize.height: 0
                         scale: 1
-                        anchors.leftMargin: 0
-                        anchors.left: parent.left
                         rotation: 0
                         source: "../images/info64.png"
-                        anchors.bottomMargin: 0
-                        anchors.top: parent.top
                     }
                     smooth: false
                     layer.enabled: false
@@ -1296,6 +1267,17 @@ Window {
                     layer.wrapMode: ShaderEffectSource.ClampToEdge
                     clip: false
                     checkable: false
+                }
+
+                Image {
+                    id: emissionImg
+                    width: 55
+                    height: 55
+                    anchors.left: parent.left
+                    anchors.leftMargin: 0
+                    anchors.verticalCenter: parent.verticalCenter
+                    fillMode: Image.PreserveAspectFit
+                    source: "../images/xray-bianco.png"
                 }
 
 
@@ -1574,11 +1556,11 @@ Window {
                         {
                             tmp = (data[2]-"0")*100;
                             tmp += (data[3]-"0")*10;
-                            tmp += data[4]-"0";                            
-                            valueSource.cap = tmp;                           
+                            tmp += data[4]-"0";
+                            valueSource.cap = tmp;
                         }
                         else if ((data[0] ==="M")&&            // gestione Ma
-                                  (data[1]==="A"))
+                                 (data[1]==="A"))
                         {
                             tmp =  (data[2]-"0")*1000;
                             tmp += (data[3]-"0")*100;
@@ -1679,11 +1661,11 @@ Window {
                         {
 
                             if (data[2] === "0")
-                                emissionSts.active = false;
+                                emissionImg.source = "../images/xray-bianco.png"
                             else if (data[2]=== "1")
                             {
                                 serialTerminal.putPC1cmd(data,1);
-                                emissionSts.active = true;
+                                emissionImg.source ="../images/xray-giallo.png"
                                 prState.value =0;
                                 prStatus.text = "IDLE"
                             }
@@ -1717,7 +1699,7 @@ Window {
                                 errorMessage.visible = true
                             }
                             if ((data[9] === "6") && (data[8] === "5")&&
-                                (data[7] === "2") && (data[6] === "0"))
+                                    (data[7] === "2") && (data[6] === "0"))
                             {
                                 errorMessage.text = qsTr("PL02 BUFFER RX OVERFLOW !!!")
                                 errorMessage.visible = true
@@ -1728,7 +1710,7 @@ Window {
                                 errorMessage.visible = true
                             }
                             if (data[9] & 8)
-                                   errorMessage.text = qsTr("EXCEEDING CRITICAL THRESHOLD VMAX !!!")
+                                errorMessage.text = qsTr("EXCEEDING CRITICAL THRESHOLD VMAX !!!")
                             if ((data[9] === "6") && (data[8] === "1"))
                             {
                                 errorMessage.text = qsTr("CAPACITOR INPUT CALIBRATION !!!")
@@ -1736,10 +1718,10 @@ Window {
                                 errorMessage.visible = true
                             }
                             if ((data[9] === "8") && (data[8] === "6")&&
-                                (data[7] === "7") && (data[6] === "2") && (data[5] ==="3"))
+                                    (data[7] === "7") && (data[6] === "2") && (data[5] ==="3"))
                             {
                                 errorMessage.text = qsTr("WARNING V MAX RESTORED TO BALANCE CAPACITORS !!!")
-                                   //WARNING_CARICA_MAX = ALARM_STATUS & 32768 //0x8000
+                                //WARNING_CARICA_MAX = ALARM_STATUS & 32768 //0x8000
                                 errorMessage.visible = true
                             }
 
@@ -2009,7 +1991,7 @@ Window {
                 font.pixelSize: 12
             }
 
-      /*     Connections {
+            /*     Connections {
                 target: serialTerminal
                 tmp1: 1000
                 tmp: 5000
@@ -2034,3 +2016,9 @@ Window {
 
 
 
+
+/*##^##
+Designer {
+    D{i:44;anchors_y:113}D{i:45;anchors_y:111}D{i:43;anchors_y:113}D{i:60;anchors_height:55;anchors_width:55;anchors_x:171;anchors_y:0}
+}
+##^##*/
