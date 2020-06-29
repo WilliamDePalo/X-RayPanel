@@ -194,7 +194,7 @@ Window {
                 x: 700
                 y: 0
                 width: 230
-                height: 420
+                height: 400
                 anchors.rightMargin: 4
                 anchors.verticalCenterOffset: 85
                 anchors.right: parent.right
@@ -206,6 +206,7 @@ Window {
                     y: 14
                     width: 60
                     height: 60
+                    activeFocusOnPress: false
                     iconSource: ""
                     tooltip: "Small"
                     anchors.left: focusTitle.right
@@ -499,9 +500,9 @@ Window {
                     id: capacitorPerc
                     x: -121
                     width: 63
-                    height: 200
+                    height: 261
                     anchors.top: status.top
-                    anchors.topMargin: -1
+                    anchors.topMargin: -62
                     value:  valueSource.cap
                     anchors.right: parent.right
                     anchors.rightMargin: 288
@@ -509,6 +510,7 @@ Window {
 
                 Text {
                     id: focusTitle
+                    y: 265
                     height: 35
                     color: "#fdfdfd"
                     text: qsTr("FOCUS:")
@@ -521,7 +523,7 @@ Window {
                     styleColor: "#16161616"
                     anchors.rightMargin: 147
                     anchors.right: parent.right
-                    anchors.topMargin: 69
+                    anchors.topMargin: 60
                     textFormat: Text.AutoText
                     font.family: "Tahoma"
                     font.wordSpacing: 1
@@ -540,7 +542,7 @@ Window {
                     anchors.right: parent.right
                     anchors.rightMargin: 27
                     anchors.top: parent.verticalCenter
-                    anchors.topMargin: -160
+                    anchors.topMargin: -130
 
                     ProgressBar {
                         id: prState
@@ -640,7 +642,7 @@ Window {
                     anchors.left: parent.left
                     anchors.leftMargin: 8
                     font.weight: Font.Normal
-                    anchors.topMargin: 55
+                    anchors.topMargin: 40
                     font.family: "Tahoma"
                     styleColor: "#16161616"
                     fontSizeMode: Text.HorizontalFit
@@ -736,6 +738,120 @@ Window {
             }
             anchors.centerIn: parent
             //  spacing: 10
+
+            Item {
+                id: twoPointPanel
+                width: 325
+                height: 285
+                anchors.left: tachometer.right
+                anchors.leftMargin: 10
+                visible: false
+                anchors.verticalCenterOffset: 50
+                anchors.verticalCenter: parent.verticalCenter
+                MasGauge{
+                    id:masGa
+                    property bool accelerating
+                    width: 285
+                    height: 285
+                    anchors.bottomMargin: 0
+                    anchors.topMargin: 0
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                    anchors.top: parent.top
+                    anchors.leftMargin: 0
+                    minimumValue: 0.6
+                    value: valueSource.mas
+                    maximumValue: 250
+
+                    // Component.onCompleted: forceActiveFocus()
+
+                    //   Behavior on value { NumberAnimation { duration: 1000 }}
+
+                    //     Keys.onSpacePressed: accelerating = true
+                    //     Keys.onReleased: {
+                    //         if (event.key === Qt.Key_Space) {
+                    //             accelerating = false;
+                    //            event.accepted = true;
+                    //        }
+                    //    }
+                }
+
+                PressAndHoldButton {
+                    id: masMinus
+                    x: 48
+                    width: 15
+                    height: 5
+                    anchors.right: masGa.horizontalCenter
+                    anchors.rightMargin: 40
+                    anchors.top: masGa.bottom
+                    anchors.topMargin: 30
+                    scale: 3.859
+                    sourceSize.height: 24
+                    z: 1.63
+                    transformOrigin: Item.Top
+                    source: "../images/meno.png"
+                    antialiasing: true
+                    sourceSize.width: 23
+                    pressed: false
+                    fillMode: Image.Stretch
+                    property int  cntr: 0
+                    onClicked:
+                    {
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            if (cntr <= 2)
+                                serialTerminal.putPC1cmd("MX-",1)
+                            else
+                                serialTerminal.putPC1cmd("MX--",1)
+                            cntr++
+                        }
+                    }
+                    onPressedChanged:  {
+                        if (!pressed)
+                            cntr = 0
+                    }
+
+                }
+
+
+                PressAndHoldButton {
+                    id: masPlus
+                    x: 734
+                    width: 15
+                    height: 15
+                    anchors.top: parent.bottom
+                    anchors.topMargin: 10
+                    anchors.leftMargin: 40
+                    scale: 3.859
+                    sourceSize.height: 23
+                    z: 1.63
+                    transformOrigin: Item.Top
+                    source: "../images/piu.png"
+                    antialiasing: true
+                    sourceSize.width: 23
+                    pressed: false
+                    fillMode: Image.PreserveAspectFit
+                    anchors.left: masGa.horizontalCenter
+                    property int  cntr: 0
+                    onClicked:
+                    {
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+
+                            if (cntr <= 2)
+                                serialTerminal.putPC1cmd("MX+",1)
+                            else
+                                serialTerminal.putPC1cmd("MX++",1)
+                            cntr++
+
+                        }
+                    }
+                    onPressedChanged:  {
+                        if (!pressed)
+                            cntr = 0
+                    }
+                }
+            }
 
             Item {
                 id: threePointPanel
@@ -956,133 +1072,20 @@ Window {
             }
 
 
+
         }
 
 
 
         Image {
             id: logo
-            x: 31
-            y: 32
-            width: 317
-            height: 110
+            y: 27
+            width: 290
+            height: 97
+            anchors.left: parent.left
+            anchors.leftMargin: 27
             fillMode: Image.PreserveAspectFit
             source: "../images/logo-rampoldi.png"
-        }
-
-        Item {
-            id: twoPointPanel
-            width: 325
-            height: 285
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 13
-            anchors.left: parent.left
-            anchors.leftMargin: 9
-            visible: false
-            anchors.verticalCenterOffset: 145
-            anchors.verticalCenter: parent.verticalCenter
-            MasGauge{
-                id:masGa
-                property bool accelerating
-                width: 285
-                anchors.left: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-                anchors.top: parent.top
-                anchors.leftMargin: 0
-                minimumValue: 0.6
-                value: valueSource.mas
-                maximumValue: 250
-
-                // Component.onCompleted: forceActiveFocus()
-
-                //   Behavior on value { NumberAnimation { duration: 1000 }}
-
-                //     Keys.onSpacePressed: accelerating = true
-                //     Keys.onReleased: {
-                //         if (event.key === Qt.Key_Space) {
-                //             accelerating = false;
-                //            event.accepted = true;
-                //        }
-                //    }
-            }
-
-            PressAndHoldButton {
-                id: masMinus
-                x: 272
-                y: 94
-                width: 20
-                height: 20
-                scale: 3.859
-                sourceSize.height: 24
-                anchors.right: masGa.left
-                anchors.rightMargin: 42
-                z: 1.63
-                transformOrigin: Item.Top
-                source: "../images/minus-sign.png"
-                antialiasing: true
-                sourceSize.width: 23
-                anchors.verticalCenter: masGa.verticalCenter
-                anchors.verticalCenterOffset: -32
-                pressed: false
-                fillMode: Image.Stretch
-                property int  cntr: 0
-                onClicked:
-                {
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        if (cntr <= 2)
-                            serialTerminal.putPC1cmd("MX-",1)
-                        else
-                            serialTerminal.putPC1cmd("MX--",1)
-                        cntr++
-                    }
-                }
-                onPressedChanged:  {
-                    if (!pressed)
-                        cntr = 0
-                }
-
-            }
-
-
-            PressAndHoldButton {
-                id: masPlus
-                x: 734
-                y: 94
-                width: 20
-                height: 20
-                anchors.leftMargin: 332
-                scale: 3.859
-                sourceSize.height: 24
-                z: 1.63
-                transformOrigin: Item.Top
-                source: "../images/plus-sign.png"
-                antialiasing: true
-                sourceSize.width: 23
-                anchors.verticalCenter: masGa.verticalCenter
-                anchors.verticalCenterOffset: -32
-                pressed: false
-                fillMode: Image.Stretch
-                anchors.left: masGa.left
-                property int  cntr: 0
-                onClicked:
-                {
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-
-                        if (cntr <= 2)
-                            serialTerminal.putPC1cmd("MX+",1)
-                        else
-                            serialTerminal.putPC1cmd("MX++",1)
-                        cntr++
-
-                    }
-                }
-                onPressedChanged:  {
-                    if (!pressed)
-                        cntr = 0
-                }
-            }
         }
 
 
@@ -1902,9 +1905,9 @@ Window {
 
         Column {
             id: infoPanel
-            x: 611
-            width: 158
-            height: 149
+            x: 784
+            width: 219
+            height: 90
             layer.samples: 2
             scale: 1
             anchors.topMargin: 98
@@ -1960,11 +1963,12 @@ Window {
                 id: touchSynchro
                 width: 14
                 height: 16
-                text: "Panel Synchro"
-                anchors.top: pMs.bottom
-                anchors.topMargin: 2
-                anchors.left: parent.left
+                text: ""
+                anchors.verticalCenter: pMs.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: 80
                 // text: "Panel Synchro"
+
                 onCheckedChanged: {
                     if (touchSynchro.checked)
                     {
@@ -1975,6 +1979,18 @@ Window {
                     {
                         pollingTimer.repeat = 0
                     }
+                }
+                Text {
+                    id: touchLabel
+                    x: 15
+                    y: -3
+                    width: 91
+                    height: 23
+                    color: "white"
+                    text: qsTr("Panel Synchro")
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 12
                 }
             }
 
@@ -2003,7 +2019,7 @@ Window {
 
 
 
-            anchors.rightMargin: 255
+            anchors.rightMargin: 21
             anchors.top: parent.top
             visible: false
             anchors.right: parent.right
@@ -2019,6 +2035,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:44;anchors_y:113}D{i:45;anchors_y:111}D{i:43;anchors_y:113}D{i:60;anchors_height:55;anchors_width:55;anchors_x:171;anchors_y:0}
+    D{i:44;anchors_y:113}D{i:43;anchors_y:113}D{i:45;anchors_y:111}D{i:60;anchors_height:55;anchors_width:55;anchors_x:171;anchors_y:0}
 }
 ##^##*/

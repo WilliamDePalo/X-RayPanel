@@ -7,6 +7,13 @@ import QtGraphicalEffects 1.0
 
 CircularGauge {
     id: masGauge
+    width: 650
+    height: 496
+    layer.textureMirroring: ShaderEffectSource.NoMirroring
+    layer.wrapMode: ShaderEffectSource.ClampToEdge
+    layer.textureSize.height: 1
+    z: 0
+    scale: 1
 
     style: CircularGaugeStyle {
         labelStepSize: 10
@@ -25,7 +32,7 @@ CircularGauge {
 
             Image {
                 anchors.fill: parent
-                source:"../images/background.svg"
+                source:"../images/backgroundB.svg"
                 asynchronous: true
                 sourceSize {
                     width: width
@@ -63,7 +70,7 @@ CircularGauge {
             height: outerRadius * 0.27
             Image {
                 id: needle
-                source: "../images/needle.svg"
+                source: "../images/needleWb.svg"
                 height: parent.height
                 width: height * 0.1
                 asynchronous: true
@@ -122,3 +129,9 @@ CircularGauge {
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

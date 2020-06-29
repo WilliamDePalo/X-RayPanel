@@ -110,6 +110,41 @@ CircularGaugeStyle {
         ctx.fill();
     }
 
+    function paintHalfBackground(ctx) {
+        if (halfGauge) {
+            ctx.beginPath();
+            ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height / 2);
+            ctx.clip();
+        }
+
+        ctx.beginPath();
+        ctx.fillStyle = "transparent"; //"black";//sfondo quadrante
+        ctx.ellipse(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.lineWidth = tickmarkInset;
+        ctx.strokeStyle = "transparent";//"black";
+        ctx.arc(xCenter, yCenter, outerRadius - ctx.lineWidth / 2, outerRadius - ctx.lineWidth / 2, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineWidth = tickmarkInset / 2;
+        ctx.strokeStyle = "transparent";//"#222";
+        ctx.arc(xCenter, yCenter, outerRadius - ctx.lineWidth / 2, outerRadius - ctx.lineWidth / 2, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        var gradient = ctx.createRadialGradient(xCenter, yCenter, 0, xCenter, yCenter, outerRadius * 1.5);
+        gradient.addColorStop(0, "transparent");//Qt.rgba(1, 1, 1, 0));
+        gradient.addColorStop(0.7,  "transparent");//Qt.rgba(1, 1, 1, 0.13));
+        gradient.addColorStop(1,  "transparent");//Qt.rgba(1, 1, 1, 1));
+        ctx.fillStyle = gradient;
+        ctx.arc(xCenter, yCenter, outerRadius - tickmarkInset, outerRadius - tickmarkInset, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+
     background: Canvas {
         onPaint: {
             var ctx = getContext("2d");
@@ -158,7 +193,7 @@ CircularGaugeStyle {
             ctx.lineTo(xCenter, yCenter - needleLength);
             ctx.lineTo(xCenter, 0);
             ctx.closePath();
-            ctx.fillStyle = Qt.rgba(0.66, 0, 0, 0.66);
+            ctx.fillStyle = "#5eb3e4";//Qt.rgba(0.66, 0, 0, 0.66);
             ctx.fill();
 
             ctx.beginPath();
@@ -167,7 +202,7 @@ CircularGaugeStyle {
             ctx.lineTo(xCenter + needleTipWidth / 2, 0);
             ctx.lineTo(xCenter, 0);
             ctx.closePath();
-            ctx.fillStyle = Qt.lighter(Qt.rgba(0.66, 0, 0, 0.66));
+            ctx.fillStyle = "#5eb3e4";// Qt.lighter(Qt.rgba(0.66, 0, 0, 0.66));
             ctx.fill();
         }
     }

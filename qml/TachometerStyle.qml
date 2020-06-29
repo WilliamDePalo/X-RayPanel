@@ -83,6 +83,7 @@ DashboardGaugeStyle {
             paintBackground(ctx);
 
             ctx.beginPath();
+            
             ctx.lineWidth = tachometerStyle.toPixels(0.08);
             ctx.strokeStyle = "#5eb3e4";//Qt.rgba(0.5, 0, 0, 1); //colore valori massimi kv
             var warningCircumference = maximumValueAngle - minimumValueAngle * 0.1;

@@ -95,7 +95,7 @@ DashboardGaugeStyle {
                 var ctx = getContext("2d");
                 ctx.reset();
 
-                paintBackground(ctx);
+                paintHalfBackground(ctx);
 
                 if (minWarningColor != "transparent") {
                     ctx.beginPath();
@@ -140,14 +140,14 @@ DashboardGaugeStyle {
             anchors.horizontalCenter: parent.horizontalCenter
          //   anchors.bottom: parent.bottom
         }
-        Image {
-            source: icon
-            anchors.bottom: parent.verticalCenter
-            anchors.bottomMargin: toPixels(0.3)
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: toPixels(0.3)
-            height: width
-            fillMode: Image.PreserveAspectFit
-        }
+  //      Image {
+  //          source: icon
+  //          anchors.bottom: parent.verticalCenter
+  //          anchors.bottomMargin: toPixels(0.3)
+  //          anchors.horizontalCenter: parent.horizontalCenter
+  //          width: toPixels(0.3)
+  //          height: width
+  //          fillMode: Image.PreserveAspectFit
+  //      }
     }
 }

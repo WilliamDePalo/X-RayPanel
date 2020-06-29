@@ -39,5 +39,8 @@
         <file>images/xray-giallo.png</file>
         <file>images/sfondo/sfondo.png</file>
         <file>images/sfondo/sfondo1.png</file>
+        <file>images/needleW.svg</file>
+        <file>images/needleWb.svg</file>
+        <file>images/backgroundB.svg</file>
     </qresource>
 </RCC>
