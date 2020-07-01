@@ -10,8 +10,6 @@
         <file>qml/TurnIndicator.qml</file>
         <file>qml/ValueSource.qml</file>
         <file>qml/PressAndHoldButton.qml</file>
-        <file>images/minus-sign.png</file>
-        <file>images/plus-sign.png</file>
         <file>qml/Button.qml</file>
         <file>images/green.png</file>
         <file>images/red.png</file>
@@ -42,5 +40,9 @@
         <file>images/needleW.svg</file>
         <file>images/needleWb.svg</file>
         <file>images/backgroundB.svg</file>
+        <file>images/noReady.png</file>
+        <file>images/ready.png</file>
+        <file>images/fuoco-grande_B.png</file>
+        <file>images/fuoco-piccolo_B.png</file>
     </qresource>
 </RCC>

@@ -69,12 +69,15 @@ Window {
     property alias yellowButtonIconSource: yellowButton.iconSource
     //property alias elementAnchorsverticalCenterOffset: element.anchors.verticalCenterOffset
     //  property alias fuelGaugeY: focusGauge.y
-    title: "X-Ray Manager"
+    title: "Mu.De. Manager"
+
 
     ValueSource {
         id: valueSource
 
         fuoco: false
+
+
 
     }
 
@@ -100,6 +103,17 @@ Window {
 
     }
 
+    Timer{
+        id: readyTimer
+        running: true
+        repeat: true
+        interval: 300
+        //property var callback
+
+        onTriggered:  checkErrorReady() //callback()
+
+    }
+
     function setTimeout(callback, delay)
     {
         if (pollingTimer.running) {
@@ -112,6 +126,14 @@ Window {
         pollingTimer.running = true;
     }
 
+    function setStatusInterval(delay)
+    {
+         if(statusTimer.running){
+             statusTimer.stop();
+         }
+          statusTimer.interval = delay;
+         statusTimer.running = true;
+    }
 
     function setStatusTo(callback, delay)
     {
@@ -122,6 +144,17 @@ Window {
         statusTimer.callback = callback;
         statusTimer.interval = delay + 1;
         statusTimer.running = true;
+    }
+
+    function setReadyTo(callback, delay)
+    {
+        if(readyTimer.running){
+            // error
+            return;
+        }
+        readyTimer.callback = callback;
+        readyTimer.interval = delay + 1;
+        readyTimer.running = true;
     }
 
     function sendMinMaFp()
@@ -156,6 +189,27 @@ Window {
         // si potrebbe aggiungere anche lo stato "ST"
     }
 
+
+    function checkErrorReady()
+    {// c'è un allarme in atto // non ho la connessione // lo stato è init, alarm, o disconnect // la carica e' minore di 98%
+        if ((errorMessage.visible == true) || (serialTerminal.getConnectionStatusSlot() === false) ||
+            ((valueSource.numericSTS == 0)  ||(valueSource.numericSTS == 1) || (valueSource.numericSTS == 5)) ||
+            (valueSource.cap < 98))
+      /*  if ((errorMessage.visible == true) || // c'è un allarme in atto
+            ((valueSource.numericSTS == 0)  ||
+             (valueSource.numericSTS == 1)  ||
+             (valueSource.numericSTS == 5)) ||
+             (valueSource.cap < 98))
+*/
+        {
+            readyImg.source = "../images/noReady.png"
+        }else
+        {
+            readyImg.source = "../images/ready.png"
+        }
+    }
+
+
     // Dashboards are typically in a landscape orientation, so we need to ensure
     // our height is never greater than our width.
     Item {
@@ -163,8 +217,8 @@ Window {
         y: 0
         width: 1024
         height: 600
-        anchors.rightMargin: -6
-        anchors.leftMargin: 6
+        anchors.rightMargin: 0
+        anchors.leftMargin: 0
         anchors.left: parent.left
         anchors.right: parent.right
         // Math.min(root.width, root.height)
@@ -325,10 +379,10 @@ Window {
                     height: 35
                     color: "#fdfdfd"
                     text: qsTr("STATUS:")
-                    anchors.leftMargin: 0
+                    anchors.leftMargin: -40
                     font.family: "Tahoma"
                     anchors.top: parent.top
-                    anchors.topMargin: 0
+                    anchors.topMargin: 1
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignLeft
                     textFormat: Text.AutoText
@@ -340,7 +394,7 @@ Window {
                     styleColor: "#16161616"
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.rightMargin: 155
+                    anchors.rightMargin: 195
                     font.pixelSize: 18
                 }
 
@@ -435,7 +489,7 @@ Window {
                             implicitWidth: 200
                             implicitHeight: 20
                             radius: 1
-                            border.color: "#000000"
+                            border.color: "#0d1220"
                             opacity: 1
                             visible: true
                             //    border.color: "#62626a"
@@ -498,14 +552,14 @@ Window {
 
                 Gauge {
                     id: capacitorPerc
-                    x: -121
+                    x: -142
                     width: 63
                     height: 261
                     anchors.top: status.top
-                    anchors.topMargin: -62
+                    anchors.topMargin: -64
                     value:  valueSource.cap
                     anchors.right: parent.right
-                    anchors.rightMargin: 288
+                    anchors.rightMargin: 309
                 }
 
                 Text {
@@ -647,6 +701,20 @@ Window {
                     styleColor: "#16161616"
                     fontSizeMode: Text.HorizontalFit
                     font.pixelSize: 18
+                }
+
+                Image {
+                    id: readyImg
+                    x: -790
+                    y: -185
+                    width: 85
+                    height: 35
+                    anchors.verticalCenterOffset: 0
+                    anchors.verticalCenter: readyTitle.verticalCenter
+                    anchors.left: readyTitle.right
+                    anchors.leftMargin: 1
+                    fillMode: Image.PreserveAspectFit
+                    source: "../images/noReady.png"
                 }
 
             }
@@ -988,20 +1056,24 @@ Window {
                             font.pixelSize: tempGaugeStyle.toPixels(0.225)
                             text: styleData.value === 0 ? "min" :(styleData.value === 1 ? "MSEC" : (styleData.value === 2/*11*/ ? "max" : ""))
                         }
-                    }
 
+                    }
+                    onValueChanged:  {
+                        msecMinus.anchors.rightMargin = 35 + (valueSource.msec.toString().length * 10)
+                        msecPlus.anchors.leftMargin = 35 + (valueSource.msec.toString().length * 10)
+                    }
                     PressAndHoldButton {
                         id: msecMinus
                         width: 8
                         height: 2
                         anchors.top: parent.bottom
                         anchors.topMargin: -42
-                        anchors.left: parent.left
-                        anchors.right: tachometer.left
+                      //  anchors.left: parent.left
+                        anchors.right : parent.horizontalCenter
+                        anchors.rightMargin: 55
                         transformOrigin: Item.Top
                         anchors.verticalCenterOffset: -30
                         sourceSize.width: 23
-                        anchors.rightMargin: -350
                         sourceSize.height: 15
                         z: 1.63
                         scale: 3.859
@@ -1009,7 +1081,7 @@ Window {
                         pressed: false
                         source: "../images/meno.png"
                         anchors.verticalCenter: tachometer.verticalCenter
-                        anchors.leftMargin: 2
+                       // anchors.leftMargin: 2
                         antialiasing: true
                         property int  cntr: 0
                         onClicked:
@@ -1021,6 +1093,7 @@ Window {
                                 else
                                     serialTerminal.putPC1cmd("MS--",1)
                                 cntr++
+
                             }
                         }
                         onPressedChanged:  {
@@ -1031,23 +1104,20 @@ Window {
 
                     PressAndHoldButton {
                         id: msecPlus
-                        x: 131
                         width: 8
                         height: 8
                         anchors.top: parent.bottom
                         anchors.topMargin: -55
-                        anchors.right: parent.right
-                        anchors.rightMargin: 2
                         anchors.verticalCenterOffset: -30
                         source: "../images/piu.png"
-                        anchors.leftMargin: -350
+                        anchors.leftMargin: 55
                         antialiasing: true
                         anchors.verticalCenter: tachometer.verticalCenter
                         scale: 3.859
                         transformOrigin: Item.Top
                         z: 1.63
                         fillMode: Image.Stretch
-                        anchors.left: tachometer.right
+                        anchors.left: parent.horizontalCenter
                         sourceSize.width: 23
                         sourceSize.height: 23
                         pressed: false
@@ -1073,17 +1143,18 @@ Window {
 
 
 
+
         }
 
 
 
         Image {
             id: logo
-            y: 27
-            width: 290
-            height: 97
+            y: 42
+            width: 310
+            height: 115
             anchors.left: parent.left
-            anchors.leftMargin: 27
+            anchors.leftMargin: 16
             fillMode: Image.PreserveAspectFit
             source: "../images/logo-rampoldi.png"
         }
@@ -1152,7 +1223,7 @@ Window {
                                 btnyellImage.source = "../images/red.png"
                             else
                                 btnyellImage.source = "../images/green.png"
-                        }else
+                        }else if (infoPanel.visible== false)
                         {
                             baudRate.currentIndex = 8
                             serialSettings.visible = true
@@ -1229,7 +1300,7 @@ Window {
                         if (infoPanel.visible)
                         {
                             infoPanel.visible = false
-                        }else
+                        }else if (serialSettings.visible == false)
                         {
                             infoPanel.visible = true
                         }
@@ -1399,7 +1470,6 @@ Window {
                             if (data[4]==="1")
                             {
                                 status.text=qsTr("INITIALIZATION")
-
                             }else if (data[4]==="2")
                             {
                                 status.text=qsTr("STANDBY")
@@ -1420,6 +1490,7 @@ Window {
                             {
                                 status.text=qstr("UNKNOW")
                             }
+                            valueSource.numericSTS = data[4]
                         }
                     }else // se non e' un polling
                     {
@@ -1453,6 +1524,7 @@ Window {
                                     if (serialTerminal.getConnectionStatusSlot() !== false)
                                         serialTerminal.putPC1cmd("MA00800",1)
                                 valueSource.fuoco = false
+                                focusImage.source =  "../images/fuoco-piccolo.png"
                             }
                             else
                             {
@@ -1463,8 +1535,9 @@ Window {
                                 if ((valueSource.tecn == 1) && (valueSource.fuoco === 0))
                                     if (serialTerminal.getConnectionStatusSlot() !== false)
                                         serialTerminal.putPC1cmd("MA01600",1)
+                                focusImage.source =  "../images/fuoco-grande.png"
                             }
-                            errorMessage.visible = false
+                            errorMessage.visible = false                            
                         }else if((data[0] ==="E")&&            // gestione fuoco
                                  (data[1]==="T"))
                         {
@@ -1515,6 +1588,8 @@ Window {
                                             serialTerminal.putPC1cmd("MX00006",1)
                                         }
                                     }
+                                    tecLabel2.color = "#5bb2e5"
+                                    tecLabel3.color = "#fbfbfb"
                                 }
                             }
                             else // // Tecnica 3 punti
@@ -1541,6 +1616,8 @@ Window {
                                             serialTerminal.putPC1cmd("MA00800",1)
                                         }
                                     }
+                                    tecLabel3.color = "#5bb2e5";
+                                    tecLabel2.color = "#fbfbfb"
                                 }
                             }
                             errorMessage.visible = false
@@ -1561,6 +1638,9 @@ Window {
                             tmp += (data[3]-"0")*10;
                             tmp += data[4]-"0";
                             valueSource.cap = tmp;
+                            if (valueSource.cap >= 98 ) // se maggiore di 98
+                                setStatusInterval(3500);
+
                         }
                         else if ((data[0] ==="M")&&            // gestione Ma
                                  (data[1]==="A"))
@@ -1622,7 +1702,8 @@ Window {
                             tmp += (data[5]-"0");//*10;
                             tmp += ( data[6]-"0")/10;
                             valueSource.mas = tmp;
-                            errorMessage.visible = false
+                            errorMessage.visible = false;
+
                         }
                         else if ((data[0] ==="P")&&            // gestione PRONTO
                                  (data[1]==="R"))
@@ -1664,7 +1745,10 @@ Window {
                         {
 
                             if (data[2] === "0")
+                            {
                                 emissionImg.source = "../images/xray-bianco.png"
+                                setStatusInterval(1000);
+                            }
                             else if (data[2]=== "1")
                             {
                                 serialTerminal.putPC1cmd(data,1);
@@ -1905,8 +1989,8 @@ Window {
 
         Column {
             id: infoPanel
-            x: 784
-            width: 219
+            x: 748
+            width: 260
             height: 90
             layer.samples: 2
             scale: 1
@@ -1964,9 +2048,10 @@ Window {
                 width: 14
                 height: 16
                 text: ""
+                anchors.verticalCenterOffset: -10
                 anchors.verticalCenter: pMs.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: 80
+                anchors.right: parent.horizontalCenter
+                anchors.rightMargin: -10
                 // text: "Panel Synchro"
 
                 onCheckedChanged: {
@@ -1982,12 +2067,13 @@ Window {
                 }
                 Text {
                     id: touchLabel
-                    x: 15
                     y: -3
                     width: 91
                     height: 23
                     color: "white"
                     text: qsTr("Panel Synchro")
+                    anchors.left: parent.left
+                    anchors.leftMargin: 18
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: 12
@@ -2019,7 +2105,7 @@ Window {
 
 
 
-            anchors.rightMargin: 21
+            anchors.rightMargin: 16
             anchors.top: parent.top
             visible: false
             anchors.right: parent.right
@@ -2035,6 +2121,8 @@ Window {
 
 /*##^##
 Designer {
-    D{i:44;anchors_y:113}D{i:43;anchors_y:113}D{i:45;anchors_y:111}D{i:60;anchors_height:55;anchors_width:55;anchors_x:171;anchors_y:0}
+    D{i:32;anchors_y:"-185"}D{i:44;anchors_y:113}D{i:46;anchors_y:111}D{i:45;anchors_y:113}
+D{i:51;anchors_x:131}D{i:61;anchors_height:55;anchors_width:55;anchors_x:171;anchors_y:0}
+D{i:79;anchors_x:15}
 }
 ##^##*/

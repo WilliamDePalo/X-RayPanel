@@ -87,6 +87,7 @@ Item {
     property real mas:0.6
     property int tecn : 4 //valore di unknow per il default
     property int cap: 0
+    property int numericSTS: 0
 //! [0]
 /*
     function randomDirection() {
