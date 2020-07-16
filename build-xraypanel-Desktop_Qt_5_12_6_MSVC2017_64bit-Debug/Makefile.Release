@@ -231,22 +231,24 @@ release\qrc_xraypanel_4.11.cpp: ..\X-RayPanel\xraypanel_4.11.qrc \
 		..\X-RayPanel\qml\ValueSource.qml \
 		..\X-RayPanel\qml\PressAndHoldButton.qml \
 		..\X-RayPanel\images\tickmark.svg \
+		..\X-RayPanel\images\noReady.png \
 		..\X-RayPanel\images\background.png \
 		..\X-RayPanel\images\red.png \
-		..\X-RayPanel\images\minus-sign.png \
 		..\X-RayPanel\images\piu.png \
 		..\X-RayPanel\images\logoRxRwhite.png \
+		..\X-RayPanel\images\ready.png \
 		..\X-RayPanel\images\smallFocus.png \
 		..\X-RayPanel\images\yellow.png \
 		..\X-RayPanel\images\xray-giallo.png \
-		..\X-RayPanel\images\plus-sign.png \
 		..\X-RayPanel\images\fuel-icon.png \
 		..\X-RayPanel\images\logoRxR.jpg \
 		..\X-RayPanel\images\meno.png \
 		..\X-RayPanel\images\temperature-icon.png \
 		..\X-RayPanel\images\needle.svg \
+		..\X-RayPanel\images\backgroundB.svg \
 		..\X-RayPanel\images\whitetramp.png \
 		..\X-RayPanel\images\background.svg \
+		..\X-RayPanel\images\needleW.svg \
 		..\X-RayPanel\images\whitetrasp.png \
 		..\X-RayPanel\images\green.png \
 		..\X-RayPanel\images\xray-bianco.png \
@@ -254,6 +256,7 @@ release\qrc_xraypanel_4.11.cpp: ..\X-RayPanel\xraypanel_4.11.qrc \
 		..\X-RayPanel\images\fuoco-grande.png \
 		..\X-RayPanel\images\fuoco-piccolo.png \
 		..\X-RayPanel\images\logo-rampoldi.png \
+		..\X-RayPanel\images\needleWb.svg \
 		..\X-RayPanel\images\sfondo\sfondo.png \
 		..\X-RayPanel\images\sfondo\neon-background.jpg \
 		..\X-RayPanel\images\sfondo\raggi.jpg \
