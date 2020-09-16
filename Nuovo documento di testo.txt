@@ -1,8 +1,10 @@
 copiare il file release da solo in un'altra cartella 
 
 X 64 Bit 
+ | path dove salvato il release               |           
 C:\Users\user\Desktop\QT_sv_Notouch7.0\release>C:\Qt\5.12.6\msvc2017_64\bin\winedployqt.exe --quick .
 rinominare il file vc..redist.exe
+																									 | path dove c'è il progetto|		
 C:\Users\user\Desktop\QT_sv_Notouch7.0\release>c:\QT\5.12.6\msvc2015_64\bin\windeployqt.exe --qmldir ..\X-RayPanel\qml .
 
 X 32 BIT
