@@ -48,6 +48,7 @@
 **
 ****************************************************************************/
 import QtQuick 2.2
+import QtQuick 2.12
 import QtQuick.Window 2.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
@@ -56,6 +57,8 @@ import Qt.labs.calendar 1.0
 import QtQuick 2.7
 import WdpClass 1.0
 import QtGraphicalEffects 1.0
+import "NumberPadSupport"
+import "NumberPadSupport/calculator.js" as CalcEngine
 
 Window {
     id: root
@@ -72,6 +75,22 @@ Window {
     title: "Mu.De. Manager"
 
 
+
+    property var keyPanelManager : 0  // indice dell'oggetto che sta gestendo il KeyPanel 0 = nessuno
+    property var key_noone : 0
+    property var key_mSec : 1
+    property var key_kV : 2
+    property var key_mAs : 3
+
+    property var key_trimFP_1 : 4
+    property var key_trimFP_2 : 5
+    property var key_trimFP_3 : 6
+    property var key_trimFP_4 : 7
+    property var key_trimFP_5 : 8
+    property var key_trimFP_6 : 9
+    property var key_trimFP_7 : 10
+    property var key_trimFP_8 : 11
+
     ValueSource {
         id: valueSource
 
@@ -80,6 +99,7 @@ Window {
 
 
     }
+
 
     Timer{
         id: pollingTimer
@@ -128,11 +148,11 @@ Window {
 
     function setStatusInterval(delay)
     {
-         if(statusTimer.running){
-             statusTimer.stop();
-         }
-          statusTimer.interval = delay;
-         statusTimer.running = true;
+        if(statusTimer.running){
+            statusTimer.stop();
+        }
+        statusTimer.interval = delay;
+        statusTimer.running = true;
     }
 
     function setStatusTo(callback, delay)
@@ -193,9 +213,9 @@ Window {
     function checkErrorReady()
     {// c'è un allarme in atto // non ho la connessione // lo stato è init, alarm, o disconnect // la carica e' minore di 98%
         if ((errorMessage.visible == true) || (serialTerminal.getConnectionStatusSlot() === false) ||
-            ((valueSource.numericSTS == 0)  ||(valueSource.numericSTS == 1) || (valueSource.numericSTS == 5)) ||
-            (valueSource.cap < 98))
-      /*  if ((errorMessage.visible == true) || // c'è un allarme in atto
+                ((valueSource.numericSTS == 0)  ||(valueSource.numericSTS == 1) || (valueSource.numericSTS == 5)) ||
+                (valueSource.cap < 98))
+            /*  if ((errorMessage.visible == true) || // c'è un allarme in atto
             ((valueSource.numericSTS == 0)  ||
              (valueSource.numericSTS == 1)  ||
              (valueSource.numericSTS == 5)) ||
@@ -1058,6 +1078,46 @@ Window {
                         }
 
                     }
+
+                    MouseArea {
+                        id: padCommPos
+                        y: 98
+                        height: 50
+                        anchors.verticalCenterOffset: 40
+                        z: 2
+                        hoverEnabled: true
+                        opacity: 1
+                        anchors.left: parent.left
+                        anchors.leftMargin: 31
+                        anchors.right: parent.right
+                        anchors.rightMargin: 31
+                        anchors.verticalCenter: parent.verticalCenter
+                        onClicked: {
+                                        if (panelKeyPad.visible === false)
+                                        {
+                                            //panelKeyPad.visible=true
+                                            panelKeyPad.x = 200
+                                            msecbrd.border.color = "#f62f2f"
+                                            keyPanelManager = key_mSec
+                                            CalcEngine.setItem(keyPanelManager)
+                                        }else
+                                        {
+                                            keyPanelManager = key_noone
+                                           // panelKeyPad.visible=false
+                                            msecbrd.border.color = "#00000000"
+                                            panelKeyPad.x = 0
+                                        }
+
+                        }
+                        Rectangle {
+                            id : msecbrd
+                            color: "#00000000"
+                            border.color: "#00000000"
+                            anchors.fill: parent
+                            border.width: 2
+                        }
+                        
+                    }
                     onValueChanged:  {
                         msecMinus.anchors.rightMargin = 35 + (valueSource.msec.toString().length * 10)
                         msecPlus.anchors.leftMargin = 35 + (valueSource.msec.toString().length * 10)
@@ -1068,7 +1128,7 @@ Window {
                         height: 2
                         anchors.top: parent.bottom
                         anchors.topMargin: -42
-                      //  anchors.left: parent.left
+                        //  anchors.left: parent.left
                         anchors.right : parent.horizontalCenter
                         anchors.rightMargin: 55
                         transformOrigin: Item.Top
@@ -1081,7 +1141,7 @@ Window {
                         pressed: false
                         source: "../images/meno.png"
                         anchors.verticalCenter: tachometer.verticalCenter
-                       // anchors.leftMargin: 2
+                        // anchors.leftMargin: 2
                         antialiasing: true
                         property int  cntr: 0
                         onClicked:
@@ -1145,8 +1205,6 @@ Window {
 
 
         }
-
-
 
         Image {
             id: logo
@@ -1537,7 +1595,7 @@ Window {
                                         serialTerminal.putPC1cmd("MA01600",1)
                                 focusImage.source =  "../images/fuoco-grande.png"
                             }
-                            errorMessage.visible = false                            
+                            errorMessage.visible = false
                         }else if((data[0] ==="E")&&            // gestione fuoco
                                  (data[1]==="T"))
                         {
@@ -1852,6 +1910,8 @@ Window {
                                         errorMessage.text = qsTr("XR1 ACKNOWLEDGEMENT TIMEOUT")
                                     if(data[4]==="4")
                                         errorMessage.text = qsTr("PREPARATION TIMEOUT")
+                                    if(data[4]==="5")
+                                        errorMessage.text = qsTr("CHARGE CONNECTION TIMEOUT")
                                 }
                             }
 
@@ -2111,7 +2171,246 @@ Window {
             anchors.right: parent.right
         }
 
+
+        Rectangle {
+            id: panelKeyPad
+            x: 839
+            y: 44
+            z:1
+            width: 154
+            height: 370
+            color: "#00000000"
+            border.color: "#00000000"
+            anchors.rightMargin: 31
+            visible: true
+            anchors.verticalCenterOffset: 32
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            onWidthChanged: controller.reload()
+            onHeightChanged: controller.reload()
+
+            // This is the behavior, and it applies a NumberAnimation to any attempt to set the x property
+                  Behavior on x {
+
+                      NumberAnimation {
+                          //This specifies how long the animation takes
+                          duration: 600
+                          //This selects an easing curve to interpolate with, the default is Easing.Linear
+                          easing.type: Easing.OutBounce
+                      }
+                  }
+
+
+
+
+            function operatorPressed(operator) {
+                CalcEngine.operatorPressed(operator)
+                numPad.buttonPressed()
+            }
+            function digitPressed(digit) {
+                CalcEngine.digitPressed(digit)
+                numPad.buttonPressed()
+            }
+            function isButtonDisabled(op) {
+               return CalcEngine.disabled(op)
+            }
+            function setIdxValue(idx,value)
+            {
+                var brokenCase = 0
+                var strTosend=""
+                // compongo il messaggio
+                switch (idx)
+                {
+                case key_mSec:
+
+                    strTosend = "MS" + value
+
+                    break;
+                case key_kV:
+                    strTosend = "KV" + value
+                    break;
+
+                case 0:
+                default:
+                    brokenCase = 1
+                    break;
+                }
+                // invio il msg
+                if ((serialTerminal.getConnectionStatusSlot() !== false)&&(!brokenCase))
+                {
+                     serialTerminal.putPC1cmd(strTosend,1)
+                }
+                // Tolgo il riferimento a idx dato che il pannellino si è chiuso
+                keyPanelManager =  key_noone
+                msecbrd.border.color = "#00000000"
+            }
+
+            Item {
+                id: pad
+                width: 180
+                anchors.top: parent.top
+                anchors.left: parent.left
+                NumberPad { id: numPad; z:1;width: 154; visible: true; anchors.top: parent.top; anchors.topMargin: -5; anchors.left: parent.left; anchors.horizontalCenter: parent.horizontalCenter
+
+                }
+            }
+
+            AnimationController {
+                id: controller
+                animation: ParallelAnimation {
+                    id: anim
+                    NumberAnimation { target: display; property: "x"; duration: 400; from: -16; to: padCommPos.width - display.width; easing.type: Easing.InOutQuad }
+                    NumberAnimation { target: pad; property: "x"; duration: 400; from: padCommPos.width - pad.width; to: 0; easing.type: Easing.InOutQuad }
+                    SequentialAnimation {
+                        NumberAnimation { target: pad; property: "scale"; duration: 200; from: 1; to: 0.97; easing.type: Easing.InOutQuad }
+                        NumberAnimation { target: pad; property: "scale"; duration: 200; from: 0.97; to: 1; easing.type: Easing.InOutQuad }
+                    }
+                }
+            }
+
+            Keys.onPressed: {
+                if (event.key === Qt.Key_0)
+                    digitPressed("0")
+                else if (event.key === Qt.Key_1)
+                    digitPressed("1")
+                else if (event.key === Qt.Key_2)
+                    digitPressed("2")
+                else if (event.key === Qt.Key_3)
+                    digitPressed("3")
+                else if (event.key === Qt.Key_4)
+                    digitPressed("4")
+                else if (event.key === Qt.Key_5)
+                    digitPressed("5")
+                else if (event.key === Qt.Key_6)
+                    digitPressed("6")
+                else if (event.key === Qt.Key_7)
+                    digitPressed("7")
+                else if (event.key === Qt.Key_8)
+                    digitPressed("8")
+                else if (event.key === Qt.Key_9)
+                    digitPressed("9")
+                else if (event.key === Qt.Key_Plus)
+                    operatorPressed("+")
+                else if (event.key === Qt.Key_Minus)
+                    operatorPressed("−")
+                else if (event.key === Qt.Key_Asterisk)
+                    operatorPressed("×")
+                else if (event.key === Qt.Key_Slash)
+                    operatorPressed("÷")
+                else if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return)
+                    operatorPressed("=")
+                else if (event.key === Qt.Key_Comma || event.key === Qt.Key_Period)
+                    digitPressed(".")
+                else if (event.key === Qt.Key_Backspace)
+                    operatorPressed("backspace")
+            }
+
+
+            /*       NumberPad {
+                id: touchpad
+                width: 154
+                height: 314
+                anchors.bottomMargin: 16
+                anchors.topMargin: -16
+                anchors.fill: parent
+                z: 1
+                scale: 0.90
+                visible: false
+
+                Rectangle {
+                    id: backrect
+                    y: 40
+                    z: -1
+                    color: "#eceeea"
+                    anchors.top: parent.bottom
+                    anchors.topMargin: 0
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: -40
+                    anchors.left: parent.left
+                    anchors.leftMargin: 0
+                    anchors.right: parent.right
+                    opacity: 0.5
+                    MouseArea {
+                        anchors.fill: parent
+                    }
+                }
+            }*/
+            Image {
+                id: numPadImg
+                x: 180
+                y: -5
+                width: 154
+                height: 314
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                z:-1
+                visible: true
+                opacity: 0.953
+                sourceSize.height: 1000
+                sourceSize.width: 1000
+                fillMode: Image.Tile
+                source: "content/background.svg"
+            }
+
+            Display {
+                id: display
+                height: 50
+                anchors.topMargin: -50
+                z:2
+                anchors.top: parent.bottom
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                displayedOperand: "wew"
+                anchors.bottom: parent.bottom
+                visible: true
+
+                MouseArea {
+                    id: mouseInput
+                    property real startX: 0
+                    property real oldP: 0
+                    property bool rewind: false
+
+                    anchors {
+                        bottom: parent.bottom
+                        left: parent.left
+                        right: parent.right
+                    }
+                    anchors.top: parent.top
+                    anchors.topMargin: 0
+                    onPositionChanged: {
+                        var reverse = startX > panelKeyPad.width / 2
+                        var mx = mapToItem(panelKeyPad, mouseInput.mouseX, mouseInput.mouseY).x
+                        var p = Math.abs((mx - startX) / (panelKeyPad.width - display.width))
+                        if (p < oldP)
+                            rewind = reverse ? false : true
+                        else
+                            rewind = reverse ? true : false
+                        controller.progress = reverse ? 1 - p : p
+                        oldP = p
+                    }
+                    onPressed: startX = mapToItem(panelKeyPad, mouseInput.mouseX, mouseInput.mouseY).x
+                    onReleased: {
+                        if (rewind)
+                            controller.completeToBeginning()
+                        else
+                            controller.completeToEnd()
+                    }
+                }
+            }
+
+        }
+
     }
+
+    TapHandler {
+        onTapped: parent.x === 0 ? parent.x = 200 : parent.x = 0
+    }
+
+
 }
 //  Text { id: time }
 
@@ -2119,10 +2418,14 @@ Window {
 
 
 
+
+
+
+
+
+
 /*##^##
 Designer {
-    D{i:32;anchors_y:"-185"}D{i:44;anchors_y:113}D{i:46;anchors_y:111}D{i:45;anchors_y:113}
-D{i:51;anchors_x:131}D{i:61;anchors_height:55;anchors_width:55;anchors_x:171;anchors_y:0}
-D{i:79;anchors_x:15}
+    D{i:95;anchors_height:50}D{i:94;anchors_height:30;anchors_width:154;anchors_x:0;anchors_y:370}
 }
 ##^##*/

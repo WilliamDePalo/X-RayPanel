@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = xrayPanel
+TARGET = mu.de.manager
 INCLUDEPATH += .
 QT += quick
 QT += widgets
@@ -19,7 +19,7 @@ SOURCES += \
     ./serial/settingsdialog.cpp \
 
 RESOURCES += \
-    ./xraypanel_4.11.qrc
+    ./mu.de.manager.qrc
 
 OTHER_FILES += \
     ./qml/dashboard.qml \
@@ -27,7 +27,8 @@ OTHER_FILES += \
     ./qml/IconGaugeStyle.qml \
     ./qml/TachometerStyle.qml \
     ./qml/TurnIndicator.qml \
-    ./qml/ValueSource.qml
+    ./qml/ValueSource.qml \
+    ./qml/NumberPadSupport/Display.qml
 
 target.path = ./quickcontrols/extras/dashboard
 INSTALLS += target
@@ -64,4 +65,8 @@ DISTFILES += \
     images/background.png \
     images/background.svg \
     images/needle.svg \
-    images/tickmark.svg
+    images/tickmark.svg \
+    qml/NumberPad.qml \
+    qml/NumberPadSupport/Display.qml \
+    qml/NumberPadSupport/NP_Button.qml \
+    qml/NumberPadSupport/calculator.js

@@ -138,6 +138,7 @@ DashboardGaugeStyle {
             color: "white"
             horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
+
          //   anchors.bottom: parent.bottom
         }
   //      Image {

@@ -44,5 +44,10 @@
         <file>images/ready.png</file>
         <file>images/fuoco-grande_B.png</file>
         <file>images/fuoco-piccolo_B.png</file>
+        <file>qml/NumberPad.qml</file>
+        <file>qml/NumberPadSupport/calculator.js</file>
+        <file>qml/NumberPadSupport/Display.qml</file>
+        <file>qml/NumberPadSupport/NP_Button.qml</file>
+        <file>qml/content/background.svg</file>
     </qresource>
 </RCC>
