@@ -13,7 +13,7 @@ function disabled(op) {
 
     if (op=="X")
         return false
-    else if (op == "✔" && (digits.toString().search(/\./) != -1  || digits.toString().search(/-/)!= -1 || parseInt(digits)>359)) {
+    else if (op == "✔" && (digits.toString().search(/\./) != -1  || digits.toString().search(/-/)!= -1 || parseInt(digits)>valueSource.maxMsecValue)) {
         display.fontColor="#ff0000"
         return true
     }
@@ -112,13 +112,18 @@ function operatorPressed(op)
         display.clear()
         display.appendDigit(digits)
     } else if (op == "✔") {
-        panelKeyPad.visible=false
-        if (itemIdx === 1)
+        scompare.running = true
+        if (itemIdx === key_mSec)
         {
             parseInt(digits)
-            // gestire gli zeri max 4 cifre
+            // gestire gli zeri max 4 cifre MS01500 l'ultimo zero viene aggiunto poi
             if (digits.toString().length<4)
-                form_digits = "0" + digits.toString()
+                form_digits = "0"
+            if (digits.toString().length<3)
+                form_digits += "0"
+            if (digits.toString().length<2)
+                form_digits += "0"
+            form_digits += digits.toString()
         }
         else if (itemIdx === 2)
         {
@@ -135,7 +140,7 @@ function operatorPressed(op)
         digits = ""
 
     } else if (op == "X") {
-        panelKeyPad.visible=false
+        scompare.running = true
         display.clear()
         curVal = 0
         memory = 0

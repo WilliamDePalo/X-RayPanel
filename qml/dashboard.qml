@@ -1092,35 +1092,61 @@ Window {
                         anchors.right: parent.right
                         anchors.rightMargin: 31
                         anchors.verticalCenter: parent.verticalCenter
+                        //onWidthChanged: controller.reload()
+                      //  onHeightChanged: controller.reload()
                         onClicked: {
                                         if (panelKeyPad.visible === false)
                                         {
-                                            //panelKeyPad.visible=true
-                                            panelKeyPad.x = 200
+                                            panelKeyPad.visible=true
+                                       //     panelKeyPad.x = 200
                                             msecbrd.border.color = "#f62f2f"
                                             keyPanelManager = key_mSec
                                             CalcEngine.setItem(keyPanelManager)
+                                            appare.running= true
                                         }else
                                         {
                                             keyPanelManager = key_noone
-                                           // panelKeyPad.visible=false
+                                 //           panelKeyPad.visible=false
                                             msecbrd.border.color = "#00000000"
-                                            panelKeyPad.x = 0
+                                        //    panelKeyPad.x = 0
+                                            scompare.running = true
                                         }
-
                         }
+
                         Rectangle {
                             id : msecbrd
                             color: "#00000000"
                             border.color: "#00000000"
                             anchors.fill: parent
                             border.width: 2
-                        }
-                        
+   /*                         AnimationController {
+                                id: controller
+                                animation: ParallelAnimation {
+                                    id: anim
+                                    NumberAnimation { target: display; property: "x"; duration: 400; from: -16; to: padCommPos.width - display.width; easing.type: Easing.InOutQuad }
+                                    NumberAnimation { target: pad; property: "x"; duration: 400; from: padCommPos.width - pad.width; to: 0; easing.type: Easing.InOutQuad }
+                                    SequentialAnimation {
+                                        NumberAnimation { target: pad; property: "scale"; duration: 200; from: 1; to: 0.97; easing.type: Easing.InOutQuad }
+                                        NumberAnimation { target: pad; property: "scale"; duration: 200; from: 0.97; to: 1; easing.type: Easing.InOutQuad }
+                                    }
+                                }*/
+                            //      }
+
+                            }
+  /*                      TapHandler {
+                            id: movingKeynum
+                            //onTapped: panelKeyPad.x === 0 ? panelKeyPad.x = 200 : panelKeyPad.x = 0
+                            onTapped: panelKeyPad.visible === true ? panelKeyPad.x -= 200 : panelKeyPad.x += 200
+                        }*/
                     }
                     onValueChanged:  {
                         msecMinus.anchors.rightMargin = 35 + (valueSource.msec.toString().length * 10)
                         msecPlus.anchors.leftMargin = 35 + (valueSource.msec.toString().length * 10)
+
+                        padCommPos.anchors.rightMargin = 51 - (valueSource.msec.toString().length * 10)
+                        padCommPos.anchors.leftMargin = 51 - (valueSource.msec.toString().length * 10)
+
+
                     }
                     PressAndHoldButton {
                         id: msecMinus
@@ -2186,21 +2212,52 @@ Window {
             anchors.verticalCenterOffset: 32
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            onWidthChanged: controller.reload()
-            onHeightChanged: controller.reload()
+
+            XAnimator {
+                id : appare
+                easing.amplitude: 1.05
+                //This specifies how long the animation takes
+                duration: 1000
+                //This selects an easing curve to interpolate with, the default is Easing.Linear
+                easing.type: Easing.OutCubic
+                target: panelKeyPad
+                from: panelKeyPad.x+200
+                to : panelKeyPad.x
+                running: false
+            }
+            SequentialAnimation{
+                id:scompare
+                XAnimator {
+                    easing.amplitude: 1.05
+                    //This specifies how long the animation takes
+                    duration: 800
+                    //This selects an easing curve to interpolate with, the default is Easing.Linear
+                    easing.type: Easing.OutCubic
+                    target: panelKeyPad
+                    from: panelKeyPad.x
+                    to : panelKeyPad.x+200
+                    running: false
+                }
+                onStopped:{
+                    panelKeyPad.visible = false
+                 //   parent.visible = false
+                }
+                //    NumberAnimation{
+                //        target: panelKeyPad
+            }
+
 
             // This is the behavior, and it applies a NumberAnimation to any attempt to set the x property
-                  Behavior on x {
+      /*            Behavior on x {
+                      NumberAnimation  {
 
-                      NumberAnimation {
+                          easing.amplitude: 1.05
                           //This specifies how long the animation takes
-                          duration: 600
+                          duration: 1000
                           //This selects an easing curve to interpolate with, the default is Easing.Linear
-                          easing.type: Easing.OutBounce
+                          easing.type: Easing.OutCubic
                       }
-                  }
-
-
+                  }*/
 
 
             function operatorPressed(operator) {
@@ -2222,8 +2279,8 @@ Window {
                 switch (idx)
                 {
                 case key_mSec:
-
-                    strTosend = "MS" + value
+// formatto il valore per essere inviato via cpi
+                    strTosend = "MS" + value +"0"
 
                     break;
                 case key_kV:
@@ -2247,7 +2304,9 @@ Window {
 
             Item {
                 id: pad
-                width: 180
+                anchors.right: parent.right
+                anchors.rightMargin: -30
+                visible: true
                 anchors.top: parent.top
                 anchors.left: parent.left
                 NumberPad { id: numPad; z:1;width: 154; visible: true; anchors.top: parent.top; anchors.topMargin: -5; anchors.left: parent.left; anchors.horizontalCenter: parent.horizontalCenter
@@ -2255,18 +2314,7 @@ Window {
                 }
             }
 
-            AnimationController {
-                id: controller
-                animation: ParallelAnimation {
-                    id: anim
-                    NumberAnimation { target: display; property: "x"; duration: 400; from: -16; to: padCommPos.width - display.width; easing.type: Easing.InOutQuad }
-                    NumberAnimation { target: pad; property: "x"; duration: 400; from: padCommPos.width - pad.width; to: 0; easing.type: Easing.InOutQuad }
-                    SequentialAnimation {
-                        NumberAnimation { target: pad; property: "scale"; duration: 200; from: 1; to: 0.97; easing.type: Easing.InOutQuad }
-                        NumberAnimation { target: pad; property: "scale"; duration: 200; from: 0.97; to: 1; easing.type: Easing.InOutQuad }
-                    }
-                }
-            }
+
 
             Keys.onPressed: {
                 if (event.key === Qt.Key_0)
@@ -2368,7 +2416,7 @@ Window {
                 anchors.bottom: parent.bottom
                 visible: true
 
-                MouseArea {
+       /*        MouseArea {
                     id: mouseInput
                     property real startX: 0
                     property real oldP: 0
@@ -2399,18 +2447,11 @@ Window {
                         else
                             controller.completeToEnd()
                     }
-                }
+                }*/
             }
 
         }
-
     }
-
-    TapHandler {
-        onTapped: parent.x === 0 ? parent.x = 200 : parent.x = 0
-    }
-
-
 }
 //  Text { id: time }
 
@@ -2426,6 +2467,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:95;anchors_height:50}D{i:94;anchors_height:30;anchors_width:154;anchors_x:0;anchors_y:370}
+    D{i:87;anchors_width:180}
 }
 ##^##*/

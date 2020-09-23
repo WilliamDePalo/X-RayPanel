@@ -83,6 +83,7 @@ Item {
     property real kv:30
     property real mA: 50
     property real msec: 40
+    property real maxMsecValue: 1536
     property bool fuoco:false
     property real mas:0.6
     property int tecn : 4 //valore di unknow per il default
