@@ -47,6 +47,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+import QtQuick 2.0
 import QtQuick 2.2
 import QtQuick 2.12
 import QtQuick.Window 2.1
@@ -122,7 +123,7 @@ Window {
         onTriggered: callback()
 
     }
-
+/*
     Timer{
         id: readyTimer
         running: true
@@ -132,7 +133,7 @@ Window {
 
         onTriggered:  checkErrorReady() //callback()
 
-    }
+    }*/
 
     function setTimeout(callback, delay)
     {
@@ -166,7 +167,7 @@ Window {
         statusTimer.running = true;
     }
 
-    function setReadyTo(callback, delay)
+/*    function setReadyTo(callback, delay)
     {
         if(readyTimer.running){
             // error
@@ -175,7 +176,7 @@ Window {
         readyTimer.callback = callback;
         readyTimer.interval = delay + 1;
         readyTimer.running = true;
-    }
+    }*/
 
     function sendMinMaFp()
     {
@@ -754,6 +755,51 @@ Window {
                 minimumValue: 40
 
                 style: TachometerStyle {}
+
+      MouseArea {
+                id: kvpadCommPos
+                y: 98
+                height: 45
+                anchors.verticalCenterOffset: 47
+                z: 2
+                hoverEnabled: true
+                opacity: 1
+                anchors.left: parent.left
+                anchors.leftMargin: 115
+                anchors.right: parent.right
+                anchors.rightMargin: 115
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: {
+                    if (panelKeyPad.visible === false)
+                    {
+                        panelKeyPad.visible=true
+                        kvbrd.border.color = "#f62f2f"
+                        keyPanelManager = key_kV
+                        CalcEngine.setItem(keyPanelManager)
+                        appare.running= true
+                    }else
+                    {
+                        if (keyPanelManager == key_kV)
+                        {
+             //               keyPanelManager = key_noone
+             //               kvbrd.border.color = "#00000000"
+                            scompare.running = true
+                        }
+                    }
+                }
+                Rectangle {
+                    id : kvbrd
+                    color: "#00000000"
+                    border.color: "#00000000"
+                    anchors.fill: parent
+                    z: 3
+                    border.width: 2
+                }
+              }
+              onValueChanged:  {
+                  kvpadCommPos.anchors.rightMargin = 130 - (valueSource.kv.toString().length * 10)
+                  kvpadCommPos.anchors.leftMargin = 130 - (valueSource.kv.toString().length * 10)
+              }
             }
             PressAndHoldButton {
                 id: kvPlus
@@ -1105,11 +1151,12 @@ Window {
                                             appare.running= true
                                         }else
                                         {
-                                            keyPanelManager = key_noone
-                                 //           panelKeyPad.visible=false
-                                            msecbrd.border.color = "#00000000"
-                                        //    panelKeyPad.x = 0
-                                            scompare.running = true
+                                            if ( keyPanelManager == key_mSec)
+                                            {
+                                          //      keyPanelManager = key_noone
+                                          //      msecbrd.border.color = "#00000000"
+                                                scompare.running = true
+                                            }
                                         }
                         }
 
@@ -1143,8 +1190,8 @@ Window {
                         msecMinus.anchors.rightMargin = 35 + (valueSource.msec.toString().length * 10)
                         msecPlus.anchors.leftMargin = 35 + (valueSource.msec.toString().length * 10)
 
-                        padCommPos.anchors.rightMargin = 51 - (valueSource.msec.toString().length * 10)
-                        padCommPos.anchors.leftMargin = 51 - (valueSource.msec.toString().length * 10)
+                        padCommPos.anchors.rightMargin = 45 - (valueSource.msec.toString().length * 10)
+                        padCommPos.anchors.leftMargin = 45 - (valueSource.msec.toString().length * 10)
 
 
                     }
@@ -2240,10 +2287,10 @@ Window {
                 }
                 onStopped:{
                     panelKeyPad.visible = false
-                 //   parent.visible = false
-                }
-                //    NumberAnimation{
-                //        target: panelKeyPad
+                    keyPanelManager = key_noone
+                    msecbrd.border.color = "#00000000"
+                    kvbrd.border.color = "#00000000"
+                }                
             }
 
 
@@ -2297,9 +2344,12 @@ Window {
                 {
                      serialTerminal.putPC1cmd(strTosend,1)
                 }
-                // Tolgo il riferimento a idx dato che il pannellino si è chiuso
-                keyPanelManager =  key_noone
-                msecbrd.border.color = "#00000000"
+                /* Tolgo il riferimento a idx dato che il pannellino si è chiuso
+                if (keyPanelManager == key_mSec)
+                    msecbrd.border.color = "#00000000"
+                else if (keyPanelManager ==  key_kV)
+                    kvbrd.border.color = "#00000000"
+                keyPanelManager =  key_noone*/
             }
 
             Item {
@@ -2465,8 +2515,4 @@ Window {
 
 
 
-/*##^##
-Designer {
-    D{i:87;anchors_width:180}
-}
-##^##*/
+

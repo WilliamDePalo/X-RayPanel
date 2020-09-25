@@ -124,12 +124,13 @@ function operatorPressed(op)
             if (digits.toString().length<2)
                 form_digits += "0"
             form_digits += digits.toString()
-        }
-        else if (itemIdx === 2)
-        {
-            // gestire gli zeri max 3 cifre
+        } else if (itemIdx === key_kV)
+        {    // gestire gli zeri max 3 cifre
             if (digits.toString().length<3)
-                form_digits = "0"+ digits.toString()
+                form_digits += "0"
+            if (digits.toString().length<2)
+                form_digits += "0"
+            form_digits += digits.toString()
         }
         panelKeyPad.setIdxValue(itemIdx,form_digits )
        // boxCommPos.value=parseInt(digits)
@@ -140,6 +141,7 @@ function operatorPressed(op)
         digits = ""
 
     } else if (op == "X") {
+
         scompare.running = true
         display.clear()
         curVal = 0
