@@ -24,7 +24,7 @@
         "-wd4577",
         "-wd4467",
         "-EHsc",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager",
         "-IC:/Qt/5.12.6/msvc2017_64/include",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtQuick",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtWidgets",
@@ -34,8 +34,8 @@
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtNetwork",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtSerialPort",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtCore",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
         "-IC:/Qt/5.12.6/msvc2017_64/mkspecs/win32-msvc",
         "-DUNICODE",
         "-D_UNICODE",
@@ -51,10 +51,10 @@
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
         "/TP",
-        "C:\\Users\\user\\Desktop\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\main.cpp"
+        "C:\\Progetti\\Interfaccia Mu.De. Manager\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\main.cpp"
     ],
-    "directory": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager/main.cpp"
+    "directory": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+    "file": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager/main.cpp"
 },
 {
     "arguments": [
@@ -81,7 +81,7 @@
         "-wd4577",
         "-wd4467",
         "-EHsc",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager",
         "-IC:/Qt/5.12.6/msvc2017_64/include",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtQuick",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtWidgets",
@@ -91,8 +91,8 @@
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtNetwork",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtSerialPort",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtCore",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
         "-IC:/Qt/5.12.6/msvc2017_64/mkspecs/win32-msvc",
         "-DUNICODE",
         "-D_UNICODE",
@@ -108,10 +108,10 @@
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
         "/TP",
-        "C:\\Users\\user\\Desktop\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\serialLogger.cpp"
+        "C:\\Progetti\\Interfaccia Mu.De. Manager\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\serialLogger.cpp"
     ],
-    "directory": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/serialLogger.cpp"
+    "directory": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+    "file": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/serialLogger.cpp"
 },
 {
     "arguments": [
@@ -138,7 +138,7 @@
         "-wd4577",
         "-wd4467",
         "-EHsc",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager",
         "-IC:/Qt/5.12.6/msvc2017_64/include",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtQuick",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtWidgets",
@@ -148,8 +148,8 @@
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtNetwork",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtSerialPort",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtCore",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
         "-IC:/Qt/5.12.6/msvc2017_64/mkspecs/win32-msvc",
         "-DUNICODE",
         "-D_UNICODE",
@@ -165,10 +165,10 @@
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
         "/TP",
-        "C:\\Users\\user\\Desktop\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\serialterminal.cpp"
+        "C:\\Progetti\\Interfaccia Mu.De. Manager\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\serialterminal.cpp"
     ],
-    "directory": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/serialterminal.cpp"
+    "directory": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+    "file": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/serialterminal.cpp"
 },
 {
     "arguments": [
@@ -195,7 +195,7 @@
         "-wd4577",
         "-wd4467",
         "-EHsc",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager",
         "-IC:/Qt/5.12.6/msvc2017_64/include",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtQuick",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtWidgets",
@@ -205,8 +205,8 @@
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtNetwork",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtSerialPort",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtCore",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
         "-IC:/Qt/5.12.6/msvc2017_64/mkspecs/win32-msvc",
         "-DUNICODE",
         "-D_UNICODE",
@@ -222,10 +222,10 @@
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
         "/TP",
-        "C:\\Users\\user\\Desktop\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\settingsdialog.cpp"
+        "C:\\Progetti\\Interfaccia Mu.De. Manager\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\settingsdialog.cpp"
     ],
-    "directory": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/settingsdialog.cpp"
+    "directory": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+    "file": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/settingsdialog.cpp"
 },
 {
     "arguments": [
@@ -252,7 +252,7 @@
         "-wd4577",
         "-wd4467",
         "-EHsc",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager",
         "-IC:/Qt/5.12.6/msvc2017_64/include",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtQuick",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtWidgets",
@@ -262,8 +262,8 @@
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtNetwork",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtSerialPort",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtCore",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
         "-IC:/Qt/5.12.6/msvc2017_64/mkspecs/win32-msvc",
         "-DUNICODE",
         "-D_UNICODE",
@@ -278,10 +278,10 @@
         "-DQT_NETWORK_LIB",
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
-        "C:\\Users\\user\\Desktop\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\serialLogger.h"
+        "C:\\Progetti\\Interfaccia Mu.De. Manager\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\serialLogger.h"
     ],
-    "directory": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/serialLogger.h"
+    "directory": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+    "file": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/serialLogger.h"
 },
 {
     "arguments": [
@@ -308,7 +308,7 @@
         "-wd4577",
         "-wd4467",
         "-EHsc",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager",
         "-IC:/Qt/5.12.6/msvc2017_64/include",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtQuick",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtWidgets",
@@ -318,8 +318,8 @@
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtNetwork",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtSerialPort",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtCore",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
         "-IC:/Qt/5.12.6/msvc2017_64/mkspecs/win32-msvc",
         "-DUNICODE",
         "-D_UNICODE",
@@ -334,10 +334,10 @@
         "-DQT_NETWORK_LIB",
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
-        "C:\\Users\\user\\Desktop\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\serialterminal.h"
+        "C:\\Progetti\\Interfaccia Mu.De. Manager\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\serialterminal.h"
     ],
-    "directory": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/serialterminal.h"
+    "directory": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+    "file": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/serialterminal.h"
 },
 {
     "arguments": [
@@ -364,7 +364,7 @@
         "-wd4577",
         "-wd4467",
         "-EHsc",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager",
         "-IC:/Qt/5.12.6/msvc2017_64/include",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtQuick",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtWidgets",
@@ -374,8 +374,8 @@
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtNetwork",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtSerialPort",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtCore",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
         "-IC:/Qt/5.12.6/msvc2017_64/mkspecs/win32-msvc",
         "-DUNICODE",
         "-D_UNICODE",
@@ -390,10 +390,10 @@
         "-DQT_NETWORK_LIB",
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
-        "C:\\Users\\user\\Desktop\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\settingsdialog.h"
+        "C:\\Progetti\\Interfaccia Mu.De. Manager\\sv_Mu.De.Manager 1.0\\Mu.De._Manager\\serial\\settingsdialog.h"
     ],
-    "directory": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/settingsdialog.h"
+    "directory": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+    "file": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager/serial/settingsdialog.h"
 },
 {
     "arguments": [
@@ -420,7 +420,7 @@
         "-wd4577",
         "-wd4467",
         "-EHsc",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager",
         "-IC:/Qt/5.12.6/msvc2017_64/include",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtQuick",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtWidgets",
@@ -430,8 +430,8 @@
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtNetwork",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtSerialPort",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtCore",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
         "-IC:/Qt/5.12.6/msvc2017_64/mkspecs/win32-msvc",
         "-DUNICODE",
         "-D_UNICODE",
@@ -446,10 +446,10 @@
         "-DQT_NETWORK_LIB",
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
-        "C:\\Users\\user\\Desktop\\sv_Mu.De.Manager 1.0\\build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug\\ui_mainwindow.h"
+        "C:\\Progetti\\Interfaccia Mu.De. Manager\\sv_Mu.De.Manager 1.0\\build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug\\ui_mainwindow.h"
     ],
-    "directory": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/ui_mainwindow.h"
+    "directory": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+    "file": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/ui_mainwindow.h"
 },
 {
     "arguments": [
@@ -476,7 +476,7 @@
         "-wd4577",
         "-wd4467",
         "-EHsc",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/Mu.De._Manager",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/Mu.De._Manager",
         "-IC:/Qt/5.12.6/msvc2017_64/include",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtQuick",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtWidgets",
@@ -486,8 +486,8 @@
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtNetwork",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtSerialPort",
         "-IC:/Qt/5.12.6/msvc2017_64/include/QtCore",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
-        "-IC:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/debug",
+        "-IC:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
         "-IC:/Qt/5.12.6/msvc2017_64/mkspecs/win32-msvc",
         "-DUNICODE",
         "-D_UNICODE",
@@ -502,9 +502,9 @@
         "-DQT_NETWORK_LIB",
         "-DQT_SERIALPORT_LIB",
         "-DQT_CORE_LIB",
-        "C:\\Users\\user\\Desktop\\sv_Mu.De.Manager 1.0\\build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug\\ui_settingsdialog.h"
+        "C:\\Progetti\\Interfaccia Mu.De. Manager\\sv_Mu.De.Manager 1.0\\build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug\\ui_settingsdialog.h"
     ],
-    "directory": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
-    "file": "C:/Users/user/Desktop/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/ui_settingsdialog.h"
+    "directory": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug",
+    "file": "C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Debug/ui_settingsdialog.h"
 }
 ]
