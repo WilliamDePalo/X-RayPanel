@@ -28,7 +28,8 @@ OTHER_FILES += \
     ./qml/TachometerStyle.qml \
     ./qml/TurnIndicator.qml \
     ./qml/ValueSource.qml \
-    ./qml/NumberPadSupport/Display.qml
+    ./qml/NumberPadSupport/Display.qml \
+    ./qml/menuSupport/BlackButtonStyle.qml
 
 target.path = ./quickcontrols/extras/dashboard
 INSTALLS += target
@@ -60,8 +61,7 @@ DISTFILES += \
     ./qml/PressAndHoldButton.qml \
     ./qml/TachometerStyle.qml \
     ./qml/TurnIndicator.qml \
-    ./qml/ValueSource.qml \
-    ./qml/dashboard.qml \
+    ./qml/ValueSource.qml \  
     images/background.png \
     images/background.svg \
     images/needle.svg \
@@ -69,4 +69,7 @@ DISTFILES += \
     qml/NumberPad.qml \
     qml/NumberPadSupport/Display.qml \
     qml/NumberPadSupport/NP_Button.qml \
-    qml/NumberPadSupport/calculator.js
+    qml/NumberPadSupport/calculator.js \
+    qml/menuSupport/BlackButtonBackground.qml \
+    qml/menuSupport/BlackButtonStyle.qml \
+    ./qml/dashboard.qml

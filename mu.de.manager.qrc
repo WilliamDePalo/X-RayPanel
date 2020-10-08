@@ -49,5 +49,10 @@
         <file>qml/NumberPadSupport/Display.qml</file>
         <file>qml/NumberPadSupport/NP_Button.qml</file>
         <file>qml/content/background.svg</file>
+        <file>images/toppng.com-menu-icon-white.png</file>
+        <file>qml/menuSupport/BlackButtonBackground.qml</file>
+        <file>qml/menuSupport/BlackButtonStyle.qml</file>
+        <file>images/icon-go.png</file>
+        <file>fonts/OpenSans-Regular.ttf</file>
     </qresource>
 </RCC>

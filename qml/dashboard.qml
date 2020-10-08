@@ -48,8 +48,9 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtQuick 2.2
 import QtQuick 2.12
+import QtQuick 2.2
+import QtQml 2.12
 import QtQuick.Window 2.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
@@ -59,7 +60,13 @@ import QtQuick 2.7
 import WdpClass 1.0
 import QtGraphicalEffects 1.0
 import "NumberPadSupport"
+import "menuSupport"
 import "NumberPadSupport/calculator.js" as CalcEngine
+
+// di seguito gli import per il menuPanel
+import QtQuick.Layouts 1.0
+import QtQuick.Dialogs 1.0
+//import "content"
 
 Window {
     id: root
@@ -102,6 +109,7 @@ Window {
     }
 
 
+
     Timer{
         id: pollingTimer
         running: false
@@ -123,7 +131,7 @@ Window {
         onTriggered: callback()
 
     }
-/*
+    /*
     Timer{
         id: readyTimer
         running: true
@@ -167,7 +175,7 @@ Window {
         statusTimer.running = true;
     }
 
-/*    function setReadyTo(callback, delay)
+    /*    function setReadyTo(callback, delay)
     {
         if(readyTimer.running){
             // error
@@ -756,50 +764,50 @@ Window {
 
                 style: TachometerStyle {}
 
-      MouseArea {
-                id: kvpadCommPos
-                y: 98
-                height: 45
-                anchors.verticalCenterOffset: 47
-                z: 2
-                hoverEnabled: true
-                opacity: 1
-                anchors.left: parent.left
-                anchors.leftMargin: 115
-                anchors.right: parent.right
-                anchors.rightMargin: 115
-                anchors.verticalCenter: parent.verticalCenter
-                onClicked: {
-                    if (panelKeyPad.visible === false)
-                    {
-                        panelKeyPad.visible=true
-                        kvbrd.border.color = "#f62f2f"
-                        keyPanelManager = key_kV
-                        CalcEngine.setItem(keyPanelManager)
-                        appare.running= true
-                    }else
-                    {
-                        if (keyPanelManager == key_kV)
+                MouseArea {
+                    id: kvpadCommPos
+                    y: 98
+                    height: 45
+                    anchors.verticalCenterOffset: 47
+                    z: 2
+                    hoverEnabled: true
+                    opacity: 1
+                    anchors.left: parent.left
+                    anchors.leftMargin: 115
+                    anchors.right: parent.right
+                    anchors.rightMargin: 115
+                    anchors.verticalCenter: parent.verticalCenter
+                    onClicked: {
+                        if (panelKeyPad.visible === false)
                         {
-             //               keyPanelManager = key_noone
-             //               kvbrd.border.color = "#00000000"
-                            scompare.running = true
+                            panelKeyPad.visible=true
+                            kvbrd.border.color = "#f62f2f"
+                            keyPanelManager = key_kV
+                            CalcEngine.setItem(keyPanelManager)
+                            appare.running= true
+                        }else
+                        {
+                            if (keyPanelManager == key_kV)
+                            {
+                                //               keyPanelManager = key_noone
+                                //               kvbrd.border.color = "#00000000"
+                                scompare.running = true
+                            }
                         }
                     }
+                    Rectangle {
+                        id : kvbrd
+                        color: "#00000000"
+                        border.color: "#00000000"
+                        anchors.fill: parent
+                        z: 3
+                        border.width: 2
+                    }
                 }
-                Rectangle {
-                    id : kvbrd
-                    color: "#00000000"
-                    border.color: "#00000000"
-                    anchors.fill: parent
-                    z: 3
-                    border.width: 2
+                onValueChanged:  {
+                    kvpadCommPos.anchors.rightMargin = 130 - (valueSource.kv.toString().length * 10)
+                    kvpadCommPos.anchors.leftMargin = 130 - (valueSource.kv.toString().length * 10)
                 }
-              }
-              onValueChanged:  {
-                  kvpadCommPos.anchors.rightMargin = 130 - (valueSource.kv.toString().length * 10)
-                  kvpadCommPos.anchors.leftMargin = 130 - (valueSource.kv.toString().length * 10)
-              }
             }
             PressAndHoldButton {
                 id: kvPlus
@@ -1139,25 +1147,25 @@ Window {
                         anchors.rightMargin: 31
                         anchors.verticalCenter: parent.verticalCenter
                         //onWidthChanged: controller.reload()
-                      //  onHeightChanged: controller.reload()
+                        //  onHeightChanged: controller.reload()
                         onClicked: {
-                                        if (panelKeyPad.visible === false)
-                                        {
-                                            panelKeyPad.visible=true
-                                       //     panelKeyPad.x = 200
-                                            msecbrd.border.color = "#f62f2f"
-                                            keyPanelManager = key_mSec
-                                            CalcEngine.setItem(keyPanelManager)
-                                            appare.running= true
-                                        }else
-                                        {
-                                            if ( keyPanelManager == key_mSec)
-                                            {
-                                          //      keyPanelManager = key_noone
-                                          //      msecbrd.border.color = "#00000000"
-                                                scompare.running = true
-                                            }
-                                        }
+                            if (panelKeyPad.visible === false)
+                            {
+                                panelKeyPad.visible=true
+                                //     panelKeyPad.x = 200
+                                msecbrd.border.color = "#f62f2f"
+                                keyPanelManager = key_mSec
+                                CalcEngine.setItem(keyPanelManager)
+                                appare.running= true
+                            }else
+                            {
+                                if ( keyPanelManager == key_mSec)
+                                {
+                                    //      keyPanelManager = key_noone
+                                    //      msecbrd.border.color = "#00000000"
+                                    scompare.running = true
+                                }
+                            }
                         }
 
                         Rectangle {
@@ -1166,7 +1174,7 @@ Window {
                             border.color: "#00000000"
                             anchors.fill: parent
                             border.width: 2
-   /*                         AnimationController {
+                            /*                         AnimationController {
                                 id: controller
                                 animation: ParallelAnimation {
                                     id: anim
@@ -1179,8 +1187,8 @@ Window {
                                 }*/
                             //      }
 
-                            }
-  /*                      TapHandler {
+                        }
+                        /*                      TapHandler {
                             id: movingKeynum
                             //onTapped: panelKeyPad.x === 0 ? panelKeyPad.x = 200 : panelKeyPad.x = 0
                             onTapped: panelKeyPad.visible === true ? panelKeyPad.x -= 200 : panelKeyPad.x += 200
@@ -1464,7 +1472,7 @@ Window {
                         sourceSize.height: 0
                         scale: 1
                         rotation: 0
-                        source: "../images/info64.png"
+                        source: "../images/toppng.com-menu-icon-white.png"
                     }
                     smooth: false
                     layer.enabled: false
@@ -2255,7 +2263,7 @@ Window {
             color: "#00000000"
             border.color: "#00000000"
             anchors.rightMargin: 31
-            visible: true
+            visible: false
             anchors.verticalCenterOffset: 32
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
@@ -2290,12 +2298,12 @@ Window {
                     keyPanelManager = key_noone
                     msecbrd.border.color = "#00000000"
                     kvbrd.border.color = "#00000000"
-                }                
+                }
             }
 
 
             // This is the behavior, and it applies a NumberAnimation to any attempt to set the x property
-      /*            Behavior on x {
+            /*            Behavior on x {
                       NumberAnimation  {
 
                           easing.amplitude: 1.05
@@ -2316,7 +2324,7 @@ Window {
                 numPad.buttonPressed()
             }
             function isButtonDisabled(op) {
-               return CalcEngine.disabled(op)
+                return CalcEngine.disabled(op)
             }
             function setIdxValue(idx,value)
             {
@@ -2326,7 +2334,7 @@ Window {
                 switch (idx)
                 {
                 case key_mSec:
-// formatto il valore per essere inviato via cpi
+                    // formatto il valore per essere inviato via cpi
                     strTosend = "MS" + value +"0"
 
                     break;
@@ -2342,7 +2350,7 @@ Window {
                 // invio il msg
                 if ((serialTerminal.getConnectionStatusSlot() !== false)&&(!brokenCase))
                 {
-                     serialTerminal.putPC1cmd(strTosend,1)
+                    serialTerminal.putPC1cmd(strTosend,1)
                 }
                 /* Tolgo il riferimento a idx dato che il pannellino si è chiuso
                 if (keyPanelManager == key_mSec)
@@ -2466,7 +2474,7 @@ Window {
                 anchors.bottom: parent.bottom
                 visible: true
 
-       /*        MouseArea {
+                /*        MouseArea {
                     id: mouseInput
                     property real startX: 0
                     property real oldP: 0
@@ -2500,6 +2508,392 @@ Window {
                 }*/
             }
 
+        }
+
+        Rectangle {
+            id: menuPanel
+            x: 711
+            y: 26
+            width: 200
+            height: 400
+            color: "#161616"
+            function toPixels(percentage) {
+                return percentage * Math.min(menuPanel.width, menuPanel.height);
+            }
+
+            property bool isScreenPortrait: height > width
+            property color lightFontColor: "#222"
+            property color darkFontColor: "#e7e7e7"
+            readonly property color lightBackgroundColor: "#cccccc"
+            readonly property color darkBackgroundColor: "#161616"
+            property real customizerPropertySpacing: 10
+            property real colorPickerRowSpacing: 8
+
+            Text {
+                id: textSingleton
+            }
+
+      /*      property Component circularGauge: CircularGaugeView {}
+
+            property Component dial: ControlView {
+                darkBackground: false
+
+                control: Column {
+                    id: dialColumn
+                    width: controlBounds.width
+                    height: controlBounds.height - spacing
+                    spacing: menuPanel.toPixels(0.05)
+
+                    ColumnLayout {
+                        id: volumeColumn
+                        width: parent.width
+                        height: (dialColumn.height - dialColumn.spacing) / 2
+                        spacing: height * 0.025
+
+                        Dial {
+                            id: volumeDial
+                            Layout.alignment: Qt.AlignCenter
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+
+
+       //                         Determines whether the dial animates its rotation to the new value when
+      //                          a single click or touch is received on the dial.
+
+                            property bool animate: customizerItem.animate
+
+                            Behavior on value {
+                                enabled: volumeDial.animate && !volumeDial.pressed
+                                NumberAnimation {
+                                    duration: 300
+                                    easing.type: Easing.OutSine
+                                }
+                            }
+                        }
+
+                        ControlLabel {
+                            id: volumeText
+                            text: "Volume"
+                            Layout.alignment: Qt.AlignCenter
+                        }
+                    }
+
+                    ColumnLayout {
+                        id: trebleColumn
+                        width: parent.width
+                        height: (dialColumn.height - dialColumn.spacing) / 2
+                        spacing: height * 0.025
+
+                        Dial {
+                            id: dial2
+                            Layout.alignment: Qt.AlignCenter
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+
+                            stepSize: 1
+                            maximumValue: 10
+
+                            style: DialStyle {
+                                labelInset: outerRadius * 0
+                            }
+                        }
+
+                        ControlLabel {
+                            id: trebleText
+                            text: "Treble"
+                            Layout.alignment: Qt.AlignCenter
+                        }
+                    }
+                }
+
+                customizer: Column {
+                    spacing: customizerPropertySpacing
+
+                    property alias animate: animateCheckBox.checked
+
+                    CustomizerLabel {
+                        text: "Animate"
+                    }
+
+                    CustomizerSwitch {
+                        id: animateCheckBox
+                    }
+                }
+            }
+
+            property Component delayButton: ControlView {
+                darkBackground: false
+
+                control: DelayButton {
+                    text: "Alarm"
+                    anchors.centerIn: parent
+                }
+            }
+
+            property Component gauge: ControlView {
+                id: gaugeView
+                control: Gauge {
+                    id: gauge
+                    width: orientation === Qt.Vertical ? implicitWidth : gaugeView.controlBounds.width
+                    height: orientation === Qt.Vertical ? gaugeView.controlBounds.height : implicitHeight
+                    anchors.centerIn: parent
+
+                    minimumValue: 0
+                    value: customizerItem.value
+                    maximumValue: 100
+                    orientation: customizerItem.orientationFlag ? Qt.Vertical : Qt.Horizontal
+                    tickmarkAlignment: orientation === Qt.Vertical
+                        ? (customizerItem.alignFlag ? Qt.AlignLeft : Qt.AlignRight)
+                        : (customizerItem.alignFlag ? Qt.AlignTop : Qt.AlignBottom)
+                }
+
+                customizer: Column {
+                    spacing: customizerPropertySpacing
+
+                    property alias value: valueSlider.value
+                    property alias orientationFlag: orientationCheckBox.checked
+                    property alias alignFlag: alignCheckBox.checked
+
+                    CustomizerLabel {
+                        text: "Value"
+                    }
+
+                    CustomizerSlider {
+                        id: valueSlider
+                        minimumValue: 0
+                        value: 50
+                        maximumValue: 100
+                    }
+
+                    CustomizerLabel {
+                        text: "Vertical orientation"
+                    }
+
+                    CustomizerSwitch {
+                        id: orientationCheckBox
+                        checked: true
+                    }
+
+                    CustomizerLabel {
+                        text: controlItem.orientation === Qt.Vertical ? "Left align" : "Top align"
+                    }
+
+                    CustomizerSwitch {
+                        id: alignCheckBox
+                        checked: true
+                    }
+                }
+            }
+
+            property Component toggleButton: ControlView {
+                darkBackground: false
+
+                control: ToggleButton {
+                    text: checked ? "On" : "Off"
+                    anchors.centerIn: parent
+                }
+            }
+
+            property Component pieMenu: PieMenuControlView {}
+
+            property Component statusIndicator: ControlView {
+                id: statusIndicatorView
+                darkBackground: false
+
+                Timer {
+                    id: recordingFlashTimer
+                    running: true
+                    repeat: true
+                    interval: 1000
+                }
+
+                ColumnLayout {
+                    id: indicatorLayout
+                    width: statusIndicatorView.controlBounds.width * 0.25
+                    height: statusIndicatorView.controlBounds.height * 0.75
+                    anchors.centerIn: parent
+
+                    Repeater {
+                        model: ListModel {
+                            id: indicatorModel
+                            ListElement {
+                                name: "Power"
+                                indicatorColor: "#35e02f"
+                            }
+                            ListElement {
+                                name: "Recording"
+                                indicatorColor: "red"
+                            }
+                        }
+
+                        ColumnLayout {
+                            Layout.preferredWidth: indicatorLayout.width
+                            spacing: 0
+
+                            StatusIndicator {
+                                id: indicator
+                                color: indicatorColor
+                                Layout.preferredWidth: statusIndicatorView.controlBounds.width * 0.07
+                                Layout.preferredHeight: Layout.preferredWidth
+                                Layout.alignment: Qt.AlignHCenter
+                                on: true
+
+                                Connections {
+                                    target: recordingFlashTimer
+                                    onTriggered: if (name == "Recording") indicator.active = !indicator.active
+                                }
+                            }
+                            ControlLabel {
+                                id: indicatorLabel
+                                text: name
+                                Layout.alignment: Qt.AlignHCenter
+                                Layout.maximumWidth: parent.width
+                                horizontalAlignment: Text.AlignHCenter
+                            }
+                        }
+                    }
+                }
+            }
+
+            property Component tumbler: ControlView {
+                id: tumblerView
+                darkBackground: false
+
+                Tumbler {
+                    id: tumbler
+                    anchors.centerIn: parent
+
+                    // TODO: Use FontMetrics with 5.4
+                    Label {
+                        id: characterMetrics
+                        font.bold: true
+                        font.pixelSize: textSingleton.font.pixelSize * 1.25
+                        font.family: openSans.name
+                        visible: false
+                        text: "M"
+                    }
+
+                    readonly property real delegateTextMargins: characterMetrics.width * 1.5
+                    readonly property var days: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+                    TumblerColumn {
+                        id: tumblerDayColumn
+
+                        function updateModel() {
+                            var previousIndex = tumblerDayColumn.currentIndex;
+                            var newDays = tumbler.days[monthColumn.currentIndex];
+
+                            if (!model) {
+                                var array = [];
+                                for (var i = 0; i < newDays; ++i) {
+                                    array.push(i + 1);
+                                }
+                                model = array;
+                            } else {
+                                // If we've already got days in the model, just add or remove
+                                // the minimum amount necessary to make spinning the month column fast.
+                                var difference = model.length - newDays;
+                                if (model.length > newDays) {
+                                    model.splice(model.length - 1, difference);
+                                } else {
+                                    var lastDay = model[model.length - 1];
+                                    for (i = lastDay; i < lastDay + difference; ++i) {
+                                        model.push(i + 1);
+                                    }
+                                }
+                            }
+
+                            tumbler.setCurrentIndexAt(0, Math.min(newDays - 1, previousIndex));
+                        }
+                    }
+                    TumblerColumn {
+                        id: monthColumn
+                        width: characterMetrics.width * 3 + tumbler.delegateTextMargins
+                        model: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                        onCurrentIndexChanged: tumblerDayColumn.updateModel()
+                    }
+                    TumblerColumn {
+                        width: characterMetrics.width * 4 + tumbler.delegateTextMargins
+                        model: ListModel {
+                            Component.onCompleted: {
+                                for (var i = 2000; i < 2100; ++i) {
+                                    append({value: i.toString()});
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+*/
+
+            FontLoader {
+                id: openSans
+                source: "qrc:/fonts/OpenSans-Regular.ttf"
+             }
+
+            property var componentMap: {
+                "SystemInfo": infoPanel,
+ //               "DelayButton": delayButton,
+ //               "Dial": dial,
+ //               "Gauge": gauge,
+ //               "PieMenu": pieMenu,
+//                "StatusIndicator": statusIndicator,
+  //              "ToggleButton": toggleButton,
+ //               "Tumbler": tumbler
+            }
+
+            StackView {
+                id: stackView
+                anchors.fill: parent
+
+                initialItem: ListView {
+                    model: ListModel {
+                        ListElement {
+                            title: "System Info"
+                        }
+                        ListElement {
+                            title: "About Mu.De.Manager..."
+                        }
+                        ListElement {
+                            title: "Advanced Mode"
+                        }
+                        ListElement {
+                            title: "Current Calibration"
+                        }
+                        ListElement {
+                            title: "Voltage Calibration"
+                        }
+                        ListElement {
+                            title: "StatusIndicator"
+                        }
+                        ListElement {
+                            title: "ToggleButton"
+                        }
+                        ListElement {
+                            title: "Tumbler"
+                        }
+                    }
+
+                    delegate: Button {
+                        width: stackView.width
+                        height: menuPanel.height * 0.125
+                        text: title
+
+                        style: BlackButtonStyle {
+                            fontColor: menuPanel.darkFontColor
+                            rightAlignedIconSource: "qrc:/images/icon-go.png"
+                        }
+
+                        onClicked: {
+                            if (stackView.depth == 1) {
+                                // Only push the control view if we haven't already pushed it...
+                                stackView.push({item: componentMap[title]});
+                                stackView.currentItem.forceActiveFocus();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
