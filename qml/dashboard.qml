@@ -64,8 +64,8 @@ import "menuSupport"
 import "NumberPadSupport/calculator.js" as CalcEngine
 
 // di seguito gli import per il menuPanel
-import QtQuick.Layouts 1.0
-import QtQuick.Dialogs 1.0
+//import QtQuick.Layouts 1.0
+//import QtQuick.Dialogs 1.0
 //import "content"
 
 Window {
@@ -75,6 +75,7 @@ Window {
     height: 600
 
     color: "#d3eccb"
+    //  property alias btnCloseCopyrightText: btnCloseCopyright.text
     // property alias touchSynchroText: touchSynchro.text
 
     property alias yellowButtonIconSource: yellowButton.iconSource
@@ -265,7 +266,7 @@ Window {
         }
 
         Column{
-            id: gaugeColumn
+            id: backGroundPanel
             anchors.leftMargin: 0
             visible: true
             transformOrigin: Item.Center
@@ -1436,12 +1437,18 @@ Window {
 
 
                     onClicked:  {
-                        if (infoPanel.visible)
+                        if (menuPanel.visible)
                         {
-                            infoPanel.visible = false
+                            menuPanel.visible= false
+                            //infoPanel.visible = false
+                            //stackView.push()
                         }else if (serialSettings.visible == false)
                         {
-                            infoPanel.visible = true
+                            //stackView.pop()
+                            menuPanel.visible= true
+                            //stackView.visible = true
+                            //stackView.__performTransition()
+                            //infoPanel.visible = true
                         }
                     }
                     style: ButtonStyle {
@@ -2510,30 +2517,9 @@ Window {
 
         }
 
-        Rectangle {
-            id: menuPanel
-            x: 711
-            y: 26
-            width: 200
-            height: 400
-            color: "#161616"
-            function toPixels(percentage) {
-                return percentage * Math.min(menuPanel.width, menuPanel.height);
-            }
 
-            property bool isScreenPortrait: height > width
-            property color lightFontColor: "#222"
-            property color darkFontColor: "#e7e7e7"
-            readonly property color lightBackgroundColor: "#cccccc"
-            readonly property color darkBackgroundColor: "#161616"
-            property real customizerPropertySpacing: 10
-            property real colorPickerRowSpacing: 8
 
-            Text {
-                id: textSingleton
-            }
-
-      /*      property Component circularGauge: CircularGaugeView {}
+        /*      property Component circularGauge: CircularGaugeView {}
 
             property Component dial: ControlView {
                 darkBackground: false
@@ -2825,28 +2811,253 @@ Window {
                 }
             }
 */
+        //         property Component aboutPanel: Row {
+        Row {
+            id: aboutPanel
+            x: 211
+            y: 102
+            width: 589
+            height: 430
+            visible: false
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
 
-            FontLoader {
-                id: openSans
-                source: "qrc:/fonts/OpenSans-Regular.ttf"
-             }
-
-            property var componentMap: {
-                "SystemInfo": infoPanel,
- //               "DelayButton": delayButton,
- //               "Dial": dial,
- //               "Gauge": gauge,
- //               "PieMenu": pieMenu,
-//                "StatusIndicator": statusIndicator,
-  //              "ToggleButton": toggleButton,
- //               "Tumbler": tumbler
+            Text {
+                id: copirightTxt
+                width: 369
+                height: 85
+                text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">Copiright (C) 2020 Rampoldi X-Ray s.r.l.</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">All right reserved worldwide.</span></p>\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;\"><br /></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"mailto:w.depalo@rampoldixray.it\"><span style=\" font-family:'Verdana','sans-serif'; font-size:14pt; text-decoration: underline; color:#0000ff;\">w.depalo@rampoldixray.it</span></a><span style=\" font-size:14pt;\"> </span></p>\n<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"http://www.rampoldixray.it/\"><span style=\" font-family:'Verdana','sans-serif'; font-size:14pt; text-decoration: underline; color:#0000ff;\">www.rampoldixray.it</span></a><span style=\" font-size:14pt;\"> </span></p></body></html>"
+                elide: Text.ElideRight
+                anchors.bottom: parent.bottom
+                font.pixelSize: 12
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.Wrap
+                anchors.bottomMargin: 35
+                fontSizeMode: Text.FixedSize
+                textFormat: Text.RichText
+                minimumPixelSize: 17
+                z: 3
+                anchors.horizontalCenter: parent.horizontalCenter
+                minimumPointSize: 17
             }
 
-            StackView {
+            Text {
+                id: title
+                height: 15
+                text: "Mu.De. Manager "
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: 12
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+                minimumPointSize: 17
+                minimumPixelSize: 17
+                textFormat: Text.AutoText
+                anchors.horizontalCenterOffset: 150
+                z: 3
+                anchors.verticalCenterOffset: -170
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            Image {
+                id: image
+                anchors.fill: parent
+                source: "../images/logoRxR.jpg"
+                z: 2
+                fillMode: Image.Stretch
+            }
+
+            Text {
+                id: versionTxt
+                height: 15
+                text: "v xx.yy.zz"
+                anchors.verticalCenter: title.verticalCenter
+                font.pixelSize: 12
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                minimumPointSize: 17
+                textFormat: Text.AutoText
+                minimumPixelSize: 17
+                z: 3
+                anchors.horizontalCenterOffset: 80
+                anchors.horizontalCenter: title.horizontalCenter
+            }
+
+            Button {
+                id: btnCloseCopyright
+                width: 100
+                height: 30
+                anchors.verticalCenter: title.verticalCenter
+
+                anchors.left: parent.left
+                enabled: true
+                iconSource: ""
+                isDefault: false
+                checkable: true
+                z: 3
+                anchors.leftMargin: 57
+                Text {
+                    id: btnClsTxt
+                    anchors.fill: parent
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    textFormat: Text.RichText
+                    minimumPixelSize: 13
+                    color: "white"
+                    text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">CLOSE</span></p></body></html>"
+                }
+                style:ButtonStyle{
+                    background:Rectangle{
+                        color: "#de1414"
+
+                        antialiasing: true
+                        //"#666" : "transparent"
+                        border.color: "white"
+                        radius: height/2
+                        border.width: 2
+                    }
+                    //     text:Text {
+                    //          color: "white"
+                    //          height: 15
+                    //     }
+                }
+                onClicked: {
+                    aboutPanel.visible = false
+                }
+            }
+            onActiveFocusChanged: {
+                if (activeFocus)
+                    aboutPanel.visible = true
+                else
+                    aboutPanel.visible = false
+            }
+
+        }
+    }
+    FontLoader {
+        id: openSans
+        source: "qrc:/fonts/OpenSans-Regular.ttf"
+    }
+
+    property var componentMap: {
+        "SystemInfo": infoPanel,
+        "About": aboutPanel
+        //               "Dial": dial,
+        //               "Gauge": gauge,
+        //               "PieMenu": pieMenu,
+        //                "StatusIndicator": statusIndicator,
+        //              "ToggleButton": toggleButton,
+        //               "Tumbler": tumbler
+    }
+
+    Rectangle {
+        id: menuPanel
+        x: 711
+        y: 26
+        width: 200
+        height: 400
+        color: "#161616"
+        visible: true
+        function toPixels(percentage) {
+           return percentage * Math.min(menuPanel.width, menuPanel.height);
+       }
+
+        property bool isScreenPortrait: height > width
+        property color lightFontColor: "#222"
+        property color darkFontColor: "#e7e7e7"
+        readonly property color lightBackgroundColor: "#cccccc"
+        readonly property color darkBackgroundColor: "#161616"
+        property real customizerPropertySpacing: 10
+        property real colorPickerRowSpacing: 8
+
+        Text {
+            id: textSingleton
+
+        }
+        Grid{
+
+            columns: 1
+            columnSpacing: 0
+            rowSpacing: 16
+            id: menuPad
+            rows: 5
+            signal mnButtonPressed
+            anchors.fill: parent
+
+
+            Button {
+                id: bt_SysInjfo
+                width: menuPad.width
+                height: menuPad.height * (1/menuPad.rows)
+                text : qsTr("System Info")
+
+                style: BlackButtonStyle {
+                    fontColor: menuPanel.darkFontColor
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"                
+
+                }
+                 onClicked: {
+                  // chiudi menu
+                     infoPanel.visible = true
+                 }
+            }
+
+
+            Button {
+                id: bt_About
+                width: menuPad.width
+                height: menuPad.height * (1/menuPad.rows)
+                text: "About Mu.De.Manager..."               
+                style: BlackButtonStyle {
+                    fontColor: menuPanel.darkFontColor
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"
+                }
+                onClicked: {
+                 // chiudi menu
+                    aboutPanel.visible = true
+                }
+            }
+
+            Button {
+                id:bt_Advanced
+                width: menuPad.width
+                height: menuPad.height * (1/menuPad.rows)
+                text: "Advanced Mode"
+                style: BlackButtonStyle {
+                    fontColor: menuPanel.darkFontColor
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"
+                }
+            }
+
+            Button {
+                 id: bt_calA
+                 width: menuPad.width
+                 height: menuPad.height * (1/menuPad.rows)
+                 text: "Current Calibration"
+                style: BlackButtonStyle {
+                    fontColor: menuPanel.darkFontColor
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"
+                }
+            }
+
+            Button {
+                id: bt_calV
+                width: menuPad.width
+                height: menuPad.height * (1/menuPad.rows)
+                text: "Voltage Calibration"
+                style: BlackButtonStyle {
+                    fontColor: menuPanel.darkFontColor
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"
+                }
+            }
+
+        }
+        /*StackView {
                 id: stackView
                 anchors.fill: parent
-
+                visible: false
                 initialItem: ListView {
+
                     model: ListModel {
                         ListElement {
                             title: "System Info"
@@ -2888,15 +3099,44 @@ Window {
                             if (stackView.depth == 1) {
                                 // Only push the control view if we haven't already pushed it...
                                 stackView.push({item: componentMap[title]});
-                                stackView.currentItem.forceActiveFocus();
+                              //  stackView.currentItem.forceActiveFocus();
+                                stackView.currentItem.visible = true
+                        //        menuPanel.visible = false
                             }
                         }
                     }
                 }
-            }
-        }
+                delegate: StackViewDelegate {
+                        function transitionFinished(properties)
+                        {
+                            //properties.exitItem.opacity = 1
+                          //  properties.exitItem.y -= stackView.height
+                            //if (stackView.parent.visible)
+
+
+                         }
+
+                        pushTransition: StackViewTransition {
+                            PropertyAnimation {
+                                target: enterItem
+                                property: "y"
+                                from: stackView.y// - stackView.height
+                                to: stackView.y
+                            }
+                            PropertyAnimation {
+                                target: exitItem
+                                property: "y"
+                                from: stackView.y
+                                to: stackView.y // - stackView.height-menuPanel.y
+                            }
+                        }
+                    }
+                    */
     }
 }
+
+
+
 //  Text { id: time }
 
 

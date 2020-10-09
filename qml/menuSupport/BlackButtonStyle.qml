@@ -98,7 +98,7 @@ ButtonStyle {
 
             sourceComponent: Image {
                 width: Math.min(sourceSize.width, height)
-                height: bt_text.implicitHeight
+                height: text.implicitHeight
                 fillMode: Image.PreserveAspectFit
                 source: rightAlignedIconSource
             }
