@@ -63,7 +63,7 @@ ButtonStyle {
     label: Item {
         implicitWidth: row.implicitWidth
         implicitHeight: row.implicitHeight
-        baselineOffset: row.y + text.y + text.baselineOffset
+        baselineOffset: row.y + bt_text.y + bt_text.baselineOffset
 
         Row {
             id: row
@@ -75,14 +75,14 @@ ButtonStyle {
             Image {
                 source: control.iconSource
                 width: Math.min(sourceSize.width, height)
-                height: text.implicitHeight
+                height: bt_text.implicitHeight
                 fillMode: Image.PreserveAspectFit
             }
             Text {
                 id: bt_text
                 text: control.text
                 color: fontColor
-                font.pixelSize: control.height * 0.25
+                font.pixelSize: control.height * 0.20 //25
                 font.family: openSans.name
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
@@ -97,8 +97,9 @@ ButtonStyle {
             anchors.rightMargin: textSingleton.implicitHeight
 
             sourceComponent: Image {
+                //anchors.left: bt_text.right
                 width: Math.min(sourceSize.width, height)
-                height: text.implicitHeight
+                height: bt_text.implicitHeight
                 fillMode: Image.PreserveAspectFit
                 source: rightAlignedIconSource
             }

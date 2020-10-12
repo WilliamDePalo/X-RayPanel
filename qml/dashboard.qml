@@ -785,7 +785,7 @@ Window {
                             kvbrd.border.color = "#f62f2f"
                             keyPanelManager = key_kV
                             CalcEngine.setItem(keyPanelManager)
-                            appare.running= true
+                            appare.running = true
                         }else
                         {
                             if (keyPanelManager == key_kV)
@@ -1150,7 +1150,7 @@ Window {
                         //onWidthChanged: controller.reload()
                         //  onHeightChanged: controller.reload()
                         onClicked: {
-                            if (panelKeyPad.visible === false)
+                            if ((panelKeyPad.visible === false) && (menuPanel.visible== false))
                             {
                                 panelKeyPad.visible=true
                                 //     panelKeyPad.x = 200
@@ -1439,16 +1439,12 @@ Window {
                     onClicked:  {
                         if (menuPanel.visible)
                         {
-                            menuPanel.visible= false
-                            //infoPanel.visible = false
-                            //stackView.push()
-                        }else if (serialSettings.visible == false)
+                           // menuPanel.visible= false
+                            menu_out.running = true
+                        }else if (panelKeyPad.visible==false)
                         {
-                            //stackView.pop()
-                            menuPanel.visible= true
-                            //stackView.visible = true
-                            //stackView.__performTransition()
-                            //infoPanel.visible = true
+                           menuPanel.visible = true
+                           menu_in.running = true
                         }
                     }
                     style: ButtonStyle {
@@ -2953,14 +2949,16 @@ Window {
     Rectangle {
         id: menuPanel
         x: 711
-        y: 26
+        y: 16
+        property  var ypos: 16
         width: 200
         height: 400
-        color: "#161616"
-        visible: true
+        visible: false
+        color: "#00000000"
         function toPixels(percentage) {
            return percentage * Math.min(menuPanel.width, menuPanel.height);
        }
+
 
         property bool isScreenPortrait: height > width
         property color lightFontColor: "#222"
@@ -2978,7 +2976,7 @@ Window {
 
             columns: 1
             columnSpacing: 0
-            rowSpacing: 16
+            rowSpacing: 0
             id: menuPad
             rows: 5
             signal mnButtonPressed
@@ -2993,12 +2991,16 @@ Window {
 
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
-                    rightAlignedIconSource: "qrc:/images/icon-go.png"                
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"
 
                 }
                  onClicked: {
                   // chiudi menu
-                     infoPanel.visible = true
+                     menu_out.running = true
+                     if (infoPanel.visible)
+                        infoPanel.visible = false
+                     else if (serialSettings.visible == false)
+                         infoPanel.visible = true
                  }
             }
 
@@ -3007,13 +3009,14 @@ Window {
                 id: bt_About
                 width: menuPad.width
                 height: menuPad.height * (1/menuPad.rows)
-                text: "About Mu.De.Manager..."               
+                text: qsTr("About Mu.de. ... ")
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
                     rightAlignedIconSource: "qrc:/images/icon-go.png"
                 }
                 onClicked: {
                  // chiudi menu
+                    menu_out.running = true
                     aboutPanel.visible = true
                 }
             }
@@ -3022,7 +3025,7 @@ Window {
                 id:bt_Advanced
                 width: menuPad.width
                 height: menuPad.height * (1/menuPad.rows)
-                text: "Advanced Mode"
+                text: qsTr("Advanced Mode")
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
                     rightAlignedIconSource: "qrc:/images/icon-go.png"
@@ -3033,7 +3036,8 @@ Window {
                  id: bt_calA
                  width: menuPad.width
                  height: menuPad.height * (1/menuPad.rows)
-                 text: "Current Calibration"
+                 text: "Current Cal."
+                 visible: false
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
                     rightAlignedIconSource: "qrc:/images/icon-go.png"
@@ -3044,7 +3048,8 @@ Window {
                 id: bt_calV
                 width: menuPad.width
                 height: menuPad.height * (1/menuPad.rows)
-                text: "Voltage Calibration"
+                text: "Voltage Cal."
+                visible : false
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
                     rightAlignedIconSource: "qrc:/images/icon-go.png"
@@ -3132,6 +3137,39 @@ Window {
                         }
                     }
                     */
+
+        YAnimator {
+
+            id : menu_in
+            easing.amplitude: 1.05
+            //This specifies how long the animation takes
+            duration: 1000
+            //This selects an easing curve to interpolate with, the default is Easing.Linear
+            easing.type: Easing.OutCubic
+            target: menuPanel
+            from: menuPanel.ypos-(menuPanel.height+16)
+            to :menuPanel.ypos
+            running: false
+        }
+        SequentialAnimation{
+            id: menu_out            
+            YAnimator  {
+                easing.amplitude: 1.05
+                //This specifies how long the animation takes
+                duration: 600
+                //This selects an easing curve to interpolate with, the default is Easing.Linear
+                easing.type: Easing.OutCubic
+                target: menuPanel
+                from: menuPanel.ypos
+                to : menuPanel.ypos-(menuPanel.height+16)
+                running: false
+            }
+            onStopped:{
+                menuPanel.visible = false
+                menuPanel.y = ypos // riposiziono
+            }
+        }
+
     }
 }
 
