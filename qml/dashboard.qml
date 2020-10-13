@@ -100,6 +100,8 @@ Window {
     property var key_trimFP_7 : 10
     property var key_trimFP_8 : 11
 
+
+
     ValueSource {
         id: valueSource
 
@@ -109,7 +111,21 @@ Window {
 
     }
 
-
+    function setAdvancedMode(value)
+        {
+            if (value)
+            {
+                valueSource.advancedMode = true
+                valueSource.btnTXT = "EXIT"
+           //     iconAdvanced.visible = true
+            }
+            else
+             {
+                valueSource.advancedMode = false
+                valueSource.btnTXT = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; color:#ffffff;\">ENTER</span></p></body></html>"
+          //      iconAdvanced.visible = false
+            }
+        }
 
     Timer{
         id: pollingTimer
@@ -1439,12 +1455,22 @@ Window {
                     onClicked:  {
                         if (menuPanel.visible)
                         {
-                           // menuPanel.visible= false
+                            // menuPanel.visible= false
                             menu_out.running = true
                         }else if (panelKeyPad.visible==false)
                         {
-                           menuPanel.visible = true
-                           menu_in.running = true
+                            if (valueSource.advancedMode)
+                            {
+                                bt_calA.visible = true
+                                bt_calV.visible = true
+                            }else
+                            {
+                                bt_calA.visible = false
+                                bt_calV.visible = false
+                            }
+
+                            menuPanel.visible = true
+                            menu_in.running = true
                         }
                     }
                     style: ButtonStyle {
@@ -2857,10 +2883,11 @@ Window {
 
             Image {
                 id: image
+                visible: true
                 anchors.fill: parent
                 source: "../images/logoRxR.jpg"
                 z: 2
-                fillMode: Image.Stretch
+                fillMode: Image.PreserveAspectCrop
             }
 
             Text {
@@ -2929,6 +2956,224 @@ Window {
             }
 
         }
+
+        Rectangle {
+            id: pwdPanel
+            x: 90
+            y: 138
+            width: 547
+            height: 260
+            visible: false
+            border.color: "#f62f2f"
+            border.width: 2
+            gradient: Gradient {
+                GradientStop {
+                    position: 0
+                    color: "#ff5eb3e5"
+                }
+
+                GradientStop {
+                    position: 1
+                    color: "#ff000000"
+                }
+            }
+
+            function checkPWD(candidatePWD)
+            {
+                if (candidatePWD === "escono I raggi dal monoblocco?")
+                    return  true
+                else
+                    return false
+            }
+
+            Text {
+                id: pwd_Title
+                x: 148
+                width: 230
+                height: 40
+                color: "#fbfbfb"
+                text: "Enter Installer Password"
+                anchors.top: parent.top
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.topMargin: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                styleColor: "#fbfbfb"
+                minimumPointSize: 14
+                minimumPixelSize: 15
+            }
+
+            TextInput {
+                id: pwdTxtIn
+                width: 230
+                height: 40
+                text: qsTr("")
+                anchors.top: pwd_Title.bottom
+                font.pixelSize: 14
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                z: 3
+                cursorVisible: true
+                anchors.topMargin: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                echoMode: TextInput.Password
+
+                Rectangle{
+                    color: "#fbfbfb"
+                    border.width: 1
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    z: -1
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+                onTextChanged: {
+                    if (error_txt.visible)
+                    {
+                        pwdTxtIn.text=""
+                        error_txt.visible = false
+                    }
+
+                }
+
+/*                onEditingFinished: {
+                    if (pwdPanel.checkPWD(pwdTxtIn.text.toString()))
+                        valueSource.advancedMode = true
+                    else
+                        error_txt.visible = true
+                    pwdTxtIn.text=""
+                }*/
+                onAccepted: {
+                    if (pwdPanel.checkPWD(pwdTxtIn.text.toString()))
+                    {
+                        setAdvancedMode(true)
+                    }
+                    else
+                        error_txt.visible = true
+                }
+
+            }
+
+            Text {
+                id: error_txt
+                x: 148
+                width: 230
+                height: 40
+                visible: false
+                color: "#de1414"
+                text: "WRONG PASSWORD !!!"
+                anchors.top: btnEnter.bottom
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: 20
+                minimumPixelSize: 15
+                minimumPointSize: 14
+                styleColor: "#fbfbfb"
+            }
+
+            Button {
+                id: btnEnter
+                width: 100
+                height: 30
+                anchors.verticalCenter: title.verticalCenter
+                anchors.top: pwdTxtIn.bottom
+                anchors.topMargin: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                style: ButtonStyle {
+                    background: Rectangle {
+                        radius: height/2
+                        border.color: "#ffffff"
+                        border.width: 2
+                        gradient: Gradient {
+                            GradientStop {
+                                position: 0.86935
+                                color: "#f62f2f"
+                            }
+
+                            GradientStop {
+                                position: 1
+                                color: "#fbfbfb"
+                            }
+                        }
+                        antialiasing: true
+                    }
+                }
+                z: 3
+                checkable: true
+                isDefault: false
+                Text {
+                    id: btnEnterTxt
+                    color: "#ffffff"
+                    text: valueSource.btnTXT
+                    anchors.fill: parent
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    textFormat: Text.RichText
+                    minimumPixelSize: 13
+
+                }
+                iconSource: ""
+                enabled: true
+                onClicked: {
+                    if (valueSource.advancedMode === false)
+                    {
+                        // check pwd
+                        if (pwdPanel.checkPWD(pwdTxtIn.text.toString()))
+                            setAdvancedMode(true)
+                        else
+                            error_txt.visible = true
+                    }else
+                        setAdvancedMode(false)
+                }
+            }
+
+            Button {
+                id: btnExit
+                width: 30
+                height: 30
+                anchors.verticalCenter: title.verticalCenter
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.rightMargin: 10
+                anchors.topMargin: 10
+                style: ButtonStyle {
+                    background: Rectangle {
+                        color: "#f62f2f"
+                        radius: height/2
+                        border.color: "#ffffff"
+                        border.width: 2
+                        antialiasing: true
+                    }
+                }
+                z: 3
+                checkable: true
+                isDefault: false
+                Text {
+                    id: btnExitTxt
+                    color: "#ffffff"
+                    text: "X"
+                    anchors.fill: parent
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    font.pointSize: 9
+                    font.styleName: "Grassetto"
+                    textFormat: Text.RichText
+                    minimumPixelSize: 15
+                }
+                iconSource: ""
+                enabled: true
+                onClicked: {
+                    // close
+                    pwdPanel.visible = false
+                }
+            }
+
+
+
+        }
     }
     FontLoader {
         id: openSans
@@ -2956,8 +3201,8 @@ Window {
         visible: false
         color: "#00000000"
         function toPixels(percentage) {
-           return percentage * Math.min(menuPanel.width, menuPanel.height);
-       }
+            return percentage * Math.min(menuPanel.width, menuPanel.height);
+        }
 
 
         property bool isScreenPortrait: height > width
@@ -2994,14 +3239,14 @@ Window {
                     rightAlignedIconSource: "qrc:/images/icon-go.png"
 
                 }
-                 onClicked: {
-                  // chiudi menu
-                     menu_out.running = true
-                     if (infoPanel.visible)
+                onClicked: {
+                    // chiudi menu
+                    menu_out.running = true
+                    if (infoPanel.visible)
                         infoPanel.visible = false
-                     else if (serialSettings.visible == false)
-                         infoPanel.visible = true
-                 }
+                    else if (serialSettings.visible == false)
+                        infoPanel.visible = true
+                }
             }
 
 
@@ -3015,9 +3260,12 @@ Window {
                     rightAlignedIconSource: "qrc:/images/icon-go.png"
                 }
                 onClicked: {
-                 // chiudi menu
+                    // chiudi menu
                     menu_out.running = true
-                    aboutPanel.visible = true
+                    if (aboutPanel.visible)
+                        aboutPanel.visible = false
+                    else
+                        aboutPanel.visible = true
                 }
             }
 
@@ -3030,14 +3278,26 @@ Window {
                     fontColor: menuPanel.darkFontColor
                     rightAlignedIconSource: "qrc:/images/icon-go.png"
                 }
+                onClicked: {
+                    // chiudi menu
+                    menu_out.running = true
+                    if (pwdPanel.visible)
+                        pwdPanel.visible = false
+                    else
+                    {
+                        pwdPanel.visible = true
+                        pwdTxtIn.text="" // pulisco la stringa se sporca
+                    }
+                }
+
             }
 
             Button {
-                 id: bt_calA
-                 width: menuPad.width
-                 height: menuPad.height * (1/menuPad.rows)
-                 text: "Current Cal."
-                 visible: false
+                id: bt_calA
+                width: menuPad.width
+                height: menuPad.height * (1/menuPad.rows)
+                text: "Current Cal."
+                visible: false
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
                     rightAlignedIconSource: "qrc:/images/icon-go.png"
@@ -3152,7 +3412,7 @@ Window {
             running: false
         }
         SequentialAnimation{
-            id: menu_out            
+            id: menu_out
             YAnimator  {
                 easing.amplitude: 1.05
                 //This specifies how long the animation takes
@@ -3166,7 +3426,7 @@ Window {
             }
             onStopped:{
                 menuPanel.visible = false
-                menuPanel.y = ypos // riposiziono
+                menuPanel.y = menuPanel.ypos // riposiziono
             }
         }
 

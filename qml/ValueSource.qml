@@ -89,6 +89,8 @@ Item {
     property int tecn : 4 //valore di unknow per il default
     property int cap: 0
     property int numericSTS: 0
+    property bool advancedMode : false
+    property string btnTXT: "ENTER"
 //! [0]
 /*
     function randomDirection() {
