@@ -54,5 +54,6 @@
         <file>qml/menuSupport/BlackButtonStyle.qml</file>
         <file>images/icon-go.png</file>
         <file>fonts/OpenSans-Regular.ttf</file>
+        <file>images/options-settings-White.svg</file>
     </qresource>
 </RCC>

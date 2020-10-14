@@ -112,20 +112,20 @@ Window {
     }
 
     function setAdvancedMode(value)
+    {
+        if (value)
         {
-            if (value)
-            {
-                valueSource.advancedMode = true
-                valueSource.btnTXT = "EXIT"
-           //     iconAdvanced.visible = true
-            }
-            else
-             {
-                valueSource.advancedMode = false
-                valueSource.btnTXT = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; color:#ffffff;\">ENTER</span></p></body></html>"
-          //      iconAdvanced.visible = false
-            }
+            valueSource.advancedMode = true
+            valueSource.btnTXT = "EXIT"
+            advancedIcon.visible = true
         }
+        else
+        {
+            valueSource.advancedMode = false
+            valueSource.btnTXT = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; color:#ffffff;\">ENTER</span></p></body></html>"
+            advancedIcon.visible = false
+        }
+    }
 
     Timer{
         id: pollingTimer
@@ -136,6 +136,21 @@ Window {
 
         onTriggered: callback()
 
+    }
+
+    Image {
+        id: advancedIcon
+        visible: false
+        anchors.fill: parent
+        source: "../images/options-settings-White.svg"
+        z: 2
+        sourceSize.height: 70
+        sourceSize.width: 70
+        anchors.rightMargin: 944
+        anchors.leftMargin: 10
+        anchors.bottomMargin: 520
+        anchors.topMargin: 10
+        fillMode: Image.Stretch
     }
 
     Timer{
@@ -1306,7 +1321,7 @@ Window {
 
         Image {
             id: logo
-            y: 42
+            y: 53
             width: 310
             height: 115
             anchors.left: parent.left
@@ -2980,7 +2995,7 @@ Window {
 
             function checkPWD(candidatePWD)
             {
-                if (candidatePWD === "escono I raggi dal monoblocco?")
+                if (candidatePWD === "il Monoblocco funziona?")
                     return  true
                 else
                     return false
@@ -3037,7 +3052,7 @@ Window {
 
                 }
 
-/*                onEditingFinished: {
+                /*                onEditingFinished: {
                     if (pwdPanel.checkPWD(pwdTxtIn.text.toString()))
                         valueSource.advancedMode = true
                     else
@@ -3431,6 +3446,7 @@ Window {
         }
 
     }
+
 }
 
 
