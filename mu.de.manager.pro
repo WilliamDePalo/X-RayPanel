@@ -4,13 +4,22 @@ INCLUDEPATH += .
 QT += quick
 QT += widgets
 QT += serialport
+QT += qml quick
+static {
+   QT += svg
+   QTPLUGIN += qtvirtualkeyboardplugin
+}
 
 # With C++11 support
 greaterThan(QT_MAJOR_VERSION, 4){
-    CONFIG += c++11
+    CONFIG += c++11   
 } else {
     QMAKE_CXXFLAGS += -std=c++0x
 }
+
+CONFIG  += link_pkgconfig
+#target.path = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard/basic
+#INSTALLS += target
 
 SOURCES += \
     ./main.cpp \
@@ -61,7 +70,14 @@ DISTFILES += \
     ./qml/PressAndHoldButton.qml \
     ./qml/TachometerStyle.qml \
     ./qml/TurnIndicator.qml \
-    ./qml/ValueSource.qml \  
+    ./qml/ValueSource.qml \   \
+    qml/keyPadSupport/AutoScroller.qml \
+    qml/keyPadSupport/FloatingButton_Active.svg \
+    qml/keyPadSupport/FloatingButton_Available.svg \
+    qml/keyPadSupport/FloatingButton_Unavailable.svg \
+    qml/keyPadSupport/HandwritingModeButton.qml \
+    qml/keyPadSupport/TextArea.qml \
+    qml/keyPadSupport/TextField.qml \
     images/background.png \
     images/background.svg \
     images/needle.svg \
@@ -72,4 +88,5 @@ DISTFILES += \
     qml/NumberPadSupport/calculator.js \
     qml/menuSupport/BlackButtonBackground.qml \
     qml/menuSupport/BlackButtonStyle.qml \
-    ./qml/dashboard.qml
+    qml/dashboard.qml
+

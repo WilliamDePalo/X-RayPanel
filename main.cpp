@@ -47,7 +47,6 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 #include <QtGui/QGuiApplication>
 #include <QtQml/QQmlApplicationEngine>
 #include <QtGui/QFont>
@@ -64,6 +63,8 @@
 #include "serial/settingsdialog.h"
 #include <QDebug>
 
+#include <QQmlEngine>
+
 int main(int argc, char *argv[])
 {
 
@@ -79,7 +80,7 @@ int main(int argc, char *argv[])
 //        return -1;
 
  //   return app.exec();
-
+    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
