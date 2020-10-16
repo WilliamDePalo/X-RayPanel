@@ -38,7 +38,7 @@ Controls.TextField {
     selectedTextColor: color
     selectByMouse: true
     font.pixelSize: Qt.application.font.pixelSize * 2
-
+   // visible: false
     property int enterKeyAction: EnterKeyAction.None
     readonly property bool enterKeyEnabled: enterKeyAction === EnterKeyAction.None || acceptableInput || inputMethodComposing
 

@@ -3001,7 +3001,7 @@ Window {
 
             function checkPWD(candidatePWD)
             {
-                if (candidatePWD === "il Monoblocco funziona?")
+                if (candidatePWD === valueSource.advanced_PWD)
                     return  true
                 else
                     return false
@@ -3035,25 +3035,30 @@ Window {
 
                 onClicked: focus = true
 
-            TextField {
-                id: pwdTxtIn
-                width: 230
-                height: 40
-                text: qsTr("")
-                anchors.top: pwd_Title.bottom
-                font.pixelSize: 14
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                z: 3
-                //  cursorVisible: true
-                anchors.topMargin: 20
-                anchors.horizontalCenter: parent.horizontalCenter
-                echoMode: TextInput.Password
-                placeholderText: "Password field"
-                inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
-                enterKeyAction: EnterKeyAction.Next
-                //        onAccepted: upperCaseField.focus = true
-           /*     Rectangle{
+                TextField {
+                    id: pwdTxtIn
+                    width: 230
+                    height: 40
+                    text: qsTr("")
+                    anchors.top: pwd_Title.bottom
+                    font.pixelSize: 14
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    z: 3
+                    //  cursorVisible: true
+                    anchors.topMargin: 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    echoMode: TextInput.Password
+                    placeholderText: "Password field"
+                    inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
+                    enterKeyAction: EnterKeyAction.Next
+
+
+
+
+                    //        onAccepted: upperCaseField.focus = true
+                    /*     Rectangle{
                     color: "#fbfbfb"
                     border.width: 1
                     anchors.left: parent.left
@@ -3062,32 +3067,33 @@ Window {
                     z: -1
                     anchors.horizontalCenter: parent.horizontalCenter
                 }*/
-                onTextChanged: {
-                    if (error_txt.visible)
-                    {
-                        pwdTxtIn.text=""
-                        error_txt.visible = false
+                    onTextChanged: {
+                        if (error_txt.visible)
+                        {
+                            pwdTxtIn.text=""
+                            error_txt.visible = false
+                        }
+
                     }
 
-                }
-
-                /*                onEditingFinished: {
+                    /*                onEditingFinished: {
                     if (pwdPanel.checkPWD(pwdTxtIn.text.toString()))
                         valueSource.advancedMode = true
                     else
                         error_txt.visible = true
                     pwdTxtIn.text=""
                 }*/
-                onAccepted: {
-                    if (pwdPanel.checkPWD(pwdTxtIn.text.toString()))
-                    {
-                        setAdvancedMode(true)
+                    onAccepted: {
+                        if (pwdPanel.checkPWD(pwdTxtIn.text.toString()))
+                        {
+                            setAdvancedMode(true)
+                        }
+                        else
+                            error_txt.visible = true
                     }
-                    else
-                        error_txt.visible = true
+
                 }
 
-            }
             }
             Text {
                 id: error_txt
@@ -3209,32 +3215,34 @@ Window {
 
         }
 
-       // Rectangle {
                 Item {
          //   id: keyboardArea
             x: 198
             y: 392
             width: 678
             height: 277
-            anchors.verticalCenterOffset: 273
-            anchors.horizontalCenterOffset: -141
+            anchors.verticalCenterOffset: 154
+            anchors.horizontalCenterOffset: -106
             // color: "#00000000"
                    // Only set with CONFIG+=disable-desktop.
             property bool handwritingInputPanelActive: false
-   //         Item {
+
                 id: appContainer
         //        width: Screen.width < Screen.height ? parent.height : parent.width
          //       height: Screen.width < Screen.height ? parent.width : parent.height
                 anchors.centerIn: parent
                 rotation: Screen.width < Screen.height ? 90 : 0
+                visible: false
                 //Basic {
-                  Item{  id: virtualKeyboard
+                  Item{
+                    id: virtualKeyboard
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.right: parent.right
                     anchors.bottom: inputPanel.top
-                 //   handwritingInputPanelActive: handwritingInputPanel.active
-                }
+                    anchors.topMargin: 72
+                    // handwritingInputPanelActive: handwritingInputPanel.active
+                  }
 
                 /*  Handwriting input panel for full screen handwriting input.
 
@@ -3245,8 +3253,8 @@ Window {
                     The handwriting input panel is positioned to cover the entire area of
                     application. The panel itself is transparent, but once it is active the
                     user can draw handwriting on it.
-                */
-            /*    HandwritingInputPanel {
+
+                HandwritingInputPanel {
                     z: 79
                     id: handwritingInputPanel
                     anchors.fill: parent
@@ -3257,8 +3265,8 @@ Window {
                         color: "black"
                         opacity: 0.10
                     }
-                }*/
-
+                }
+*/
                 /*  Container area for the handwriting mode button.
 
                     Handwriting mode button can be moved freely within the container area.
@@ -3282,8 +3290,8 @@ Window {
                         onClicked: handwritingInputPanel.active = !handwritingInputPanel.active
                         onDoubleClicked: handwritingInputPanel.available = !handwritingInputPanel.available
                     }
-                }
-*/
+                }*/
+
                 /*  Keyboard input panel.
 
                     The keyboard is anchored to the bottom of the application.
@@ -3291,16 +3299,16 @@ Window {
                 InputPanel {
                     id: inputPanel
                     z: 89
-                    y: appContainer.height
+                    y: 10 // Qt.inputMethod.visible ? appContainer.height - inputPanel.height : appContainer.height// appContainer.height
                     anchors.left: parent.left
                     anchors.right: parent.right
                     states: State {
                         name: "visible"
-                        /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
-                            but then the handwriting input panel and the keyboard input panel can be visible
-                            at the same time. Here the visibility is bound to InputPanel.active property instead,
-                            which allows the handwriting panel to control the visibility when necessary.
-                        */
+                        //  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
+                        //    but then the handwriting input panel and the keyboard input panel can be visible
+                        //    at the same time. Here the visibility is bound to InputPanel.active property instead,
+                        //    which allows the handwriting panel to control the visibility when necessary.
+
                         when: inputPanel.active
                         PropertyChanges {
                             target: inputPanel
@@ -3326,7 +3334,7 @@ Window {
                         property: "animating"
                         value: inputPanelTransition.running
                     }
-                    AutoScroller {}
+                 //   AutoScroller {}
                 }
 
                 Binding {
@@ -3334,7 +3342,6 @@ Window {
                     property: "fullScreenMode"
                     value: appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
                 }
-       //     }
         }
     }
     FontLoader {
@@ -3342,7 +3349,7 @@ Window {
         source: "qrc:/fonts/OpenSans-Regular.ttf"
     }
 
-    property var componentMap: {
+   /* property var componentMap: {
         "SystemInfo": infoPanel,
         "About": aboutPanel
         //               "Dial": dial,
@@ -3351,7 +3358,7 @@ Window {
         //                "StatusIndicator": statusIndicator,
         //              "ToggleButton": toggleButton,
         //               "Tumbler": tumbler
-    }
+    }*/
 
     Rectangle {
         id: menuPanel
