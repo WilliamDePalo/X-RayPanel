@@ -48,6 +48,6 @@ Controls.TextField {
     background: Rectangle {
         color: "#FFFFFF"
         border.width: 2
-        border.color: kbTxT.activeFocus ? "#5CAA15" : "#BDBEBF"
+        border.color: kbTxT.activeFocus ? "#f62f2f" : "#BDBEBF" //"#5CAA15"
     }
 }

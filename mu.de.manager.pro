@@ -71,12 +71,9 @@ DISTFILES += \
     ./qml/TachometerStyle.qml \
     ./qml/TurnIndicator.qml \
     ./qml/ValueSource.qml \   \
-    qml/keyPadSupport/AutoScroller.qml \
     qml/keyPadSupport/FloatingButton_Active.svg \
     qml/keyPadSupport/FloatingButton_Available.svg \
-    qml/keyPadSupport/FloatingButton_Unavailable.svg \
-    qml/keyPadSupport/HandwritingModeButton.qml \
-    qml/keyPadSupport/TextArea.qml \
+    qml/keyPadSupport/FloatingButton_Unavailable.svg \    
     qml/keyPadSupport/TextField.qml \
     images/background.png \
     images/background.svg \

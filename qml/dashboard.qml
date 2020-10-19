@@ -3034,7 +3034,11 @@ Window {
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 onClicked:
+                {
                     focus = true
+
+                }
+
 
                 TextField {
                     id: pwdTxtIn
@@ -3051,10 +3055,16 @@ Window {
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     echoMode: TextInput.Password
-                    placeholderText: "Password field"
+                    placeholderText:  qsTr("Insert Password")
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
                     enterKeyAction: EnterKeyAction.Next
-
+ /*                   onPressed: {
+                        if (!keyboardArea.visible)
+                        {
+                            keyboardArea.visible = true
+                            kb_in.running = true
+                        }
+                    }*/
 
 
 
@@ -3209,6 +3219,8 @@ Window {
                 onClicked: {
                     // close
                     pwdPanel.visible = false
+                    pwdTxtIn.focus = false
+                    //inputPanel.active = false
                 }
             }
 
@@ -3217,150 +3229,119 @@ Window {
         }
 
         Item {
-         //   id: keyboardArea
-            id: appContainer
+            id: keyboardArea
             x: 198
-            y: 392
-            width: 678
-            height: 277
-            anchors.verticalCenterOffset: 154
-            anchors.horizontalCenterOffset: -106
-            anchors.centerIn: parent
+            y: 0//376//392
+            width: 650
+            height: 200
+            anchors.horizontalCenterOffset: -83
+
             // color: "#00000000"
-                   // Only set with CONFIG+=disable-desktop.
+            // Only set with CONFIG+=disable-desktop.
             property bool handwritingInputPanelActive: false
 
 
-        //        width: Screen.width < Screen.height ? parent.height : parent.width
-         //       height: Screen.width < Screen.height ? parent.width : parent.height
+            //        width: Screen.width < Screen.height ? parent.height : parent.width
+            //       height: Screen.width < Screen.height ? parent.width : parent.height
 
-                rotation: Screen.width < Screen.height ? 90 : 0
-                visible: true
-                //Basic {
-                Item{
-                    id: virtualKeyboard
-                    anchors.fill: appContainer
-                    // handwritingInputPanelActive: handwritingInputPanel.active
+            rotation: Screen.width < Screen.height ? 90 : 0
+            visible: true
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+            anchors.horizontalCenter: parent.horizontalCenter
+            //Basic {
+    /*        Item{
+                id: virtualKeyboard
+                anchors.fill: keyboardArea
+                // handwritingInputPanelActive: handwritingInputPanel.active
 
-                }
-  /*              Binding {
-                    target: VirtualKeyboardSettings
-                    property: "fullScreenMode"
-                    value: false
-                }
-                transitions: Transition {
-                     id: inputPanelTransition
-                     from: ""
-                     to: "visible"
-                     reversible: true
-                     enabled: !VirtualKeyboardSettings.fullScreenMode
-                     ParallelAnimation {
-                         NumberAnimation {
-                             properties: "y"
-                             duration: 2250
-                             easing.type: Easing.InOutQuad
-                         }
-                     }
-                 }*/
-                /*  Handwriting input panel for full screen handwriting input.
+            }*/
 
-                    This component is an optional add-on for the InputPanel component, that
-                    is, its use does not affect the operation of the InputPanel component,
-                    but it also can not be used as a standalone component.
 
-                    The handwriting input panel is positioned to cover the entire area of
-                    application. The panel itself is transparent, but once it is active the
-                    user can draw handwriting on it.
 
-                HandwritingInputPanel {
-                    z: 79
-                    id: handwritingInputPanel
-                    anchors.fill: parent
-                    inputPanel: inputPanel
-                    Rectangle {
-                        z: -1
-                        anchors.fill: parent
-                        color: "black"
-                        opacity: 0.10
-                    }
-                }
-*/
-                /*  Container area for the handwriting mode button.
-
-                    Handwriting mode button can be moved freely within the container area.
-                    In this example, a single click changes the handwriting mode and a
-                    double-click changes the availability of the full screen handwriting input.
-
-                Item {
-                    visible: false
-                    z: 99
-                    anchors { left: parent.left; top: parent.top; right: parent.right; bottom: inputPanel.top; }
-                    HandwritingModeButton {
-                        id: handwritingModeButton
-                        anchors.top: parent.top
-                        anchors.right: parent.right
-                        anchors.margins: 10
-                        floating: true
-                        flipable: true
-                        width: 76
-                        height: width
-                        state: handwritingInputPanel.state
-                        onClicked: handwritingInputPanel.active = !handwritingInputPanel.active
-                        onDoubleClicked: handwritingInputPanel.available = !handwritingInputPanel.available
-                    }
-                }*/
-
-                /*  Keyboard input panel.
+            /*  Keyboard input panel.
 
                     The keyboard is anchored to the bottom of the application.
                 */
-                InputPanel {
-                    id: inputPanel
-                    z: 89
-                    y:  Qt.inputMethod.visible ? appContainer.height - inputPanel.height : appContainer.height// appContainer.height
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-    /////                states: State {
-    ///                    name: "visible"
-                        //  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
-                        //    but then the handwriting input panel and the keyboard input panel can be visible
-                        //    at the same time. Here the visibility is bound to InputPanel.active property instead,
-                        //    which allows the handwriting panel to control the visibility when necessary.
+            InputPanel {
+                id: inputPanel
+                y: 283 // Qt.inputMethod.visible ? keyboardArea.height - inputPanel.height : keyboardArea.height// appContainer.height
+                anchors.left: parent.left
+                anchors.right: parent.right
+                z: 89
 
-   ///                     when: inputPanel.active
-  ///                      PropertyChanges {
-   ///                         target: inputPanel
-   ///                         y: appContainer.height - inputPanel.height
-  ///                      }
-  ///                  }
+                property var ypos: 300
+                states : State {
+                    name: "visible"
+                    //  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
+                    //    but then the handwriting input panel and the keyboard input panel can be visible
+                    //    at the same time. Here the visibility is bound to InputPanel.active property instead,
+                    //    which allows the handwriting panel to control the visibility when necessary.
 
- /*                   transitions: Transition {
+                    when: inputPanel.active
+                    PropertyChanges {
+                        target: inputPanel
+                        y: 0 //keyboardArea.height - inputPanel.height
+
+                    }
+                }
+
+                /*                transitions: Transition {
                         id: inputPanelTransition
                         from: ""
                         to: "visible"
                         reversible: true
-                        enabled: !VirtualKeyboardSettings.fullScreenMode
+                        enabled: true //!VirtualKeyboardSettings.fullScreenMode
                         ParallelAnimation {
                             NumberAnimation {
                                 properties: "y"
-                                duration: 250
+                                duration: 2250
                                 easing.type: Easing.InOutQuad
                             }
                         }
-                    }// transizione sul click dell'attivazione
-                    Binding {
-                        target: InputContext
-                        property: "animating"
-                        value: inputPanelTransition.running
+                    }*/
+                transitions: Transition {
+                    id: kb_in
+                    from: ""
+                    to: "visible"
+                    reversible: true
+                    enabled: true //!VirtualKeyboardSettings.fullScreenMode
+                    ParallelAnimation {
+                        NumberAnimation {
+                            properties: "y"
+                            duration: 1000
+              //              from: inputPanel.ypos
+             //               to: keyboardArea.y
+                            easing.type: Easing.OutCubic
+                        }
                     }
-                 //   AutoScroller {}*/
                 }
-                    // abilitazione in full Screen
+                // transizione sul click dell'attivazione
                 Binding {
-                    target: VirtualKeyboardSettings
-                    property: "fullScreenMode"
-                    value: false //appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
+                    target: InputContext
+                    property: "animating"
+                    value: kb_in.running //inputPanelTransition.running
                 }
+                //   AutoScroller {}
+            }
+            // abilitazione in full Screen
+            Binding {
+                target: VirtualKeyboardSettings
+                property: "fullScreenMode"
+                value: false //appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
+            }
+   /*         YAnimator {
+                id : kb_in
+                easing.amplitude: 1.05
+                //This specifies how long the animation takes
+                duration: 1000
+                //This selects an easing curve to interpolate with, the default is Easing.Linear
+                easing.type: Easing.OutCubic
+                target: keyboardArea
+                from:583// (keyboardArea.height+16) - keyboardArea.ypos
+                to :keyboardArea.ypos
+                running: false
+            }*/
         }
     }
     FontLoader {

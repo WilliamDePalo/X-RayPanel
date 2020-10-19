@@ -91,7 +91,7 @@ Item {
     property int numericSTS: 0
     property bool advancedMode : false
     property string btnTXT: "ENTER"
-    property string advanced_PWD : "Wilhelm Rontgen !"
+    property string advanced_PWD : ",Wilhelm."
 
 //! [0]
 /*

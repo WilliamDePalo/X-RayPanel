@@ -55,12 +55,6 @@
         <file>images/icon-go.png</file>
         <file>fonts/OpenSans-Regular.ttf</file>
         <file>images/options-settings-White.svg</file>
-        <file>qml/keyPadSupport/TextArea.qml</file>
         <file>qml/keyPadSupport/TextField.qml</file>
-        <file>qml/keyPadSupport/AutoScroller.qml</file>
-        <file>qml/keyPadSupport/FloatingButton_Active.svg</file>
-        <file>qml/keyPadSupport/FloatingButton_Available.svg</file>
-        <file>qml/keyPadSupport/FloatingButton_Unavailable.svg</file>
-        <file>qml/keyPadSupport/HandwritingModeButton.qml</file>
     </qresource>
 </RCC>
