@@ -3033,7 +3033,8 @@ Window {
                 anchors.topMargin: 20
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                onClicked: focus = true
+                onClicked:
+                    focus = true
 
                 TextField {
                     id: pwdTxtIn
@@ -3215,35 +3216,52 @@ Window {
 
         }
 
-                Item {
+        Item {
          //   id: keyboardArea
+            id: appContainer
             x: 198
             y: 392
             width: 678
             height: 277
             anchors.verticalCenterOffset: 154
             anchors.horizontalCenterOffset: -106
+            anchors.centerIn: parent
             // color: "#00000000"
                    // Only set with CONFIG+=disable-desktop.
             property bool handwritingInputPanelActive: false
 
-                id: appContainer
+
         //        width: Screen.width < Screen.height ? parent.height : parent.width
          //       height: Screen.width < Screen.height ? parent.width : parent.height
-                anchors.centerIn: parent
-                rotation: Screen.width < Screen.height ? 90 : 0
-                visible: false
-                //Basic {
-                  Item{
-                    id: virtualKeyboard
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.right: parent.right
-                    anchors.bottom: inputPanel.top
-                    anchors.topMargin: 72
-                    // handwritingInputPanelActive: handwritingInputPanel.active
-                  }
 
+                rotation: Screen.width < Screen.height ? 90 : 0
+                visible: true
+                //Basic {
+                Item{
+                    id: virtualKeyboard
+                    anchors.fill: appContainer
+                    // handwritingInputPanelActive: handwritingInputPanel.active
+
+                }
+  /*              Binding {
+                    target: VirtualKeyboardSettings
+                    property: "fullScreenMode"
+                    value: false
+                }
+                transitions: Transition {
+                     id: inputPanelTransition
+                     from: ""
+                     to: "visible"
+                     reversible: true
+                     enabled: !VirtualKeyboardSettings.fullScreenMode
+                     ParallelAnimation {
+                         NumberAnimation {
+                             properties: "y"
+                             duration: 2250
+                             easing.type: Easing.InOutQuad
+                         }
+                     }
+                 }*/
                 /*  Handwriting input panel for full screen handwriting input.
 
                     This component is an optional add-on for the InputPanel component, that
@@ -3299,23 +3317,24 @@ Window {
                 InputPanel {
                     id: inputPanel
                     z: 89
-                    y: 10 // Qt.inputMethod.visible ? appContainer.height - inputPanel.height : appContainer.height// appContainer.height
+                    y:  Qt.inputMethod.visible ? appContainer.height - inputPanel.height : appContainer.height// appContainer.height
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    states: State {
-                        name: "visible"
+    /////                states: State {
+    ///                    name: "visible"
                         //  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
                         //    but then the handwriting input panel and the keyboard input panel can be visible
                         //    at the same time. Here the visibility is bound to InputPanel.active property instead,
                         //    which allows the handwriting panel to control the visibility when necessary.
 
-                        when: inputPanel.active
-                        PropertyChanges {
-                            target: inputPanel
-                            y: appContainer.height - inputPanel.height
-                        }
-                    }
-                    transitions: Transition {
+   ///                     when: inputPanel.active
+  ///                      PropertyChanges {
+   ///                         target: inputPanel
+   ///                         y: appContainer.height - inputPanel.height
+  ///                      }
+  ///                  }
+
+ /*                   transitions: Transition {
                         id: inputPanelTransition
                         from: ""
                         to: "visible"
@@ -3328,19 +3347,19 @@ Window {
                                 easing.type: Easing.InOutQuad
                             }
                         }
-                    }
+                    }// transizione sul click dell'attivazione
                     Binding {
                         target: InputContext
                         property: "animating"
                         value: inputPanelTransition.running
                     }
-                 //   AutoScroller {}
+                 //   AutoScroller {}*/
                 }
-
+                    // abilitazione in full Screen
                 Binding {
                     target: VirtualKeyboardSettings
                     property: "fullScreenMode"
-                    value: appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
+                    value: false //appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
                 }
         }
     }
