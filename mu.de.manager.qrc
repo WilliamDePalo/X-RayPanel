@@ -56,5 +56,6 @@
         <file>fonts/OpenSans-Regular.ttf</file>
         <file>images/options-settings-White.svg</file>
         <file>qml/keyPadSupport/TextField.qml</file>
+        <file>qml/MACallPoint.qml</file>
     </qresource>
 </RCC>

@@ -619,14 +619,14 @@ Window {
 
                 Gauge {
                     id: capacitorPerc
-                    x: -142
+                    x: -117
                     width: 63
                     height: 261
                     anchors.top: status.top
-                    anchors.topMargin: -64
+                    anchors.topMargin: -63
                     value:  valueSource.cap
                     anchors.right: parent.right
-                    anchors.rightMargin: 309
+                    anchors.rightMargin: 284
                 }
 
                 Text {
@@ -1320,10 +1320,31 @@ Window {
                 }
             }
 
-
-
-
-        }
+            Grid {
+                id: mACalFGPanel
+                anchors.left: parent.left
+                anchors.right: rigthColumn.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                flow: Grid.TopToBottom
+                rows: 4
+                anchors.rightMargin: 115
+                anchors.topMargin: 168
+                anchors.leftMargin: 0
+                anchors.bottomMargin: 0
+                columns: 3
+                MACallPoint{kV:"40";mA:"80"}
+                MACallPoint{}
+                MACallPoint{}
+                MACallPoint{}
+                MACallPoint{}
+                MACallPoint{}
+                MACallPoint{}
+                MACallPoint{}
+                MACallPoint{}
+                MACallPoint{}
+            }
+       }
 
         Image {
             id: logo
@@ -2417,8 +2438,7 @@ Window {
                 visible: true
                 anchors.top: parent.top
                 anchors.left: parent.left
-                NumberPad { id: numPad; z:1;width: 154; visible: true; anchors.top: parent.top; anchors.topMargin: -5; anchors.left: parent.left; anchors.horizontalCenter: parent.horizontalCenter
-
+                NumberPad { id: numPad; z:1;width: 154; visible: true; anchors.top: parent.top; anchors.topMargin: -5; anchors.left: parent.left; anchors.horizontalCenter: parent.horizontalCenter;
                 }
             }
 
@@ -3058,7 +3078,7 @@ Window {
                     placeholderText:  qsTr("Insert Password")
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
                     enterKeyAction: EnterKeyAction.Next
- /*                   onPressed: {
+                    /*                   onPressed: {
                         if (!keyboardArea.visible)
                         {
                             keyboardArea.visible = true
@@ -3250,7 +3270,7 @@ Window {
             anchors.bottomMargin: 0
             anchors.horizontalCenter: parent.horizontalCenter
             //Basic {
-    /*        Item{
+            /*        Item{
                 id: virtualKeyboard
                 anchors.fill: keyboardArea
                 // handwritingInputPanelActive: handwritingInputPanel.active
@@ -3310,8 +3330,8 @@ Window {
                         NumberAnimation {
                             properties: "y"
                             duration: 1000
-              //              from: inputPanel.ypos
-             //               to: keyboardArea.y
+                            //              from: inputPanel.ypos
+                            //               to: keyboardArea.y
                             easing.type: Easing.OutCubic
                         }
                     }
@@ -3330,7 +3350,7 @@ Window {
                 property: "fullScreenMode"
                 value: false //appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
             }
-   /*         YAnimator {
+            /*         YAnimator {
                 id : kb_in
                 easing.amplitude: 1.05
                 //This specifies how long the animation takes
@@ -3349,7 +3369,7 @@ Window {
         source: "qrc:/fonts/OpenSans-Regular.ttf"
     }
 
-   /* property var componentMap: {
+    /* property var componentMap: {
         "SystemInfo": infoPanel,
         "About": aboutPanel
         //               "Dial": dial,
@@ -3469,7 +3489,18 @@ Window {
                 visible: false
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
-                    rightAlignedIconSource: "qrc:/images/icon-go.png"
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"                    
+                }
+                onClicked: {
+                    // se sono su FG
+                    if (valueSource.fuoco)
+                    { // tolgo i pannelli del funzionamento
+
+                        twoPointPanel.visible = false
+                        threePointPanel.visible = false
+                                // Attivo il pannello calibrazione MAFG
+                        mACalFGPanel.visible = true
+                    }
                 }
             }
 
