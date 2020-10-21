@@ -203,6 +203,8 @@ Makefile: ..\Mu.De._Manager\mu.de.manager.pro C:\Qt\5.12.5\msvc2015_64\mkspecs\w
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_uiplugin.pri \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_uitools.pri \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_uitools_private.pri \
+		C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_virtualkeyboard.pri \
+		C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_virtualkeyboard_private.pri \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_vulkan_support_private.pri \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_webchannel.pri \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_webchannel_private.pri \
@@ -233,6 +235,7 @@ Makefile: ..\Mu.De._Manager\mu.de.manager.pro C:\Qt\5.12.5\msvc2015_64\mkspecs\w
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\features\resolve_config.prf \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\features\exclusive_builds_post.prf \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\features\default_post.prf \
+		C:\Qt\5.12.5\msvc2015_64\mkspecs\features\link_pkgconfig.prf \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\features\qml_debug.prf \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\features\precompile_header.prf \
 		C:\Qt\5.12.5\msvc2015_64\mkspecs\features\warn_on.prf \
@@ -384,6 +387,8 @@ C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_theme_support_private.pri:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_uiplugin.pri:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_uitools.pri:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_uitools_private.pri:
+C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_virtualkeyboard.pri:
+C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_virtualkeyboard_private.pri:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_vulkan_support_private.pri:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_webchannel.pri:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\modules\qt_lib_webchannel_private.pri:
@@ -414,6 +419,7 @@ C:\Qt\5.12.5\msvc2015_64\mkspecs\features\win32\default_pre.prf:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\features\resolve_config.prf:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\features\exclusive_builds_post.prf:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\features\default_post.prf:
+C:\Qt\5.12.5\msvc2015_64\mkspecs\features\link_pkgconfig.prf:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\features\qml_debug.prf:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\features\precompile_header.prf:
 C:\Qt\5.12.5\msvc2015_64\mkspecs\features\warn_on.prf:
