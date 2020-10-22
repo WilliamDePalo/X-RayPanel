@@ -64,7 +64,7 @@ DashboardGaugeStyle {
         implicitWidth: toPixels(0.03)
         antialiasing: true
         implicitHeight: toPixels(0.08)
-        color: styleData.index === 7 || styleData.index === 8 ? "#5eb3e4" : "#c8c8c8"//Qt.rgba(0.5, 0, 0, 1) : "#c8c8c8"
+        color: styleData.index === 7 || styleData.index === 8 ? "#e20613" : "#c8c8c8"//Qt.rgba(0.5, 0, 0, 1) : "#c8c8c8"
     }
 
     minorTickmark: null
@@ -72,7 +72,7 @@ DashboardGaugeStyle {
     tickmarkLabel: Text {
         font.pixelSize: Math.max(6, toPixels(0.12))
         text: styleData.value
-        color: styleData.index === 7 || styleData.index === 8 ? "#5eb3e4" : "#c8c8c8"//Qt.rgba(0.5, 0, 0, 1) : "#c8c8c8"
+        color: styleData.index === 7 || styleData.index === 8 ? "#e20613" : "#c8c8c8"//Qt.rgba(0.5, 0, 0, 1) : "#c8c8c8"
         antialiasing: true
     }
 
@@ -85,7 +85,7 @@ DashboardGaugeStyle {
             ctx.beginPath();
             
             ctx.lineWidth = tachometerStyle.toPixels(0.08);
-            ctx.strokeStyle = "#5eb3e4";//Qt.rgba(0.5, 0, 0, 1); //colore valori massimi kv
+            ctx.strokeStyle = "#e20613";//Qt.rgba(0.5, 0, 0, 1); //colore valori massimi kv
             var warningCircumference = maximumValueAngle - minimumValueAngle * 0.1;
             var startAngle = maximumValueAngle - 90;
             ctx.arc(outerRadius, outerRadius,

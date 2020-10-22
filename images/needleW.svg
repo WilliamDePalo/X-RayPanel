@@ -24,11 +24,11 @@
       <stop
          id="stop3219"
          offset="0"
-         style="stop-color:#5eb3e4;stop-opacity:1;" />
+         style="stop-color:#e20613;stop-opacity:1;" />
       <stop
          id="stop3221"
          offset="1"
-         style="stop-color:#5eb3e4;stop-opacity:0;" />
+         style="stop-color:#e20613;stop-opacity:0;" />
     </linearGradient>
     <linearGradient
        osb:paint="solid"
@@ -36,7 +36,7 @@
       <stop
          id="stop3201"
          offset="0"
-         style="stop-color:#5eb3e4;stop-opacity:1;" />
+         style="stop-color:#e20613;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
        gradientUnits="userSpaceOnUse"

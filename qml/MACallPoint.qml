@@ -1,21 +1,23 @@
 import QtQuick 2.0
 
 MouseArea {
+    id: mouseArea
 
     width: 210
     height: 100
     propagateComposedEvents: true
     property alias kV: val_kV.text
     property alias mA: val_mA.text
+    property alias c_N:  caseNumber.text
 
     TurnIndicator{
         id: pointer
         width: 60
         height: 60
-        anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
         direction: 2
-        anchors.verticalCenterOffset: 0
         anchors.leftMargin: 5
         activeFocusOnTab: true
         on: false
@@ -165,6 +167,24 @@ MouseArea {
             z: -1
             border.color: "grey"
         }
+    }
+
+    Text {
+        id: caseNumber
+        x: 5
+        y: 8
+        width: 60
+        height: 31
+        color: "#ffffff"
+        text: qsTr("1")
+        font.pixelSize: 25
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        style: Text.Normal
+        font.weight: Font.Normal
+        font.bold: true
+        font.family: "Arial"
+        fontSizeMode: Text.Fit
     }
 
 }

@@ -297,7 +297,7 @@ Window {
             anchors.leftMargin: -7
             anchors.topMargin: 0
             fillMode: Image.TileVertically
-            source: "../images/sfondo/sfondo1"
+            source: "../images/sfondo/sfondo-grigio-chiaro.png"
             anchors.fill: parent
             //Image:"qrc:image/logoRxR.jpg"
         }
@@ -310,6 +310,7 @@ Window {
             rotation: 0
             anchors.fill: parent
             spacing: 0
+            anchors.centerIn: parent
             Item {
                 id: rigthColumn
                 x: 700
@@ -368,7 +369,7 @@ Window {
                         anchors.leftMargin: 0
                         anchors.topMargin: 0
                         scale: 1
-                        source: "../images/fuoco-piccolo.png"
+                        source: "../images/fuoco-piccolo_B.png"
                     }
                     /*                  CircularGauge {
                         id: focusGauge
@@ -444,7 +445,7 @@ Window {
                 Text {
                     id: statusTitle
                     height: 35
-                    color: "#fdfdfd"
+                    color: "#e20613"
                     text: qsTr("STATUS:")
                     anchors.leftMargin: -40
                     font.family: "Tahoma"
@@ -469,7 +470,7 @@ Window {
                     id: status
                     y: 196
                     height: 34
-                    color: "#5eb3e4"
+                    color: "#060606"// #5eb3e4
                     text: qsTr("DISCONNECT")
                     anchors.verticalCenter: statusTitle.verticalCenter
                     anchors.left: statusTitle.right
@@ -562,7 +563,6 @@ Window {
                             //    border.color: "#62626a"
                             scale: 1
                             border.width: 12
-
                         }
                     }
                     onCheckedChanged: {
@@ -585,7 +585,7 @@ Window {
                     id: tecLabel2
                     y: 355
                     height: 18
-                    color: "#fbfbfb"
+                    color: "#060606"
 
                     text: qsTr("2 POINT")
                     font.pixelSize: 18
@@ -605,7 +605,7 @@ Window {
                     x: 111
                     y: 355
                     height: 18
-                    color: "#5bb2e5"
+                    color: "#e20613"
                     text: qsTr("3 POINT")
                     font.pixelSize: 18
                     font.family: "Verdana"
@@ -623,17 +623,54 @@ Window {
                     width: 63
                     height: 261
                     anchors.top: status.top
+                    value: 0
                     anchors.topMargin: -63
-                    value:  valueSource.cap
                     anchors.right: parent.right
                     anchors.rightMargin: 284
+
+
+                    Rectangle{
+                        width: 13
+                        radius: 3
+                        border.width: 2
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.horizontalCenterOffset: -5
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        z: 2
+
+                    }
+
+                    style: GaugeStyle{
+
+                        tickmarkLabel: Text {
+                            text: control.formatValue(styleData.value)
+                            font: control.font
+                            color:"black"
+                            antialiasing: true
+                        }
+
+
+                        tickmark: Item {
+                            implicitWidth: Math.round(TextSingleton.height * 1.1)
+                            implicitHeight: Math.max(2, Math.round(TextSingleton.height * 0.1))
+
+                            Rectangle {
+                                color:"black"
+                                anchors.fill: parent
+                                anchors.leftMargin: Math.round(TextSingleton.implicitHeight * 0.2)
+                                anchors.rightMargin: Math.round(TextSingleton.implicitHeight * 0.2)
+                            }
+                        }
+
+                    }
                 }
 
                 Text {
                     id: focusTitle
                     y: 265
                     height: 35
-                    color: "#fdfdfd"
+                    color: "#060606"
                     text: qsTr("FOCUS:")
                     anchors.leftMargin: 8
                     anchors.left: parent.left
@@ -719,7 +756,7 @@ Window {
                         id: prTitle
                         width: 111
                         height: 24
-                        color: "#5eb3e4"
+                        color: "#e20613" // #5eb3e4
                         text: qsTr("GENERATOR STATE :")
                         font.family: "Verdana"
                         verticalAlignment: Text.AlignVCenter
@@ -734,7 +771,7 @@ Window {
                         id: prStatus
                         width: 111
                         height: 24
-                        color: "#5eb3e4"
+                        color: "#00000000"
                         text: qsTr("INACTIVE")
                         font.family: "Verdana"
                         verticalAlignment: Text.AlignVCenter
@@ -749,7 +786,7 @@ Window {
                 Text {
                     id: readyTitle
                     height: 35
-                    color: "#fdfdfd"
+                    color: "#060606"
                     text: "READY:"
                     horizontalAlignment: Text.AlignLeft
                     anchors.top: prContainer.bottom
@@ -785,138 +822,143 @@ Window {
                 }
 
             }
-
-            CircularGauge {
-                id: tachometer
-                y: 0
+            Item{
+                id: kVPanel
                 width: 285
                 height: 285
+                visible: true
                 anchors.verticalCenterOffset: 50
                 anchors.left: parent.left
                 anchors.leftMargin: 30
                 anchors.verticalCenter: parent.verticalCenter
-                //0.25 - gaugeRow.spacing
-                value: valueSource.kv
-                maximumValue: 125
-                minimumValue: 40
+                CircularGauge {
+                    id: tachometer
+                    y: 0
+                    anchors.fill: parent
+                    //0.25 - gaugeRow.spacing
+                    value: valueSource.kv
+                    maximumValue: 125
+                    minimumValue: 40
 
-                style: TachometerStyle {}
+                    style: TachometerStyle {}
 
-                MouseArea {
-                    id: kvpadCommPos
-                    y: 98
-                    height: 45
-                    anchors.verticalCenterOffset: 47
-                    z: 2
-                    hoverEnabled: true
-                    opacity: 1
-                    anchors.left: parent.left
-                    anchors.leftMargin: 115
-                    anchors.right: parent.right
-                    anchors.rightMargin: 115
-                    anchors.verticalCenter: parent.verticalCenter
-                    onClicked: {
-                        if (panelKeyPad.visible === false)
-                        {
-                            panelKeyPad.visible=true
-                            kvbrd.border.color = "#f62f2f"
-                            keyPanelManager = key_kV
-                            CalcEngine.setItem(keyPanelManager)
-                            appare.running = true
-                        }else
-                        {
-                            if (keyPanelManager == key_kV)
+                    MouseArea {
+                        id: kvpadCommPos
+                        y: 98
+                        height: 45
+                        anchors.verticalCenterOffset: 47
+                        z: 2
+                        hoverEnabled: true
+                        opacity: 1
+                        anchors.left: parent.left
+                        anchors.leftMargin: 115
+                        anchors.right: parent.right
+                        anchors.rightMargin: 115
+                        anchors.verticalCenter: parent.verticalCenter
+                        onClicked: {
+                            if (panelKeyPad.visible === false)
                             {
-                                //               keyPanelManager = key_noone
-                                //               kvbrd.border.color = "#00000000"
-                                scompare.running = true
+                                panelKeyPad.visible=true
+                                kvbrd.border.color = "#f62f2f"
+                                keyPanelManager = key_kV
+                                CalcEngine.setItem(keyPanelManager)
+                                appare.running = true
+                            }else
+                            {
+                                if (keyPanelManager == key_kV)
+                                {
+                                    //               keyPanelManager = key_noone
+                                    //               kvbrd.border.color = "#00000000"
+                                    scompare.running = true
+                                }
                             }
                         }
+                        Rectangle {
+                            id : kvbrd
+                            color: "#00000000"
+                            border.color: "#00000000"
+                            anchors.fill: parent
+                            z: 3
+                            border.width: 2
+                        }
                     }
-                    Rectangle {
-                        id : kvbrd
-                        color: "#00000000"
-                        border.color: "#00000000"
-                        anchors.fill: parent
-                        z: 3
-                        border.width: 2
+                    onValueChanged:  {
+                        kvpadCommPos.anchors.rightMargin = 130 - (valueSource.kv.toString().length * 10)
+                        kvpadCommPos.anchors.leftMargin = 130 - (valueSource.kv.toString().length * 10)
                     }
                 }
-                onValueChanged:  {
-                    kvpadCommPos.anchors.rightMargin = 130 - (valueSource.kv.toString().length * 10)
-                    kvpadCommPos.anchors.leftMargin = 130 - (valueSource.kv.toString().length * 10)
+                PressAndHoldButton {
+                    id: kvPlus
+                    width: 15
+                    height: 15
+                    visible: true
+                    anchors.left: tachometer.horizontalCenter
+                    anchors.leftMargin: 40
+                    anchors.top: tachometer.bottom
+                    anchors.topMargin: 10
+                    smooth: false
+                    antialiasing: true
+                    z: 1.63
+                    scale: 3.859
+                    transformOrigin: Item.Top
+                    sourceSize.height: 23
+                    fillMode: Image.PreserveAspectFit
+                    sourceSize.width: 23
+                    pressed: false
+                    source: "../images/piu_b.png"
+                    property int cntr : 0
+                    onClicked:{
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            if (cntr <= 4)
+                                serialTerminal.putPC1cmd("KV+",1)
+                            else
+                                serialTerminal.putPC1cmd("KV++",1)
+                            cntr++
+                        }
+                    }
+                    onPressedChanged:  {
+                        if (!pressed)
+                            cntr = 0
+                    }
                 }
+                PressAndHoldButton {
+                    property int cntr : 0
+                    id: kvMinus
+                    x: 254
+                    width: 15
+                    height: 5
+                    anchors.top: tachometer.bottom
+                    anchors.topMargin: 30
+                    anchors.right: tachometer.horizontalCenter
+                    anchors.rightMargin: 40
+                    antialiasing: true
+                    z: 1.63
+                    scale: 3.859
+                    transformOrigin: Item.Top
+                    sourceSize.height: 23
+                    fillMode: Image.Stretch
+                    sourceSize.width: 23
+                    pressed: false
+                    source: "../images/meno_b.png"
+                    onClicked:{
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            if (cntr <= 4)
+                                serialTerminal.putPC1cmd("KV-",1)
+                            else
+                                serialTerminal.putPC1cmd("KV--",1)
+                            cntr++
+                        }
+                    }
+                    onPressedChanged:  {
+                        if (!pressed)
+                            cntr = 0
+                    }
+                }
+
             }
-            PressAndHoldButton {
-                id: kvPlus
-                width: 15
-                height: 15
-                visible: true
-                anchors.left: tachometer.horizontalCenter
-                anchors.leftMargin: 40
-                anchors.top: tachometer.bottom
-                anchors.topMargin: 10
-                smooth: false
-                antialiasing: true
-                z: 1.63
-                scale: 3.859
-                transformOrigin: Item.Top
-                sourceSize.height: 23
-                fillMode: Image.PreserveAspectFit
-                sourceSize.width: 23
-                pressed: false
-                source: "../images/piu.png"
-                property int cntr : 0
-                onClicked:{
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        if (cntr <= 4)
-                            serialTerminal.putPC1cmd("KV+",1)
-                        else
-                            serialTerminal.putPC1cmd("KV++",1)
-                        cntr++
-                    }
-                }
-                onPressedChanged:  {
-                    if (!pressed)
-                        cntr = 0
-                }
-            }
-            PressAndHoldButton {
-                property int cntr : 0
-                id: kvMinus
-                x: 254
-                width: 15
-                height: 5
-                anchors.top: tachometer.bottom
-                anchors.topMargin: 30
-                anchors.right: tachometer.horizontalCenter
-                anchors.rightMargin: 40
-                antialiasing: true
-                z: 1.63
-                scale: 3.859
-                transformOrigin: Item.Top
-                sourceSize.height: 23
-                fillMode: Image.Stretch
-                sourceSize.width: 23
-                pressed: false
-                source: "../images/meno.png"
-                onClicked:{
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        if (cntr <= 4)
-                            serialTerminal.putPC1cmd("KV-",1)
-                        else
-                            serialTerminal.putPC1cmd("KV--",1)
-                        cntr++
-                    }
-                }
-                onPressedChanged:  {
-                    if (!pressed)
-                        cntr = 0
-                }
-            }
-            anchors.centerIn: parent
+
             //  spacing: 10
 
             Item {
@@ -1062,7 +1104,7 @@ Window {
                     fillMode: Image.Stretch
                     sourceSize.width: 23
                     pressed: false
-                    source: "../images/meno.png"
+                    source: "../images/meno_b.png"
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
@@ -1088,7 +1130,7 @@ Window {
                     fillMode: Image.PreserveAspectFit
                     sourceSize.width: 23
                     pressed: false
-                    source: "../images/piu.png"
+                    source: "../images/piu_b.png"
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
@@ -1146,7 +1188,7 @@ Window {
 
                     style: IconGaugeStyle {
                         id: tempGaugeStyle
-                        maxWarningColor: "#5bb2e5"
+                        maxWarningColor: "#e20613"//"#5bb2e5"
 
                         minimumValueAngle: -60
                         maximumValueAngle: 60
@@ -1163,7 +1205,7 @@ Window {
                         //    maxWarningColor: "#ef5050"
 
                         tickmarkLabel: Text {
-                            color: "white"
+                            color: "black"//"white"
                             visible: styleData.value === 0 || styleData.value === 2/*11*/|| styleData.value === 1
                             font.pixelSize: tempGaugeStyle.toPixels(0.225)
                             text: styleData.value === 0 ? "min" :(styleData.value === 1 ? "MSEC" : (styleData.value === 2/*11*/ ? "max" : ""))
@@ -1258,7 +1300,7 @@ Window {
                         scale: 3.859
                         fillMode: Image.Stretch
                         pressed: false
-                        source: "../images/meno.png"
+                        source: "../images/meno_b.png"
                         anchors.verticalCenter: tachometer.verticalCenter
                         // anchors.leftMargin: 2
                         antialiasing: true
@@ -1288,7 +1330,7 @@ Window {
                         anchors.top: parent.bottom
                         anchors.topMargin: -55
                         anchors.verticalCenterOffset: -30
-                        source: "../images/piu.png"
+                        source: "../images/piu_b.png"
                         anchors.leftMargin: 55
                         antialiasing: true
                         anchors.verticalCenter: tachometer.verticalCenter
@@ -1322,6 +1364,7 @@ Window {
 
             Grid {
                 id: mACalFGPanel
+                visible: false
                 anchors.left: parent.left
                 anchors.right: rigthColumn.left
                 anchors.top: parent.top
@@ -1333,16 +1376,16 @@ Window {
                 anchors.leftMargin: 0
                 anchors.bottomMargin: 0
                 columns: 3
-                MACallPoint{kV:"40";mA:"80"}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
+                MACallPoint{c_N: "1.";kV:"40";mA:"80"}
+                MACallPoint{c_N: "2."}
+                MACallPoint{c_N: "3."}
+                MACallPoint{c_N: "4."}
+                MACallPoint{c_N: "5."}
+                MACallPoint{c_N: "6."}
+                MACallPoint{c_N: "7."}
+                MACallPoint{c_N: "8."}
+                MACallPoint{c_N: "9."}
+                MACallPoint{c_N: "10."}
             }
        }
 
@@ -1354,7 +1397,7 @@ Window {
             anchors.left: parent.left
             anchors.leftMargin: 16
             fillMode: Image.PreserveAspectFit
-            source: "../images/logo-rampoldi.png"
+            source: "../images/Risorsa 1.png"
         }
 
 
@@ -1543,7 +1586,7 @@ Window {
                         sourceSize.height: 0
                         scale: 1
                         rotation: 0
-                        source: "../images/toppng.com-menu-icon-white.png"
+                        source: "../images/toppng.com-menu-icon-black.png"
                     }
                     smooth: false
                     layer.enabled: false
@@ -3492,14 +3535,33 @@ Window {
                     rightAlignedIconSource: "qrc:/images/icon-go.png"                    
                 }
                 onClicked: {
+                    // In realtà dovrei inviare solamente il messaggio al sistema
+                    // invio il comando
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        serialTerminal.putPC1cmd("CAL1",1)
+                    }
+                    // sulla lettura della risposta dovrei eseguire quello che segue
+
                     // se sono su FG
                     if (valueSource.fuoco)
                     { // tolgo i pannelli del funzionamento
 
                         twoPointPanel.visible = false
                         threePointPanel.visible = false
+                        kVPanel.visible = false
                                 // Attivo il pannello calibrazione MAFG
                         mACalFGPanel.visible = true
+                        // blocco il toggle cambio tecnica su 3 punti
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("ET1",1)
+                        }
+
+                        swTecnique.enabled = false
+                        // il tempo e' fisso a  tmp = 1700; 17 mS impostato da IFXRAY
+                        // invio il messaggio di abilitazione calibrazione
+
                     }
                 }
             }
