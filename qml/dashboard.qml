@@ -370,50 +370,7 @@ Window {
                         anchors.topMargin: 0
                         scale: 1
                         source: "../images/fuoco-piccolo.png"
-                    }
-                    /*                  CircularGauge {
-                        id: focusGauge
-                        x: 0
-                        value: valueSource.fuoco
-                        maximumValue: 1
-                        width: parent.width
-                        height: 210
-                        anchors.top: parent.top
-                        anchors.topMargin: -36
-                        anchors.right: parent.right
-                        anchors.rightMargin: 0
-                        stepSize: 1
-                        visible: true
-
-                        style: IconGaugeStyle {
-                            id: fuelGaugeStyle
-                            icon: "qrc:/images/smallFocus_FULL.png"
-                            Text {
-                                id: textSec
-                                text: qsTr("SEC")
-                            }
-                            textt: "FOCUS"
-                            minWarningColor: Qt.rgba(0.5, 0, 0, 1)
-
-                            tickmarkLabel: Text {
-                                color: "white"
-                                visible: styleData.value === 0 || styleData.value === 1
-                                font.pixelSize: fuelGaugeStyle.toPixels(0.225)
-                                text: styleData.value === 0 ? "SMALL" : (styleData.value === 1 ? "LARGE" : "")
-                            }
-                        }
-
-                        Image {
-                            id: largeFocusImage
-                            x: 64
-                            y: 59
-                            width: 23
-                            height: 24
-                            visible: false
-                            fillMode: Image.PreserveAspectFit
-                            source: "../images/largeFocus_Full.png"
-                        }
-                    }*/
+                    }                   
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
@@ -1343,7 +1300,6 @@ Window {
                     visible: true
                     flow: Grid.TopToBottom
                     rows: 4
-
                     columns: 3
                     MACallPoint{c_N: "1.";kV:"40";mA:"80"}
                     MACallPoint{c_N: "2."}
@@ -1355,6 +1311,34 @@ Window {
                     MACallPoint{c_N: "8."}
                     MACallPoint{c_N: "9."}
                     MACallPoint{c_N: "10."}
+                }
+                Grid {
+                    id: mACalFPPanel
+                    x: 0
+                    y: 0
+                    width: 667
+                    height: 400
+                    visible: true
+                    flow: Grid.TopToBottom
+                    rows: 4
+                    columns: 3
+                    property int calSel:0
+                    signal pointSelected
+                    MACallPoint{c_N: "1.";kV:"40";mA:"80";selected:true}
+                    MACallPoint{c_N: "2."}
+                    MACallPoint{c_N: "3."}
+                    MACallPoint{c_N: "4."}
+                    MACallPoint{c_N: "5."}
+                    MACallPoint{c_N: "6."}
+                    MACallPoint{c_N: "7."}
+                    MACallPoint{c_N: "8.";toSel:0
+                        onClicked: {
+
+                            mACalFPPanel.calSel = 8
+                        }
+                    }
+
+
                 }
 
                 Button {
@@ -1802,6 +1786,12 @@ Window {
                                         serialTerminal.putPC1cmd("MA00800",1)
                                 valueSource.fuoco = false
                                 focusImage.source =  "../images/fuoco-piccolo.png"
+                                // se attiva la calibrazione
+                                if (mACalPanel.visible)
+                                {
+                                    mACalFPPanel.visible = true
+                                    mACalFGPanel.visible = false
+                                }
                             }
                             else
                             {
@@ -1813,6 +1803,11 @@ Window {
                                     if (serialTerminal.getConnectionStatusSlot() !== false)
                                         serialTerminal.putPC1cmd("MA01600",1)
                                 focusImage.source =  "../images/fuoco-grande.png"
+                                if (mACalPanel.visible)
+                                {
+                                    mACalFPPanel.visible = false
+                                    mACalFGPanel.visible = true
+                                }
                             }
                             errorMessage.visible = false
                         }else if((data[0] ==="E")&&            // gestione fuoco
@@ -3058,7 +3053,7 @@ Window {
                 }
             }
             onActiveFocusChanged: {
-                if (activeFocus)
+                if (aboutPanel.activeFocus)
                     aboutPanel.visible = true
                 else
                     aboutPanel.visible = false
@@ -3560,6 +3555,9 @@ Window {
                     rightAlignedIconSource: "qrc:/images/icon-go.png"                    
                 }
                 onClicked: {
+                    // chiudi menu
+                    menu_out.running = true
+
                     // In realtà dovrei inviare solamente il messaggio al sistema
                     // invio il comando
                     if (serialTerminal.getConnectionStatusSlot() !== false)
@@ -3567,25 +3565,28 @@ Window {
                         serialTerminal.putPC1cmd("CAL1",1)
                     }
                     // sulla lettura della risposta dovrei eseguire quello che segue
-
+                    mACalPanel.visible = true
+                    twoPointPanel.visible = false
+                    threePointPanel.visible = false
+                    kVPanel.visible = false
+                    // blocco il toggle cambio tecnica su 3 punti
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        serialTerminal.putPC1cmd("ET1",1)
+                    }
+                    swTecnique.enabled = false
                     // se sono su FG
                     if (valueSource.fuoco)
-                    { // tolgo i pannelli del funzionamento
-
-                        twoPointPanel.visible = false
-                        threePointPanel.visible = false
-                        kVPanel.visible = false
+                    { // tolgo i pannelli del funzionamento                                               
                                 // Attivo il pannello calibrazione MAFG
-                        mACalPanel.visible = true
-                        // blocco il toggle cambio tecnica su 3 punti
-                        if (serialTerminal.getConnectionStatusSlot() !== false)
-                        {
-                            serialTerminal.putPC1cmd("ET1",1)
-                        }
-
-                        swTecnique.enabled = false
+                        mACalFGPanel.visible = true
+                        maCalFPPanel.visible = false
                         // il tempo e' fisso a  tmp = 1700; 17 mS impostato da IFXRAY
                         // invio il messaggio di abilitazione calibrazione
+                    }else
+                    {
+                        mACalFGPanel.visible = false
+                        mACalFPPanel.visible = true
                     }
                 }
             }
@@ -3598,7 +3599,11 @@ Window {
                 visible : false
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
-                    rightAlignedIconSource: "qrc:/images/icon-go.png"
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"                    
+                }
+                onClicked: {
+                    // chiudi menu
+                    menu_out.running = true
                 }
             }
 
@@ -3723,7 +3728,6 @@ Window {
 
 
 //  Text { id: time }
-
 
 
 

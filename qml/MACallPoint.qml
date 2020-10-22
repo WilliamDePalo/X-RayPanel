@@ -1,14 +1,31 @@
 import QtQuick 2.0
-
+import QtQuick.Controls 2.0
 MouseArea {
     id: mouseArea
-
+    property var isSel:0
     width: 210
     height: 100
+    focus: mouseArea.pressed
     propagateComposedEvents: true
+
     property alias kV: val_kV.text
     property alias mA: val_mA.text
     property alias c_N:  caseNumber.text
+    property alias selected:pointer.on
+    property alias toSel:mouseArea.isSel
+   // signal clicked
+ /*   Timer {
+        id: checkFocus
+        interval: 200
+        running: true
+        repeat: true
+        onTriggered: {
+            if(!mouseArea.focus)
+            {
+                pointer.on = false
+            }
+        }
+    }*/
 
     TurnIndicator{
         id: pointer
@@ -21,7 +38,7 @@ MouseArea {
         anchors.leftMargin: 5
         activeFocusOnTab: true
         on: false
-        flashing: false
+        flashing: true
 
     }
 
@@ -145,12 +162,15 @@ MouseArea {
         Rectangle{
             anchors.fill: parent
             z: -1
-
+        }
+        onTextChanged: {
+            if (val_maR.text!="000.0")
+                trimmerInput.b_color = "black"
         }
     }
 
     TextInput {
-        id: textInput
+        id: trimmerInput
         x: 188
         y: 39
         width: 60
@@ -161,7 +181,11 @@ MouseArea {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         anchors.horizontalCenter: lab_Trimmer.horizontalCenter
+        inputMethodHints: Qt.ImhDigitsOnly
+
+        property var b_color: rec.color
         Rectangle{
+            id: rec
             border.width: 4
             anchors.fill: parent
             z: -1
@@ -185,6 +209,32 @@ MouseArea {
         font.bold: true
         font.family: "Arial"
         fontSizeMode: Text.Fit
+    }
+
+    onClicked: {
+        forceActiveFocus()
+        pointer.on = true
+        mouseArea.isSel = caseNumber.text
+    }
+ /*  onSelectedChanged:
+    {
+        if (!mouseArea.focus)
+            pointer.on = false
+    }*/
+    onActiveFocusChanged:
+    {
+        if (!mouseArea.focus)
+            pointer.on = false
+    }
+ /*   onContainsMouseChanged: {
+
+        if (!mouseArea.focus)
+            pointer.on = false
+    }*/
+    onToSelChanged:
+    {
+        if (!mouseArea.focus)
+            pointer.on = false
     }
 
 }
