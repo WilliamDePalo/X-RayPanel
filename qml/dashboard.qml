@@ -310,6 +310,7 @@ Window {
             rotation: 0
             anchors.fill: parent
             spacing: 0
+            anchors.centerIn: parent
             Item {
                 id: rigthColumn
                 x: 700
@@ -562,7 +563,6 @@ Window {
                             //    border.color: "#62626a"
                             scale: 1
                             border.width: 12
-
                         }
                     }
                     onCheckedChanged: {
@@ -785,138 +785,143 @@ Window {
                 }
 
             }
-
-            CircularGauge {
-                id: tachometer
-                y: 0
+            Item{
+                id: kVPanel
                 width: 285
                 height: 285
+                visible: true
                 anchors.verticalCenterOffset: 50
                 anchors.left: parent.left
                 anchors.leftMargin: 30
                 anchors.verticalCenter: parent.verticalCenter
-                //0.25 - gaugeRow.spacing
-                value: valueSource.kv
-                maximumValue: 125
-                minimumValue: 40
+                CircularGauge {
+                    id: tachometer
+                    y: 0
+                    anchors.fill: parent
+                    //0.25 - gaugeRow.spacing
+                    value: valueSource.kv
+                    maximumValue: 125
+                    minimumValue: 40
 
-                style: TachometerStyle {}
+                    style: TachometerStyle {}
 
-                MouseArea {
-                    id: kvpadCommPos
-                    y: 98
-                    height: 45
-                    anchors.verticalCenterOffset: 47
-                    z: 2
-                    hoverEnabled: true
-                    opacity: 1
-                    anchors.left: parent.left
-                    anchors.leftMargin: 115
-                    anchors.right: parent.right
-                    anchors.rightMargin: 115
-                    anchors.verticalCenter: parent.verticalCenter
-                    onClicked: {
-                        if (panelKeyPad.visible === false)
-                        {
-                            panelKeyPad.visible=true
-                            kvbrd.border.color = "#f62f2f"
-                            keyPanelManager = key_kV
-                            CalcEngine.setItem(keyPanelManager)
-                            appare.running = true
-                        }else
-                        {
-                            if (keyPanelManager == key_kV)
+                    MouseArea {
+                        id: kvpadCommPos
+                        y: 98
+                        height: 45
+                        anchors.verticalCenterOffset: 47
+                        z: 2
+                        hoverEnabled: true
+                        opacity: 1
+                        anchors.left: parent.left
+                        anchors.leftMargin: 115
+                        anchors.right: parent.right
+                        anchors.rightMargin: 115
+                        anchors.verticalCenter: parent.verticalCenter
+                        onClicked: {
+                            if (panelKeyPad.visible === false)
                             {
-                                //               keyPanelManager = key_noone
-                                //               kvbrd.border.color = "#00000000"
-                                scompare.running = true
+                                panelKeyPad.visible=true
+                                kvbrd.border.color = "#f62f2f"
+                                keyPanelManager = key_kV
+                                CalcEngine.setItem(keyPanelManager)
+                                appare.running = true
+                            }else
+                            {
+                                if (keyPanelManager == key_kV)
+                                {
+                                    //               keyPanelManager = key_noone
+                                    //               kvbrd.border.color = "#00000000"
+                                    scompare.running = true
+                                }
                             }
                         }
+                        Rectangle {
+                            id : kvbrd
+                            color: "#00000000"
+                            border.color: "#00000000"
+                            anchors.fill: parent
+                            z: 3
+                            border.width: 2
+                        }
                     }
-                    Rectangle {
-                        id : kvbrd
-                        color: "#00000000"
-                        border.color: "#00000000"
-                        anchors.fill: parent
-                        z: 3
-                        border.width: 2
+                    onValueChanged:  {
+                        kvpadCommPos.anchors.rightMargin = 130 - (valueSource.kv.toString().length * 10)
+                        kvpadCommPos.anchors.leftMargin = 130 - (valueSource.kv.toString().length * 10)
                     }
                 }
-                onValueChanged:  {
-                    kvpadCommPos.anchors.rightMargin = 130 - (valueSource.kv.toString().length * 10)
-                    kvpadCommPos.anchors.leftMargin = 130 - (valueSource.kv.toString().length * 10)
+                PressAndHoldButton {
+                    id: kvPlus
+                    width: 15
+                    height: 15
+                    visible: true
+                    anchors.left: tachometer.horizontalCenter
+                    anchors.leftMargin: 40
+                    anchors.top: tachometer.bottom
+                    anchors.topMargin: 10
+                    smooth: false
+                    antialiasing: true
+                    z: 1.63
+                    scale: 3.859
+                    transformOrigin: Item.Top
+                    sourceSize.height: 23
+                    fillMode: Image.PreserveAspectFit
+                    sourceSize.width: 23
+                    pressed: false
+                    source: "../images/piu.png"
+                    property int cntr : 0
+                    onClicked:{
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            if (cntr <= 4)
+                                serialTerminal.putPC1cmd("KV+",1)
+                            else
+                                serialTerminal.putPC1cmd("KV++",1)
+                            cntr++
+                        }
+                    }
+                    onPressedChanged:  {
+                        if (!pressed)
+                            cntr = 0
+                    }
                 }
+                PressAndHoldButton {
+                    property int cntr : 0
+                    id: kvMinus
+                    x: 254
+                    width: 15
+                    height: 5
+                    anchors.top: tachometer.bottom
+                    anchors.topMargin: 30
+                    anchors.right: tachometer.horizontalCenter
+                    anchors.rightMargin: 40
+                    antialiasing: true
+                    z: 1.63
+                    scale: 3.859
+                    transformOrigin: Item.Top
+                    sourceSize.height: 23
+                    fillMode: Image.Stretch
+                    sourceSize.width: 23
+                    pressed: false
+                    source: "../images/meno.png"
+                    onClicked:{
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            if (cntr <= 4)
+                                serialTerminal.putPC1cmd("KV-",1)
+                            else
+                                serialTerminal.putPC1cmd("KV--",1)
+                            cntr++
+                        }
+                    }
+                    onPressedChanged:  {
+                        if (!pressed)
+                            cntr = 0
+                    }
+                }
+
             }
-            PressAndHoldButton {
-                id: kvPlus
-                width: 15
-                height: 15
-                visible: true
-                anchors.left: tachometer.horizontalCenter
-                anchors.leftMargin: 40
-                anchors.top: tachometer.bottom
-                anchors.topMargin: 10
-                smooth: false
-                antialiasing: true
-                z: 1.63
-                scale: 3.859
-                transformOrigin: Item.Top
-                sourceSize.height: 23
-                fillMode: Image.PreserveAspectFit
-                sourceSize.width: 23
-                pressed: false
-                source: "../images/piu.png"
-                property int cntr : 0
-                onClicked:{
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        if (cntr <= 4)
-                            serialTerminal.putPC1cmd("KV+",1)
-                        else
-                            serialTerminal.putPC1cmd("KV++",1)
-                        cntr++
-                    }
-                }
-                onPressedChanged:  {
-                    if (!pressed)
-                        cntr = 0
-                }
-            }
-            PressAndHoldButton {
-                property int cntr : 0
-                id: kvMinus
-                x: 254
-                width: 15
-                height: 5
-                anchors.top: tachometer.bottom
-                anchors.topMargin: 30
-                anchors.right: tachometer.horizontalCenter
-                anchors.rightMargin: 40
-                antialiasing: true
-                z: 1.63
-                scale: 3.859
-                transformOrigin: Item.Top
-                sourceSize.height: 23
-                fillMode: Image.Stretch
-                sourceSize.width: 23
-                pressed: false
-                source: "../images/meno.png"
-                onClicked:{
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        if (cntr <= 4)
-                            serialTerminal.putPC1cmd("KV-",1)
-                        else
-                            serialTerminal.putPC1cmd("KV--",1)
-                        cntr++
-                    }
-                }
-                onPressedChanged:  {
-                    if (!pressed)
-                        cntr = 0
-                }
-            }
-            anchors.centerIn: parent
+
             //  spacing: 10
 
             Item {
@@ -1319,30 +1324,92 @@ Window {
                     }
                 }
             }
-
-            Grid {
-                id: mACalFGPanel
+            Item {
+                id: mACalPanel
                 anchors.left: parent.left
                 anchors.right: rigthColumn.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                flow: Grid.TopToBottom
-                rows: 4
                 anchors.rightMargin: 115
                 anchors.topMargin: 168
                 anchors.leftMargin: 0
                 anchors.bottomMargin: 0
-                columns: 3
-                MACallPoint{kV:"40";mA:"80"}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
-                MACallPoint{}
+                Grid {
+                    id: mACalFGPanel
+                    x: 0
+                    y: 0
+                    width: 667
+                    height: 400
+                    visible: true
+                    flow: Grid.TopToBottom
+                    rows: 4
+
+                    columns: 3
+                    MACallPoint{c_N: "1.";kV:"40";mA:"80"}
+                    MACallPoint{c_N: "2."}
+                    MACallPoint{c_N: "3."}
+                    MACallPoint{c_N: "4."}
+                    MACallPoint{c_N: "5."}
+                    MACallPoint{c_N: "6."}
+                    MACallPoint{c_N: "7."}
+                    MACallPoint{c_N: "8."}
+                    MACallPoint{c_N: "9."}
+                    MACallPoint{c_N: "10."}
+                }
+
+                Button {
+                    id: btnClsmACalPnl
+                    anchors.verticalCenter: title.verticalCenter
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.topMargin: 370
+                    anchors.bottomMargin: 32
+                    anchors.rightMargin: 68
+                    checkable: true
+                    anchors.leftMargin: 507
+                    Text {
+                        id: btnClsTxt1
+                        visible: true
+                        color: "#ffffff"
+                        text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">CLOSE</span></p></body></html>"
+                        anchors.fill: parent
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        textFormat: Text.RichText
+                        minimumPixelSize: 13
+                    }
+                    iconSource: ""
+                    enabled: true
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: "#de1414"
+                            radius: height/2
+                            border.color: "#ffffff"
+                            border.width: 2
+                            antialiasing: true
+                        }
+                    }
+                    onClicked: {
+                        // invio il comando
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("CAL0",1)
+                        }
+                        if (valueSource.tecn) // se tecnica 3 punti
+                            threePointPanel.visible = true
+                        else
+                            twoPointPanel.visible = true
+                        kVPanel.visible = true
+                                // Attivo il pannello calibrazione MAFG
+                        mACalPanel.visible = false
+                        // blocco il toggle cambio tecnica su 3 punti
+                        swTecnique.enabled = true
+                    }
+                    isDefault: false
+                    z: 3
+                }
             }
        }
 
@@ -2962,6 +3029,7 @@ Window {
                 anchors.leftMargin: 57
                 Text {
                     id: btnClsTxt
+                    visible: true
                     anchors.fill: parent
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
@@ -3492,14 +3560,32 @@ Window {
                     rightAlignedIconSource: "qrc:/images/icon-go.png"                    
                 }
                 onClicked: {
+                    // In realtà dovrei inviare solamente il messaggio al sistema
+                    // invio il comando
+                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    {
+                        serialTerminal.putPC1cmd("CAL1",1)
+                    }
+                    // sulla lettura della risposta dovrei eseguire quello che segue
+
                     // se sono su FG
                     if (valueSource.fuoco)
                     { // tolgo i pannelli del funzionamento
 
                         twoPointPanel.visible = false
                         threePointPanel.visible = false
+                        kVPanel.visible = false
                                 // Attivo il pannello calibrazione MAFG
-                        mACalFGPanel.visible = true
+                        mACalPanel.visible = true
+                        // blocco il toggle cambio tecnica su 3 punti
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("ET1",1)
+                        }
+
+                        swTecnique.enabled = false
+                        // il tempo e' fisso a  tmp = 1700; 17 mS impostato da IFXRAY
+                        // invio il messaggio di abilitazione calibrazione
                     }
                 }
             }

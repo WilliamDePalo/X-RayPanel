@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.13.1, 2020-10-21T12:30:30. -->
+<!-- Written by QtCreator 4.13.1, 2020-10-21T16:26:34. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -304,7 +304,6 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">mu.de.manager2</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Progetti/Interfaccia Mu.De. Manager/Mu.De.Manager/sv_Mu.De.Manager/Mu.De._Manager/mu.de.manager.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Progetti/Interfaccia Mu.De. Manager/Mu.De.Manager/sv_Mu.De.Manager/Mu.De._Manager/mu.de.manager.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
