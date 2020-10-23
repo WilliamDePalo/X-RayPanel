@@ -1301,16 +1301,17 @@ Window {
                     flow: Grid.TopToBottom
                     rows: 4
                     columns: 3
-                    MACallPoint{c_N: "1.";kV:"40";mA:"80"}
-                    MACallPoint{c_N: "2."}
-                    MACallPoint{c_N: "3."}
-                    MACallPoint{c_N: "4."}
-                    MACallPoint{c_N: "5."}
-                    MACallPoint{c_N: "6."}
-                    MACallPoint{c_N: "7."}
-                    MACallPoint{c_N: "8."}
-                    MACallPoint{c_N: "9."}
-                    MACallPoint{c_N: "10."}
+                    property var calSel:".1"
+                    MACallPoint{c_N: "1.";kV:"45";mA:"160";toSel:"1."}
+                    MACallPoint{c_N: "2.";kV:"100";mA:"160";toSel:"1."}
+                    MACallPoint{c_N: "3.";kV:"45";mA:"200";toSel:"1."}
+                    MACallPoint{c_N: "4.";kV:"100";mA:"200";toSel:"1."}
+                    MACallPoint{c_N: "5.";kV:"45";mA:"250";toSel:"1."}
+                    MACallPoint{c_N: "6.";kV:"100";mA:"250";toSel:"1."}
+                    MACallPoint{c_N: "7.";kV:"45";mA:"300";toSel:"1."}
+                    MACallPoint{c_N: "8.";kV:"90";mA:"300";toSel:"1."}
+                    MACallPoint{c_N: "9.";kV:"45";mA:"400";toSel:"1."}
+                    MACallPoint{c_N: "10.";kV:"70";mA:"400";toSel:"1."}
                 }
                 Grid {
                     id: mACalFPPanel
@@ -1322,23 +1323,91 @@ Window {
                     flow: Grid.TopToBottom
                     rows: 4
                     columns: 3
-                    property int calSel:0
-                    signal pointSelected
-                    MACallPoint{c_N: "1.";kV:"40";mA:"80";selected:true}
-                    MACallPoint{c_N: "2."}
-                    MACallPoint{c_N: "3."}
-                    MACallPoint{c_N: "4."}
-                    MACallPoint{c_N: "5."}
-                    MACallPoint{c_N: "6."}
-                    MACallPoint{c_N: "7."}
-                    MACallPoint{c_N: "8.";toSel:0
-                        onClicked: {
+                    property var calSel:".1"
 
-                            mACalFPPanel.calSel = 8
+                    MACallPoint{c_N: "1.";kV:"80";mA:"80";toSel:mACalFPPanel.calSel}  // toSel:1 è l'elemento che deve essere selezionato per primo
+                    MACallPoint{c_N: "2.";kV:"115";mA:"80";toSel:mACalFPPanel.calSel}
+                    MACallPoint{c_N: "3.";kV:"65";mA:"100";toSel:mACalFPPanel.calSel}
+                    MACallPoint{c_N: "4.";kV:"95";mA:"100";toSel:mACalFPPanel.calSel}
+                    MACallPoint{c_N: "5.";kV:"45";mA:"125";toSel:mACalFPPanel.calSel}
+                    MACallPoint{c_N: "6.";kV:"75";mA:"125";toSel:mACalFPPanel.calSel}
+                    MACallPoint{c_N: "7.";kV:"45";mA:"160";toSel:mACalFPPanel.calSel}
+                    MACallPoint{c_N: "8.";kV:"60";mA:"160";toSel:mACalFPPanel.calSel}
+
+
+
+                }
+
+                Button{
+                    id:btnSaveACAl
+                    x: 537
+                    y: 298
+                    width: 55
+                    height: 55
+                    anchors.bottom: btnClsmACalPnl.top
+                    anchors.bottomMargin: 15
+                    anchors.horizontalCenter: btnClsmACalPnl.horizontalCenter
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: "transparent"
+                            radius: height/2
+                            border.color: "#00000000"
+                            border.width: 1
+                            antialiasing: true
                         }
                     }
-
-
+                    Image {
+                        id: imgBtnSaveACal
+                        anchors.fill: parent
+                        sourceSize.width: 0
+                        visible: true
+                        fillMode: Image.Stretch
+                        sourceSize.height: 0
+                        scale: 1
+                        rotation: 0
+                        source: "../images/save_icon.png"
+                    }
+                    onClicked: {
+                        // blocco il toggle cambio tecnica su 3 punti
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("AW",1)
+                        }
+                    }
+                }
+                Button{
+                    id:readACAl
+                    width: 55
+                    height: 55
+                    anchors.bottom: btnSaveACAl.bottom
+                    layer.textureMirroring: ShaderEffectSource.NoMirroring
+                    smooth: true
+                    layer.smooth: false
+                    antialiasing: true
+                    anchors.bottomMargin: 70
+                    anchors.horizontalCenter: btnClsmACalPnl.horizontalCenter
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: "transparent"
+                            radius: height/2
+                            border.color: "#00000000"
+                            border.width: 1
+                            antialiasing: true
+                        }
+                    }
+                    Image {
+                        id: imgBtnReadACal
+                        anchors.fill: parent
+                        sourceSize.width: 0
+                        visible: true
+                        fillMode: Image.Stretch
+                        sourceSize.height: 0
+                        scale: 1
+                        rotation: 0
+                        source: "../images/refresh-page-arrow.png"
+                        antialiasing: true
+                        smooth: false
+                    }
                 }
 
                 Button {

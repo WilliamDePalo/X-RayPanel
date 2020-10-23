@@ -57,5 +57,7 @@
         <file>images/options-settings-White.svg</file>
         <file>qml/keyPadSupport/TextField.qml</file>
         <file>qml/MACallPoint.qml</file>
+        <file>images/refresh-page-arrow.png</file>
+        <file>images/save_icon.png</file>
     </qresource>
 </RCC>

@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 MouseArea {
     id: mouseArea
-    property var isSel:0
+    property var isSel:""
     width: 210
     height: 100
     focus: mouseArea.pressed
@@ -200,7 +200,7 @@ MouseArea {
         width: 60
         height: 31
         color: "#ffffff"
-        text: qsTr("1")
+        text: qsTr("0.")
         font.pixelSize: 25
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
@@ -211,16 +211,23 @@ MouseArea {
         fontSizeMode: Text.Fit
     }
 
-    onClicked: {
-        forceActiveFocus()
-        pointer.on = true
+    onClicked: {        
         mouseArea.isSel = caseNumber.text
     }
- /*  onSelectedChanged:
+   onIsSelChanged:
     {
-        if (!mouseArea.focus)
+        if (mouseArea.isSel === caseNumber.text)
+        {
+            forceActiveFocus()
+            pointer.on = true
+            // qui dovrei impostare i valori da seriale e i valori confermati dovrebbero andare in calibrazione
+        }
+        else
+        {
             pointer.on = false
-    }*/
+        }
+       // parent.calSel = mouseArea.isSel
+    }
     onActiveFocusChanged:
     {
         if (!mouseArea.focus)
@@ -231,10 +238,10 @@ MouseArea {
         if (!mouseArea.focus)
             pointer.on = false
     }*/
-    onToSelChanged:
-    {
-        if (!mouseArea.focus)
-            pointer.on = false
-    }
+  //  onToSelChanged:
+ //   {
+ //       if (!mouseArea.focus)
+ //           pointer.on = false
+ //   }
 
 }
