@@ -1,41 +1,31 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
-MouseArea {
-    id: mouseArea
-    property var isSel:""
+Item {
+    id: calPointArea
+
     width: 210
     height: 100
-    focus: mouseArea.pressed
-    propagateComposedEvents: true
+    focus: calPointArea.pressed
+    //propagateComposedEvents: true
+
 
     property alias kV: val_kV.text
     property alias mA: val_mA.text
     property alias c_N:  caseNumber.text
-    property alias selected:pointer.on
-    property alias toSel:mouseArea.isSel
-   // signal clicked
- /*   Timer {
-        id: checkFocus
-        interval: 200
-        running: true
-        repeat: true
-        onTriggered: {
-            if(!mouseArea.focus)
-            {
-                pointer.on = false
-            }
-        }
-    }*/
+    property alias selected:pointer.on   
+    property alias maR: val_maR.text
+
 
     TurnIndicator{
         id: pointer
         width: 60
-        height: 60
         anchors.left: parent.left
+        anchors.top: caseNumber.bottom
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
+        anchors.topMargin: 0
+        anchors.bottomMargin: 8
         direction: 2
-        anchors.leftMargin: 5
+        anchors.leftMargin: 8
         activeFocusOnTab: true
         on: false
         flashing: true
@@ -69,7 +59,7 @@ MouseArea {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         anchors.horizontalCenter: lab_KV.horizontalCenter
-        anchors.topMargin: 5
+        anchors.topMargin: 3
         z: 1
         readOnly: true
         mouseSelectionMode: TextInput.SelectCharacters
@@ -91,7 +81,7 @@ MouseArea {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         anchors.horizontalCenter: lab_KV.horizontalCenter
-        anchors.topMargin: 10
+        anchors.topMargin: 4
         font.family: "Tahoma"
     }
 
@@ -106,7 +96,7 @@ MouseArea {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         anchors.horizontalCenter: lab_KV.horizontalCenter
-        anchors.topMargin: 5
+        anchors.topMargin: 3
         readOnly: true
         Rectangle{
             anchors.fill: parent
@@ -157,7 +147,7 @@ MouseArea {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         anchors.horizontalCenter: lab_Trimmer.horizontalCenter
-        anchors.topMargin: 5
+        anchors.topMargin: 3
         readOnly: true
         Rectangle{
             anchors.fill: parent
@@ -195,15 +185,17 @@ MouseArea {
 
     Text {
         id: caseNumber
-        x: 5
-        y: 8
         width: 60
         height: 31
         color: "#ffffff"
         text: qsTr("0.")
+        anchors.left: parent.left
+        anchors.top: parent.top
         font.pixelSize: 25
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+        anchors.leftMargin: 5
+        anchors.topMargin: 1
         style: Text.Normal
         font.weight: Font.Normal
         font.bold: true
@@ -211,37 +203,27 @@ MouseArea {
         fontSizeMode: Text.Fit
     }
 
-    onClicked: {        
-        mouseArea.isSel = caseNumber.text
-    }
-   onIsSelChanged:
+
+   /*onPointNChanged:
     {
-        if (mouseArea.isSel === caseNumber.text)
+        if (mACalPanel.selector === toSel)
         {
+
             forceActiveFocus()
             pointer.on = true
             // qui dovrei impostare i valori da seriale e i valori confermati dovrebbero andare in calibrazione
+
         }
         else
         {
             pointer.on = false
-        }
-       // parent.calSel = mouseArea.isSel
+        }      
     }
     onActiveFocusChanged:
     {
-        if (!mouseArea.focus)
-            pointer.on = false
-    }
- /*   onContainsMouseChanged: {
-
-        if (!mouseArea.focus)
+        if (!calPointArea.focus)
             pointer.on = false
     }*/
-  //  onToSelChanged:
- //   {
- //       if (!mouseArea.focus)
- //           pointer.on = false
- //   }
+
 
 }

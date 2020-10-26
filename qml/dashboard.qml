@@ -370,7 +370,7 @@ Window {
                         anchors.topMargin: 0
                         scale: 1
                         source: "../images/fuoco-piccolo.png"
-                    }                   
+                    }
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
@@ -885,7 +885,7 @@ Window {
                 id: twoPointPanel
                 width: 325
                 height: 285
-                anchors.left: tachometer.right
+                anchors.left: kVPanel.right
                 anchors.leftMargin: 10
                 visible: false
                 anchors.verticalCenterOffset: 50
@@ -1291,6 +1291,12 @@ Window {
                 anchors.topMargin: 168
                 anchors.leftMargin: 0
                 anchors.bottomMargin: 0
+                visible: true
+                property int selector : 1
+                onSelectorChanged:{
+
+                }
+
                 Grid {
                     id: mACalFGPanel
                     x: 0
@@ -1301,17 +1307,239 @@ Window {
                     flow: Grid.TopToBottom
                     rows: 4
                     columns: 3
-                    property var calSel:".1"
-                    MACallPoint{c_N: "1.";kV:"45";mA:"160";toSel:"1."}
-                    MACallPoint{c_N: "2.";kV:"100";mA:"160";toSel:"1."}
-                    MACallPoint{c_N: "3.";kV:"45";mA:"200";toSel:"1."}
-                    MACallPoint{c_N: "4.";kV:"100";mA:"200";toSel:"1."}
-                    MACallPoint{c_N: "5.";kV:"45";mA:"250";toSel:"1."}
-                    MACallPoint{c_N: "6.";kV:"100";mA:"250";toSel:"1."}
-                    MACallPoint{c_N: "7.";kV:"45";mA:"300";toSel:"1."}
-                    MACallPoint{c_N: "8.";kV:"90";mA:"300";toSel:"1."}
-                    MACallPoint{c_N: "9.";kV:"45";mA:"400";toSel:"1."}
-                    MACallPoint{c_N: "10.";kV:"70";mA:"400";toSel:"1."}
+                    property var calSel: "1."
+
+
+                    MouseArea{
+                        id: point9
+              //          property bool selection: true
+                        property string mAR : ""
+                        property bool select : true
+                        width: 210
+                        height: 100
+
+                        MACallPoint{c_N: "1.";kV:"45";mA:"160";selected:point9.select}
+
+
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point18.select = false
+                                point17.select = false
+                                point16.select = false
+                                point15.select = false
+                                point14.select = false
+                                point13.select = false
+                                point12.select = false
+                                point11.select = false
+                                point10.select = false
+                                point9.select = true
+                        }
+                    }
+
+                    //  MACallPoint{c_N: "1.";kV:"45";mA:"160";toSel:mACalFGPanel.calSel}
+                    MouseArea{
+                        id: point10
+                        width: 210
+                        height: 100
+                        property bool select : false
+                        property string mAR : ""
+                        MACallPoint{c_N: "2.";kV:"100";mA:"160";selected:point10.select}
+
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point18.select = false
+                                point17.select = false
+                                point16.select = false
+                                point15.select = false
+                                point14.select = false
+                                point13.select = false
+                                point12.select = false
+                                point11.select = false
+                                point10.select = true
+                                point9.select = false
+                        }
+                    }
+
+                    MouseArea{
+                        id: point11
+                        width: 210
+                        height: 100
+                        property bool select : false
+                        property string mAR : ""
+
+                        MACallPoint{c_N: "3.";kV:"45";mA:"200";selected:point11.select}
+
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point18.select = false
+                                point17.select = false
+                                point16.select = false
+                                point15.select = false
+                                point14.select = false
+                                point13.select = false
+                                point12.select = false
+                                point11.select = true
+                                point10.select = false
+                                point9.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point12
+                        width: 210
+                        height: 100
+                        property bool select : false
+                        property string mAR : ""
+                        MACallPoint{c_N: "4.";kV:"100";mA:"200";selected:point12.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point18.select = false
+                                point17.select = false
+                                point16.select = false
+                                point15.select = false
+                                point14.select = false
+                                point13.select = false
+                                point12.select = true
+                                point11.select = false
+                                point10.select = false
+                                point9.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point13
+                        width: 210
+                        height: 100
+                        property bool select : false
+                        property string mAR : ""
+                        MACallPoint{c_N: "5.";kV:"45";mA:"250";selected:point13.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point18.select = false
+                                point17.select = false
+                                point16.select = false
+                                point15.select = false
+                                point14.select = false
+                                point13.select = true
+                                point12.select = false
+                                point11.select = false
+                                point10.select = false
+                                point9.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point14
+                        width: 210
+                        height: 100
+                        property bool select : false
+                        property string mAR : ""
+                        MACallPoint{c_N: "6.";kV:"100";mA:"250";selected:point14.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point18.select = false
+                                point17.select = false
+                                point16.select = false
+                                point15.select = false
+                                point14.select = true
+                                point13.select = false
+                                point12.select = false
+                                point11.select = false
+                                point10.select = false
+                                point9.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point15
+                        width: 210
+                        height: 100
+                        property bool select : false
+                        property string mAR : ""
+                    MACallPoint{c_N: "7.";kV:"45";mA:"300";selected:point15.select}
+                    onClicked:  {
+
+                            // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                            point18.select = false
+                            point17.select = false
+                            point16.select = false
+                            point15.select = true
+                            point14.select = false
+                            point13.select = false
+                            point12.select = false
+                            point11.select = false
+                            point10.select = false
+                            point9.select = false
+                    }
+                    }
+                    MouseArea{
+                        id: point16
+                        width: 210
+                        height: 100
+                        property bool select : false
+                        property string mAR : ""
+                        MACallPoint{c_N: "8.";kV:"90";mA:"300";selected:point16.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point18.select = false
+                                point17.select = false
+                                point16.select = true
+                                point15.select = false
+                                point14.select = false
+                                point13.select = false
+                                point12.select = false
+                                point11.select = false
+                                point10.select = false
+                                point9.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point17
+                        width: 210
+                        height: 100
+                        property bool select : false
+                        property string mAR : ""
+                        MACallPoint{c_N: "9.";kV:"45";mA:"400";selected:point17.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point18.select = false
+                                point17.select = true
+                                point16.select = false
+                                point15.select = false
+                                point14.select = false
+                                point13.select = false
+                                point12.select = false
+                                point11.select = false
+                                point10.select = false
+                                point9.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point18
+                        width: 210
+                        height: 100
+                        property bool select : false
+                        property string mAR : ""
+                        MACallPoint{c_N: "10.";kV:"70";mA:"400";selected:point18.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point18.select = true
+                                point17.select = false
+                                point16.select = false
+                                point15.select = false
+                                point14.select = false
+                                point13.select = false
+                                point12.select = false
+                                point11.select = false
+                                point10.select = false
+                                point9.select = false
+                        }
+                    }
                 }
                 Grid {
                     id: mACalFPPanel
@@ -1320,19 +1548,190 @@ Window {
                     width: 667
                     height: 400
                     visible: true
+                    spacing: 0
+                    topPadding: 0
                     flow: Grid.TopToBottom
                     rows: 4
                     columns: 3
                     property var calSel:".1"
+                    function refreshCalmAFP()
+                    {
+                        var i = 0
+                        // invio il msg
+                        if ((serialTerminal.getConnectionStatusSlot() !== false)&&(!brokenCase))
+                        {
+                            serialTerminal.putPC1cmd("AP1",1)
+                            serialTerminal.putPC1cmd("AP2",1)
+                            serialTerminal.putPC1cmd("AP3",1)
+                            serialTerminal.putPC1cmd("AP4",1)
+                            serialTerminal.putPC1cmd("AP5",1)
+                            serialTerminal.putPC1cmd("AP6",1)
+                            serialTerminal.putPC1cmd("AP7",1)
+                            serialTerminal.putPC1cmd("AP8",1)
+                        }
+                    }
 
-                    MACallPoint{c_N: "1.";kV:"80";mA:"80";toSel:mACalFPPanel.calSel}  // toSel:1 è l'elemento che deve essere selezionato per primo
-                    MACallPoint{c_N: "2.";kV:"115";mA:"80";toSel:mACalFPPanel.calSel}
-                    MACallPoint{c_N: "3.";kV:"65";mA:"100";toSel:mACalFPPanel.calSel}
-                    MACallPoint{c_N: "4.";kV:"95";mA:"100";toSel:mACalFPPanel.calSel}
-                    MACallPoint{c_N: "5.";kV:"45";mA:"125";toSel:mACalFPPanel.calSel}
-                    MACallPoint{c_N: "6.";kV:"75";mA:"125";toSel:mACalFPPanel.calSel}
-                    MACallPoint{c_N: "7.";kV:"45";mA:"160";toSel:mACalFPPanel.calSel}
-                    MACallPoint{c_N: "8.";kV:"60";mA:"160";toSel:mACalFPPanel.calSel}
+                    MouseArea{
+                        id: point1
+                        property string mAR : ""
+                        property bool select : true
+                        width: 210
+                        height: 100
+                        MACallPoint{c_N: "1.";kV:"80";mA:"80";selected:point1.select}  // toSel:1 è l'elemento che deve essere selezionato per primo
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point8.select = false
+                                point7.select = false
+                                point6.select = false
+                                point5.select = false
+                                point4.select = false
+                                point3.select = false
+                                point2.select = false
+                                point1.select = true
+                        }
+
+                    }
+                    MouseArea{
+                        id: point2
+                        property string mAR : ""
+                        property bool select : false
+                        width: 210
+                        height: 100
+                        MACallPoint{c_N: "2.";kV:"115";mA:"80";selected:point2.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point8.select = false
+                                point7.select = false
+                                point6.select = false
+                                point5.select = false
+                                point4.select = false
+                                point3.select = false
+                                point2.select = true
+                                point1.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point3
+                        property string mAR : ""
+                        property bool select : false
+                        width: 210
+                        height: 100
+                        MACallPoint{c_N: "3.";kV:"65";mA:"100";selected:point3.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point8.select = false
+                                point7.select = false
+                                point6.select = false
+                                point5.select = false
+                                point4.select = false
+                                point3.select = true
+                                point2.select = false
+                                point1.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point4
+                        property string mAR : ""
+                        property bool select : false
+                        width: 210
+                        height: 100
+                    MACallPoint{c_N: "4.";kV:"95";mA:"100";selected:point4.select}
+                    onClicked:  {
+
+                            // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                            point8.select = false
+                            point7.select = false
+                            point6.select = false
+                            point5.select = false
+                            point4.select = true
+                            point3.select = false
+                            point2.select = false
+                            point1.select = false
+                    }
+                    }
+                    MouseArea{
+                        id: point5
+                        property string mAR : ""
+                        property bool select : false
+                        width: 210
+                        height: 100
+                    MACallPoint{c_N: "5.";kV:"45";mA:"125";selected:point5.select}
+                    onClicked:  {
+
+                            // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                            point8.select = false
+                            point7.select = false
+                            point6.select = false
+                            point5.select = true
+                            point4.select = false
+                            point3.select = false
+                            point2.select = false
+                            point1.select = false
+                    }
+                    }
+                    MouseArea{
+                        id: point6
+                        property string mAR : ""
+                        property bool select : false
+                        width: 210
+                        height: 100
+                        MACallPoint{c_N: "6.";kV:"75";mA:"125";selected:point6.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point8.select = false
+                                point7.select = false
+                                point6.select = true
+                                point5.select = false
+                                point4.select = false
+                                point3.select = false
+                                point2.select = false
+                                point1.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point7
+                        property string mAR : ""
+                        property bool select : false
+                        width: 210
+                        height: 100
+                        MACallPoint{c_N: "7.";kV:"45";mA:"160";selected:point7.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point8.select = false
+                                point7.select = true
+                                point6.select = false
+                                point5.select = false
+                                point4.select = false
+                                point3.select = false
+                                point2.select = false
+                                point1.select = false
+                        }
+                    }
+                    MouseArea{
+                        id: point8
+                        property bool select : false
+                        property string mAR : ""
+                        width: 210
+                        height: 100
+                        MACallPoint{c_N: "8.";kV:"60";mA:"160";selected:point8.select}
+                        onClicked:  {
+
+                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                                point8.select = true
+                                point7.select = false
+                                point6.select = false
+                                point5.select = false
+                                point4.select = false
+                                point3.select = false
+                                point2.select = false
+                                point1.select = false
+                        }
+                    }
 
 
 
@@ -1408,6 +1807,13 @@ Window {
                         antialiasing: true
                         smooth: false
                     }
+                    onClicked:
+                    {
+                        if (valueSource.fuoco)
+                            refreshCalmAFG()
+                        else
+                            refreshCalmAFP()
+                    }
                 }
 
                 Button {
@@ -1455,7 +1861,7 @@ Window {
                         else
                             twoPointPanel.visible = true
                         kVPanel.visible = true
-                                // Attivo il pannello calibrazione MAFG
+                        // Attivo il pannello calibrazione MAFG
                         mACalPanel.visible = false
                         // blocco il toggle cambio tecnica su 3 punti
                         swTecnique.enabled = true
@@ -1464,7 +1870,9 @@ Window {
                     z: 3
                 }
             }
-       }
+
+
+        }
 
         Image {
             id: logo
@@ -3621,7 +4029,7 @@ Window {
                 visible: false
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
-                    rightAlignedIconSource: "qrc:/images/icon-go.png"                    
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"
                 }
                 onClicked: {
                     // chiudi menu
@@ -3631,7 +4039,7 @@ Window {
                     // invio il comando
                     if (serialTerminal.getConnectionStatusSlot() !== false)
                     {
-                        serialTerminal.putPC1cmd("CAL1",1)
+                        serialTerminal.putPC1cmd("OC1",1)
                     }
                     // sulla lettura della risposta dovrei eseguire quello che segue
                     mACalPanel.visible = true
@@ -3646,8 +4054,8 @@ Window {
                     swTecnique.enabled = false
                     // se sono su FG
                     if (valueSource.fuoco)
-                    { // tolgo i pannelli del funzionamento                                               
-                                // Attivo il pannello calibrazione MAFG
+                    { // tolgo i pannelli del funzionamento
+                        // Attivo il pannello calibrazione MAFG
                         mACalFGPanel.visible = true
                         maCalFPPanel.visible = false
                         // il tempo e' fisso a  tmp = 1700; 17 mS impostato da IFXRAY
@@ -3668,7 +4076,7 @@ Window {
                 visible : false
                 style: BlackButtonStyle {
                     fontColor: menuPanel.darkFontColor
-                    rightAlignedIconSource: "qrc:/images/icon-go.png"                    
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"
                 }
                 onClicked: {
                     // chiudi menu
