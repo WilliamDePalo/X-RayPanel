@@ -5,7 +5,7 @@ Item {
 
     width: 210
     height: 100
-    focus: calPointArea.pressed
+    //focus: calPointArea.pressed
     //propagateComposedEvents: true
 
 

@@ -245,6 +245,8 @@ void SerialTerminal::resetAck(){
     if (waitForAnAck != ACK_FREE)
         waitForAnAck = ACK_FREE;
     waitAckTimer->stop();
+    // dovrei segnalare allarme " Connection Lost"
+     emit getData("CONNERROR");
 }
 
 void SerialTerminal::flushSendBuffer(){

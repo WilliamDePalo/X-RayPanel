@@ -1291,7 +1291,7 @@ Window {
                 anchors.topMargin: 168
                 anchors.leftMargin: 0
                 anchors.bottomMargin: 0
-                visible: true
+                visible: false
                 property int selector : 1
                 onSelectorChanged:{
 
@@ -1309,6 +1309,22 @@ Window {
                     columns: 3
                     property var calSel: "1."
 
+                    function refreshCalmAFG()
+                    {
+
+                        // invio il msg
+                        if ((serialTerminal.getConnectionStatusSlot() !== false)&&(!brokenCase))
+                        {
+                            serialTerminal.putPC1cmd("AR9",1)
+                            serialTerminal.putPC1cmd("AR10",1)
+                            serialTerminal.putPC1cmd("AR11",1)
+                            serialTerminal.putPC1cmd("AR4",1)
+                            serialTerminal.putPC1cmd("AR5",1)
+                            serialTerminal.putPC1cmd("AR6",1)
+                            serialTerminal.putPC1cmd("AR7",1)
+                            serialTerminal.putPC1cmd("AR8",1)
+                        }
+                    }
 
                     MouseArea{
                         id: point9
@@ -1318,7 +1334,7 @@ Window {
                         width: 210
                         height: 100
 
-                        MACallPoint{c_N: "1.";kV:"45";mA:"160";selected:point9.select}
+                        MACallPoint{ selected: false;c_N: "1.";kV:"45";mA:"160";}
 
 
                         onClicked:  {
@@ -1547,7 +1563,7 @@ Window {
                     y: 0
                     width: 667
                     height: 400
-                    visible: true
+                    visible: false
                     spacing: 0
                     topPadding: 0
                     flow: Grid.TopToBottom
@@ -1556,18 +1572,18 @@ Window {
                     property var calSel:".1"
                     function refreshCalmAFP()
                     {
-                        var i = 0
+
                         // invio il msg
                         if ((serialTerminal.getConnectionStatusSlot() !== false)&&(!brokenCase))
                         {
-                            serialTerminal.putPC1cmd("AP1",1)
-                            serialTerminal.putPC1cmd("AP2",1)
-                            serialTerminal.putPC1cmd("AP3",1)
-                            serialTerminal.putPC1cmd("AP4",1)
-                            serialTerminal.putPC1cmd("AP5",1)
-                            serialTerminal.putPC1cmd("AP6",1)
-                            serialTerminal.putPC1cmd("AP7",1)
-                            serialTerminal.putPC1cmd("AP8",1)
+                            serialTerminal.putPC1cmd("AR1",1)
+                            serialTerminal.putPC1cmd("AR2",1)
+                            serialTerminal.putPC1cmd("AR3",1)
+                            serialTerminal.putPC1cmd("AR4",1)
+                            serialTerminal.putPC1cmd("AR5",1)
+                            serialTerminal.putPC1cmd("AR6",1)
+                            serialTerminal.putPC1cmd("AR7",1)
+                            serialTerminal.putPC1cmd("AR8",1)
                         }
                     }
 
@@ -1577,7 +1593,7 @@ Window {
                         property bool select : true
                         width: 210
                         height: 100
-                        MACallPoint{c_N: "1.";kV:"80";mA:"80";selected:point1.select}  // toSel:1 è l'elemento che deve essere selezionato per primo
+                        MACallPoint{ selected: false;c_N: "1.";kV:"80";mA:"80";}  // toSel:1 è l'elemento che deve essere selezionato per primo
                         onClicked:  {
 
                                 // Se ho selezionato il punto invio i dati e deseleziono gli altri
@@ -2645,6 +2661,46 @@ Window {
                             }
                             errorMessage.visible = true
                         }
+                        else if((data[0]=== "O")&&
+                                data[1]=== "C")
+                        {
+                            if (data[2] === "1") // Se abilitazine Calibrazione corrente
+                            {
+                                // sulla lettura della risposta dovrei eseguire quello che segue
+                                mACalPanel.visible = true
+                                twoPointPanel.visible = false
+                                threePointPanel.visible = false
+                                kVPanel.visible = false
+                                // blocco il toggle cambio tecnica su 3 punti
+                                if (serialTerminal.getConnectionStatusSlot() !== false)
+                                {
+                                    serialTerminal.putPC1cmd("ET1",1)
+                                }
+                                swTecnique.enabled = false
+                                // se sono su FG
+                                if (valueSource.fuoco)
+                                { // tolgo i pannelli del funzionamento
+                                    // Attivo il pannello calibrazione MAFG
+                                    mACalFGPanel.visible = true
+                                    maCalFPPanel.visible = false
+                                    // il tempo e' fisso a  tmp = 1700; 17 mS impostato da IFXRAY
+                                    // invio il messaggio di abilitazione calibrazione
+                                }else
+                                {
+                                    mACalFGPanel.visible = false
+                                    mACalFPPanel.visible = true
+                                }
+                            }else if (data[3] === "2")// se abilitazione Calibrazione Tensione
+                            {
+
+                            }
+                        }
+
+                        else if (data==="CONNERROR")
+                        {
+                            errorMessage.text = qsTr("CONNECTION LOST !!!")
+                            errorMessage.visible = true
+                        }
                         else
                         {
                             if (data === "ERROR")
@@ -2683,6 +2739,8 @@ Window {
                             //  QUI PER ABILITARE IL polling STATI
                             statusTimer.repeat = 1
                             setStatusTo(sendStatusRqst,2500)
+
+
                         }
                     }else {
                         connectBtn.text = "Connect"
@@ -4041,30 +4099,7 @@ Window {
                     {
                         serialTerminal.putPC1cmd("OC1",1)
                     }
-                    // sulla lettura della risposta dovrei eseguire quello che segue
-                    mACalPanel.visible = true
-                    twoPointPanel.visible = false
-                    threePointPanel.visible = false
-                    kVPanel.visible = false
-                    // blocco il toggle cambio tecnica su 3 punti
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
-                    {
-                        serialTerminal.putPC1cmd("ET1",1)
-                    }
-                    swTecnique.enabled = false
-                    // se sono su FG
-                    if (valueSource.fuoco)
-                    { // tolgo i pannelli del funzionamento
-                        // Attivo il pannello calibrazione MAFG
-                        mACalFGPanel.visible = true
-                        maCalFPPanel.visible = false
-                        // il tempo e' fisso a  tmp = 1700; 17 mS impostato da IFXRAY
-                        // invio il messaggio di abilitazione calibrazione
-                    }else
-                    {
-                        mACalFGPanel.visible = false
-                        mACalFPPanel.visible = true
-                    }
+
                 }
             }
 
