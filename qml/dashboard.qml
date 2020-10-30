@@ -2212,6 +2212,7 @@ Window {
                 property  real tmp1: 1000
                 property  real tmp2:0
                 property string  rcv: ""
+                property int  cntr: 0
 
                 onGetData: {
                     if ((data[0] ==="S")&&            // gestione STATI
@@ -2261,8 +2262,10 @@ Window {
                         }
                         else
                         {
-
+                            if (data!=="CONNERROR")
+                                cntr = 0
                             errorMessage.visible = false
+
                         }
 
 
@@ -2303,6 +2306,7 @@ Window {
                                 }
                             }
                             errorMessage.visible = false
+                            cntr = 0
                         }else if((data[0] ==="E")&&            // gestione fuoco
                                  (data[1]==="T"))
                         {
@@ -2386,6 +2390,7 @@ Window {
                                 }
                             }
                             errorMessage.visible = false
+                            cntr = 0
                         }
                         else if ((data[0] ==="K")&&            // gestione kV
                                  (data[1]==="V"))
@@ -2395,7 +2400,7 @@ Window {
                             tmp += data[4]-"0";
                             valueSource.kv = tmp;
                             errorMessage.visible = false
-
+                            cntr = 0
                         }else if ((data[0]==="V") &&
                                   (data[1]==="C"))
                         {
@@ -2417,6 +2422,7 @@ Window {
                             // tmp +=  data[6]-"0";
                             valueSource.mA = tmp;
                             errorMessage.visible = false
+                            cntr = 0
                         }else if ((data[0] ==="M")&&            // gestione Ms
                                   (data[1]==="S"))
                         {
@@ -2442,6 +2448,7 @@ Window {
                             tmp = tmp1+tmp2;
                             valueSource.msec = tmp/10; // in secondi /1000
                             errorMessage.visible = false
+                            cntr = 0
                         }else if ((data[0] ==="M")&&            // gestione MAs
                                   (data[1]==="X"))
                         {
@@ -2468,7 +2475,7 @@ Window {
                             tmp += ( data[6]-"0")/10;
                             valueSource.mas = tmp;
                             errorMessage.visible = false;
-
+                            cntr = 0
                         }
                         else if ((data[0] ==="P")&&            // gestione PRONTO
                                  (data[1]==="R"))
@@ -2687,19 +2694,33 @@ Window {
                                     // invio il messaggio di abilitazione calibrazione
                                 }else
                                 {
-                                    mACalFGPanel.visible = false
                                     mACalFPPanel.visible = true
                                 }
                             }else if (data[3] === "2")// se abilitazione Calibrazione Tensione
                             {
+                                mACalFGPanel.visible = false
 
                             }
                         }
 
                         else if (data==="CONNERROR")
                         {
-                            errorMessage.text = qsTr("CONNECTION LOST !!!")
-                            errorMessage.visible = true
+                            //Deve succedere almeno 2 volte di seguito
+                            if (cntr < 3)
+                            {
+                                cntr++
+                            }
+                            else
+                            {//Se sono in preparazione o in emissione non rispondo ai messaggi
+                                if((valueSource.numericSTS!=3) ||
+                                   (valueSource.numericSTS!=4))
+                                {
+
+                                        errorMessage.text = qsTr("CONNECTION LOST !!!")
+                                        errorMessage.visible = true
+                                }
+                                cntr = 0
+                            }
                         }
                         else
                         {
