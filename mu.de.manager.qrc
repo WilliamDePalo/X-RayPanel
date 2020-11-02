@@ -57,7 +57,16 @@
         <file>images/options-settings-White.svg</file>
         <file>qml/keyPadSupport/TextField.qml</file>
         <file>qml/MACallPoint.qml</file>
+        <file>images/sfondo/sfondo-grigio-chiaro.png</file>
+        <file>images/sfondo/sfondo-grigio-scuro.png</file>
         <file>images/refresh-page-arrow.png</file>
+        <file>images/Risorsa 1.png</file>
+        <file>images/Risorsa 2.png</file>
+        <file>images/fuoco-piccolo_red.png</file>
+        <file>images/fuoco-piccolo_W.png</file>
+        <file>images/meno_b.png</file>
         <file>images/save_icon.png</file>
+        <file>images/piu_b.png</file>
+        <file>images/toppng.com-menu-icon-black.png</file>
     </qresource>
 </RCC>

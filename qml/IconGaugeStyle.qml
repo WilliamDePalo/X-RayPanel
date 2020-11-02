@@ -77,14 +77,14 @@ DashboardGaugeStyle {
         implicitWidth: toPixels(0.06)
         antialiasing: true
         implicitHeight: toPixels(0.2)
-        color: "#c8c8c8"
+        color: "black"//"#c8c8c8"
     }
 
     minorTickmark: Rectangle {
         implicitWidth: toPixels(0.03)
         antialiasing: true
         implicitHeight: toPixels(0.15)
-        color: "#c8c8c8"
+        color: "black"//"#c8c8c8"
     }
 
     background: Item {
@@ -135,7 +135,7 @@ DashboardGaugeStyle {
             font.family: "Arial"
             font.bold: true
             font.pixelSize: 50
-            color: "white"
+            color: "black"//"white"
             horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
 

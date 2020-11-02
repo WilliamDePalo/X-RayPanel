@@ -96,7 +96,7 @@ CircularGaugeStyle {
 
         ctx.beginPath();
         ctx.lineWidth = tickmarkInset / 2;
-        ctx.strokeStyle = "#5eb3e4";//"#222";
+        ctx.strokeStyle ="#222"//"trasparent"//"#e20613";//;// bordo quadrante
         ctx.arc(xCenter, yCenter, outerRadius - ctx.lineWidth / 2, outerRadius - ctx.lineWidth / 2, 0, Math.PI * 2);
         ctx.stroke();
 
@@ -193,7 +193,7 @@ CircularGaugeStyle {
             ctx.lineTo(xCenter, yCenter - needleLength);
             ctx.lineTo(xCenter, 0);
             ctx.closePath();
-            ctx.fillStyle = "#5eb3e4";//Qt.rgba(0.66, 0, 0, 0.66);
+            ctx.fillStyle = "#e20613";//Qt.rgba(0.66, 0, 0, 0.66);
             ctx.fill();
 
             ctx.beginPath();
@@ -202,7 +202,7 @@ CircularGaugeStyle {
             ctx.lineTo(xCenter + needleTipWidth / 2, 0);
             ctx.lineTo(xCenter, 0);
             ctx.closePath();
-            ctx.fillStyle = "#5eb3e4";// Qt.lighter(Qt.rgba(0.66, 0, 0, 0.66));
+            ctx.fillStyle = "#e20613";// Qt.lighter(Qt.rgba(0.66, 0, 0, 0.66));
             ctx.fill();
         }
     }

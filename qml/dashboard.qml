@@ -297,7 +297,7 @@ Window {
             anchors.leftMargin: -7
             anchors.topMargin: 0
             fillMode: Image.TileVertically
-            source: "../images/sfondo/sfondo1"
+            source: "../images/sfondo/sfondo-grigio-chiaro.png"
             anchors.fill: parent
             //Image:"qrc:image/logoRxR.jpg"
         }
@@ -369,7 +369,7 @@ Window {
                         anchors.leftMargin: 0
                         anchors.topMargin: 0
                         scale: 1
-                        source: "../images/fuoco-piccolo.png"
+                        source: "../images/fuoco-piccolo_B.png"
                     }
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
@@ -402,7 +402,7 @@ Window {
                 Text {
                     id: statusTitle
                     height: 35
-                    color: "#fdfdfd"
+                    color: "#e20613"
                     text: qsTr("STATUS:")
                     anchors.leftMargin: -40
                     font.family: "Tahoma"
@@ -427,7 +427,7 @@ Window {
                     id: status
                     y: 196
                     height: 34
-                    color: "#5eb3e4"
+                    color: "#060606"// #5eb3e4
                     text: qsTr("DISCONNECT")
                     anchors.verticalCenter: statusTitle.verticalCenter
                     anchors.left: statusTitle.right
@@ -508,19 +508,20 @@ Window {
                             x: 0
                             width: 200
                             height: 30
-                            color: "#424545"
                             //     width: 80
                             //     height: 22
                             implicitWidth: 200
                             implicitHeight: 20
                             radius: 1
-                            border.color: "#0d1220"
+                            border.color: "#b6b3b3"
                             opacity: 1
                             visible: true
+                            color: "#060606"
                             //    border.color: "#62626a"
                             scale: 1
                             border.width: 12
                         }
+
                     }
                     onCheckedChanged: {
                         if (checked==true)// 3 punti
@@ -542,7 +543,7 @@ Window {
                     id: tecLabel2
                     y: 355
                     height: 18
-                    color: "#fbfbfb"
+                    color: "#060606"
 
                     text: qsTr("2 POINT")
                     font.pixelSize: 18
@@ -562,7 +563,7 @@ Window {
                     x: 111
                     y: 355
                     height: 18
-                    color: "#5bb2e5"
+                    color: "#e20613"
                     text: qsTr("3 POINT")
                     font.pixelSize: 18
                     font.family: "Verdana"
@@ -584,13 +585,46 @@ Window {
                     value:  valueSource.cap
                     anchors.right: parent.right
                     anchors.rightMargin: 284
+                    Rectangle{
+                        width: 13
+                        radius: 3
+                        border.width: 2
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.rightMargin: 0
+                        z: 2
+
+                    }
+                    style: GaugeStyle{
+
+                        tickmarkLabel: Text {
+                            text: control.formatValue(styleData.value)
+                            font: control.font
+                            color:"black"
+                            antialiasing: true
+                        }
+
+                        tickmark: Item {
+                         //   implicitWidth: Math.round(TextSingleton.height * 1.1)
+                          //  implicitHeight: Math.max(2, Math.round(TextSingleton.height * 0.1))
+
+                            Rectangle {
+                                color:"black"
+                                anchors.fill: parent
+                                anchors.leftMargin: Math.round(TextSingleton.implicitHeight * 0.2)
+                                anchors.rightMargin: Math.round(TextSingleton.implicitHeight * 0.2)
+                            }
+                        }
+
+                    }
                 }
 
                 Text {
                     id: focusTitle
                     y: 265
                     height: 35
-                    color: "#fdfdfd"
+                    color: "#060606"
                     text: qsTr("FOCUS:")
                     anchors.leftMargin: 8
                     anchors.left: parent.left
@@ -676,7 +710,7 @@ Window {
                         id: prTitle
                         width: 111
                         height: 24
-                        color: "#5eb3e4"
+                        color: "#e20613" // #5eb3e4
                         text: qsTr("GENERATOR STATE :")
                         font.family: "Verdana"
                         verticalAlignment: Text.AlignVCenter
@@ -691,7 +725,7 @@ Window {
                         id: prStatus
                         width: 111
                         height: 24
-                        color: "#5eb3e4"
+                        color: "#00000000"
                         text: qsTr("INACTIVE")
                         font.family: "Verdana"
                         verticalAlignment: Text.AlignVCenter
@@ -706,7 +740,7 @@ Window {
                 Text {
                     id: readyTitle
                     height: 35
-                    color: "#fdfdfd"
+                    color: "#060606"
                     text: "READY:"
                     horizontalAlignment: Text.AlignLeft
                     anchors.top: prContainer.bottom
@@ -825,7 +859,7 @@ Window {
                     fillMode: Image.PreserveAspectFit
                     sourceSize.width: 23
                     pressed: false
-                    source: "../images/piu.png"
+                    source: "../images/piu_b.png"
                     property int cntr : 0
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
@@ -860,7 +894,7 @@ Window {
                     fillMode: Image.Stretch
                     sourceSize.width: 23
                     pressed: false
-                    source: "../images/meno.png"
+                    source: "../images/meno_b.png"
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
@@ -1024,7 +1058,7 @@ Window {
                     fillMode: Image.Stretch
                     sourceSize.width: 23
                     pressed: false
-                    source: "../images/meno.png"
+                    source: "../images/meno_b.png"
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
@@ -1050,7 +1084,7 @@ Window {
                     fillMode: Image.PreserveAspectFit
                     sourceSize.width: 23
                     pressed: false
-                    source: "../images/piu.png"
+                    source: "../images/piu_b.png"
                     onClicked:{
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
@@ -1108,7 +1142,7 @@ Window {
 
                     style: IconGaugeStyle {
                         id: tempGaugeStyle
-                        maxWarningColor: "#5bb2e5"
+                        maxWarningColor: "#e20613"//"#5bb2e5"
 
                         minimumValueAngle: -60
                         maximumValueAngle: 60
@@ -1125,7 +1159,7 @@ Window {
                         //    maxWarningColor: "#ef5050"
 
                         tickmarkLabel: Text {
-                            color: "white"
+                            color: "black"//"white"
                             visible: styleData.value === 0 || styleData.value === 2/*11*/|| styleData.value === 1
                             font.pixelSize: tempGaugeStyle.toPixels(0.225)
                             text: styleData.value === 0 ? "min" :(styleData.value === 1 ? "MSEC" : (styleData.value === 2/*11*/ ? "max" : ""))
@@ -1220,7 +1254,7 @@ Window {
                         scale: 3.859
                         fillMode: Image.Stretch
                         pressed: false
-                        source: "../images/meno.png"
+                        source: "../images/meno_b.png"
                         anchors.verticalCenter: tachometer.verticalCenter
                         // anchors.leftMargin: 2
                         antialiasing: true
@@ -1250,7 +1284,7 @@ Window {
                         anchors.top: parent.bottom
                         anchors.topMargin: -55
                         anchors.verticalCenterOffset: -30
-                        source: "../images/piu.png"
+                        source: "../images/piu_b.png"
                         anchors.leftMargin: 55
                         antialiasing: true
                         anchors.verticalCenter: tachometer.verticalCenter
@@ -1898,7 +1932,7 @@ Window {
             anchors.left: parent.left
             anchors.leftMargin: 16
             fillMode: Image.PreserveAspectFit
-            source: "../images/logo-rampoldi.png"
+            source: "../images/Risorsa 1.png"
         }
 
 
@@ -2087,7 +2121,7 @@ Window {
                         sourceSize.height: 0
                         scale: 1
                         rotation: 0
-                        source: "../images/toppng.com-menu-icon-white.png"
+                        source: "../images/toppng.com-menu-icon-black.png"
                     }
                     smooth: false
                     layer.enabled: false
@@ -3629,7 +3663,7 @@ Window {
             gradient: Gradient {
                 GradientStop {
                     position: 0
-                    color: "#ff5eb3e5"
+                    color: "#ffffff"
                 }
 
                 GradientStop {
