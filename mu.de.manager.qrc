@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>fonts/DejaVuSans.ttf</file>
-        <file>images/fuel-icon.png</file>
-        <file>images/temperature-icon.png</file>
         <file>qml/dashboard.qml</file>
         <file>qml/DashboardGaugeStyle.qml</file>
         <file>qml/IconGaugeStyle.qml</file>
@@ -24,15 +22,9 @@
         <file>images/sfondo/line_violet_color.jpg</file>
         <file>images/sfondo/neon-background.jpg</file>
         <file>images/sfondo/raggi.jpg</file>
-        <file>images/logoRxRwhite.png</file>
-        <file>images/whitetrasp.png</file>
-        <file>images/whitetramp.png</file>
         <file>images/info64.png</file>
         <file>images/fuoco-grande.png</file>
         <file>images/fuoco-piccolo.png</file>
-        <file>images/logo-rampoldi.png</file>
-        <file>images/meno.png</file>
-        <file>images/piu.png</file>
         <file>images/xray-bianco.png</file>
         <file>images/xray-giallo.png</file>
         <file>images/sfondo/sfondo.png</file>
@@ -49,12 +41,10 @@
         <file>qml/NumberPadSupport/Display.qml</file>
         <file>qml/NumberPadSupport/NP_Button.qml</file>
         <file>qml/content/background.svg</file>
-        <file>images/toppng.com-menu-icon-white.png</file>
         <file>qml/menuSupport/BlackButtonBackground.qml</file>
         <file>qml/menuSupport/BlackButtonStyle.qml</file>
         <file>images/icon-go.png</file>
         <file>fonts/OpenSans-Regular.ttf</file>
-        <file>images/options-settings-White.svg</file>
         <file>qml/keyPadSupport/TextField.qml</file>
         <file>qml/MACallPoint.qml</file>
         <file>images/sfondo/sfondo-grigio-chiaro.png</file>
@@ -63,10 +53,10 @@
         <file>images/Risorsa 1.png</file>
         <file>images/Risorsa 2.png</file>
         <file>images/fuoco-piccolo_red.png</file>
-        <file>images/fuoco-piccolo_W.png</file>
         <file>images/meno_b.png</file>
         <file>images/save_icon.png</file>
         <file>images/piu_b.png</file>
         <file>images/toppng.com-menu-icon-black.png</file>
+        <file>images/options-settings.svg</file>
     </qresource>
 </RCC>

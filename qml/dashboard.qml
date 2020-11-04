@@ -81,6 +81,7 @@ Window {
     height: 600
 
     color: "#d3eccb"
+    property alias capacitorPerc: capacitorPerc
     //  property alias btnCloseCopyrightText: btnCloseCopyright.text
     // property alias touchSynchroText: touchSynchro.text
 
@@ -148,7 +149,7 @@ Window {
         id: advancedIcon
         visible: false
         anchors.fill: parent
-        source: "../images/options-settings-White.svg"
+        source: "../images/options-settings.svg"
         z: 2
         sourceSize.height: 70
         sourceSize.width: 70
@@ -381,14 +382,14 @@ Window {
 
                                 serialTerminal.putPC1cmd("FO0",1)
 
-                                focusImage.source =  "../images/fuoco-piccolo.png"
+                                focusImage.source =  "../images/fuoco-piccolo_B.png"
                                 // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco piccolo
                                 if (valueSource.tecn)
                                     serialTerminal.putPC1cmd("MA00800",1)
                             }else // se piccolo
                             {
                                 serialTerminal.putPC1cmd("FO1",1)
-                                focusImage.source = "../images/fuoco-grande.png"
+                                focusImage.source = "../images/fuoco-grande_B.png"
 
                                 // se tecnica a 3 punti imposto il valore iniziale di MA Fuoco grande
                                 if (valueSource.tecn)
@@ -581,21 +582,11 @@ Window {
                     width: 63
                     height: 261
                     anchors.top: status.top
+                    value: valueSource.cap
                     anchors.topMargin: -63
-                    value:  valueSource.cap
                     anchors.right: parent.right
                     anchors.rightMargin: 284
-                    Rectangle{
-                        width: 13
-                        radius: 3
-                        border.width: 2
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.rightMargin: 0
-                        z: 2
 
-                    }
                     style: GaugeStyle{
 
                         tickmarkLabel: Text {
@@ -604,20 +595,48 @@ Window {
                             color:"black"
                             antialiasing: true
                         }
+                        valueBar:  Rectangle{
+                            color: "#e20613"
+                            border.color: "#b6b3b3"
+                            border.width: 1
+                            implicitWidth: 15
 
+                        }
+
+                    minorTickmark:Item{
+                        implicitWidth: 8
+                            implicitHeight: 2
+
+                        Rectangle {
+                            color:"#626262"
+                            radius: 0
+                            border.width: 0
+                            anchors.fill: parent
+                            anchors.leftMargin: -3
+                            anchors.rightMargin: 3
+                            z: 1
+
+                        }
+                    }
                         tickmark: Item {
-                         //   implicitWidth: Math.round(TextSingleton.height * 1.1)
-                          //  implicitHeight: Math.max(2, Math.round(TextSingleton.height * 0.1))
+                          implicitWidth: 18
+                          implicitHeight: 2
 
-                            Rectangle {
-                                color:"black"
+                          Rectangle {
+
+                              color: "black"
+                                radius: 0
+                                border.width: 0
                                 anchors.fill: parent
-                                anchors.leftMargin: Math.round(TextSingleton.implicitHeight * 0.2)
-                                anchors.rightMargin: Math.round(TextSingleton.implicitHeight * 0.2)
+                                anchors.rightMargin: 3
+                                anchors.leftMargin: 2
+                                z: 1
+
                             }
                         }
 
                     }
+
                 }
 
                 Text {
@@ -725,7 +744,7 @@ Window {
                         id: prStatus
                         width: 111
                         height: 24
-                        color: "#00000000"
+                        color: "#060606"
                         text: qsTr("INACTIVE")
                         font.family: "Verdana"
                         verticalAlignment: Text.AlignVCenter
@@ -934,7 +953,7 @@ Window {
                     anchors.left: parent.left
                     anchors.bottom: parent.bottom
                     anchors.top: parent.top
-                    anchors.leftMargin: 0
+                    anchors.leftMargin: -1
                     minimumValue: 0.6
                     value: valueSource.mas
                     maximumValue: 250
@@ -954,18 +973,18 @@ Window {
 
                 PressAndHoldButton {
                     id: masMinus
-                    x: 48
-                    width: 15
-                    height: 5
+                    x: 63
+                    width: 29
+                    height: 10
                     anchors.right: masGa.horizontalCenter
-                    anchors.rightMargin: 40
+                    anchors.rightMargin: 39
                     anchors.top: masGa.bottom
                     anchors.topMargin: 30
-                    scale: 3.859
+                    scale: 2
                     sourceSize.height: 24
-                    z: 1.63
+                    z: 3
                     transformOrigin: Item.Top
-                    source: "../images/meno.png"
+                    source: "../images/meno_b.png"
                     antialiasing: true
                     sourceSize.width: 23
                     pressed: false
@@ -1002,7 +1021,7 @@ Window {
                     sourceSize.height: 23
                     z: 1.63
                     transformOrigin: Item.Top
-                    source: "../images/piu.png"
+                    source: "../images/piu_b.png"
                     antialiasing: true
                     sourceSize.width: 23
                     pressed: false
@@ -1042,11 +1061,11 @@ Window {
 
                 PressAndHoldButton {
                     id: mAMinus
-                    x: 77
+                    x: 93
                     width: 15
                     height: 5
                     anchors.right: speedometer.horizontalCenter
-                    anchors.rightMargin: 40
+                    anchors.rightMargin: 45
                     anchors.top: speedometer.bottom
                     anchors.topMargin: 30
                     anchors.horizontalCenterOffset: -52
@@ -2315,7 +2334,7 @@ Window {
                                     if (serialTerminal.getConnectionStatusSlot() !== false)
                                         serialTerminal.putPC1cmd("MA00800",1)
                                 valueSource.fuoco = false
-                                focusImage.source =  "../images/fuoco-piccolo.png"
+                                focusImage.source =  "../images/fuoco-piccolo_B.png"
                                 // se attiva la calibrazione
                                 if (mACalPanel.visible)
                                 {
@@ -2332,7 +2351,7 @@ Window {
                                 if ((valueSource.tecn == 1) && (valueSource.fuoco === 0))
                                     if (serialTerminal.getConnectionStatusSlot() !== false)
                                         serialTerminal.putPC1cmd("MA01600",1)
-                                focusImage.source =  "../images/fuoco-grande.png"
+                                focusImage.source =  "../images/fuoco-grande_B.png"
                                 if (mACalPanel.visible)
                                 {
                                     mACalFPPanel.visible = false
@@ -2391,7 +2410,7 @@ Window {
                                             serialTerminal.putPC1cmd("MX00006",1)
                                         }
                                     }
-                                    tecLabel2.color = "#5bb2e5"
+                                    tecLabel2.color = "#e20613"//"#5bb2e5"
                                     tecLabel3.color = "#fbfbfb"
                                 }
                             }
@@ -2419,7 +2438,7 @@ Window {
                                             serialTerminal.putPC1cmd("MA00800",1)
                                         }
                                     }
-                                    tecLabel3.color = "#5bb2e5";
+                                    tecLabel3.color = "#e20613"//"#5bb2e5";
                                     tecLabel2.color = "#fbfbfb"
                                 }
                             }
@@ -2866,7 +2885,7 @@ Window {
 
             Text {
                 id: fVersion
-                color: "#f6f4f4"
+                color: "#060606"
                 text: qsTr("IF-XRAY VER :")
                 anchors.left: parent.left
                 anchors.top: parent.top
@@ -2880,7 +2899,7 @@ Window {
 
             Text {
                 id: plVersion
-                color: "#f6f4f4"
+                color: "#060606"
                 text: qsTr("CAP BANK VER :")
                 anchors.top: fVersion.bottom
                 anchors.right: parent.right
@@ -2898,7 +2917,7 @@ Window {
                 id: pMs
                 width: 92
                 height: 23
-                color: "#f9f9f9"
+                color: "#060606"
                 text: qsTr("Msec")
                 anchors.top: pMAS.bottom
                 anchors.topMargin: 1
@@ -2934,7 +2953,7 @@ Window {
                     y: -3
                     width: 91
                     height: 23
-                    color: "white"
+                    color: "#060606"
                     text: qsTr("Panel Synchro")
                     anchors.left: parent.left
                     anchors.leftMargin: 18
@@ -2948,7 +2967,7 @@ Window {
                 id: pMAS
                 width: 92
                 height: 23
-                color: "#f9f9f9"
+                color: "#060606"
                 text: qsTr("Mas ")
                 anchors.top: plVersion.bottom
                 anchors.topMargin: 5
