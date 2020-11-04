@@ -187,7 +187,7 @@ Item {
         id: caseNumber
         width: 60
         height: 31
-        color: "#ffffff"
+        color: "#e20613"
         text: qsTr("0.")
         anchors.left: parent.left
         anchors.top: parent.top

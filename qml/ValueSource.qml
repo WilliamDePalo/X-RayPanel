@@ -92,6 +92,7 @@ Item {
     property bool advancedMode : false
     property string btnTXT: "ENTER"
     property string advanced_PWD : ",Wilhelm."
+    property bool mACal: false // Calibrazione mA
 
 //! [0]
 /*

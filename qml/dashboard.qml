@@ -1387,7 +1387,7 @@ Window {
                         width: 210
                         height: 100
 
-                        MACallPoint{ selected: false;c_N: "1.";kV:"45";mA:"160";}
+                        MACallPoint{ selected:  point9.select ;c_N: "1.";kV:"45";mA:"160";}
 
 
                         onClicked:  {
@@ -1646,7 +1646,7 @@ Window {
                         property bool select : true
                         width: 210
                         height: 100
-                        MACallPoint{ selected: false;c_N: "1.";kV:"80";mA:"80";}  // toSel:1 è l'elemento che deve essere selezionato per primo
+                        MACallPoint{ selected: point1.select;c_N: "1.";kV:"80";mA:"80";}  // toSel:1 è l'elemento che deve essere selezionato per primo
                         onClicked:  {
 
                                 // Se ho selezionato il punto invio i dati e deseleziono gli altri
@@ -1879,7 +1879,7 @@ Window {
                     onClicked:
                     {
                         if (valueSource.fuoco)
-                            refreshCalmAFG()
+                   fare le funzioni         refreshCalmAFG()
                         else
                             refreshCalmAFP()
                     }
@@ -1923,17 +1923,9 @@ Window {
                         // invio il comando
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
-                            serialTerminal.putPC1cmd("CAL0",1)
+                            serialTerminal.putPC1cmd("OC0",1)
                         }
-                        if (valueSource.tecn) // se tecnica 3 punti
-                            threePointPanel.visible = true
-                        else
-                            twoPointPanel.visible = true
-                        kVPanel.visible = true
-                        // Attivo il pannello calibrazione MAFG
-                        mACalPanel.visible = false
-                        // blocco il toggle cambio tecnica su 3 punti
-                        swTecnique.enabled = true
+
                     }
                     isDefault: false
                     z: 3
@@ -2213,7 +2205,7 @@ Window {
 
                 Label{
                     id: spLab
-                    color: "#fdfdfd"
+                    color: "#060606"
 
                     text: qsTr("Serial port: ")
                     anchors.right: parent.right
@@ -2231,7 +2223,7 @@ Window {
                 id: baudLab
                 width: 56
                 height: 18
-                color: "#fbfbfb"
+                color: "#060606"
 
                 text: qsTr("Baud: ")
                 anchors.right: baudRate.left
@@ -2411,7 +2403,7 @@ Window {
                                         }
                                     }
                                     tecLabel2.color = "#e20613"//"#5bb2e5"
-                                    tecLabel3.color = "#fbfbfb"
+                                    tecLabel3.color = "#060606"
                                 }
                             }
                             else // // Tecnica 3 punti
@@ -2439,7 +2431,7 @@ Window {
                                         }
                                     }
                                     tecLabel3.color = "#e20613"//"#5bb2e5";
-                                    tecLabel2.color = "#fbfbfb"
+                                    tecLabel2.color = "#060606"
                                 }
                             }
                             errorMessage.visible = false
@@ -2726,11 +2718,12 @@ Window {
                         {
                             if (data[2] === "1") // Se abilitazine Calibrazione corrente
                             {
-                                // sulla lettura della risposta dovrei eseguire quello che segue
+                                // sulla lettura d ella risposta dovrei eseguire quello che segue
                                 mACalPanel.visible = true
                                 twoPointPanel.visible = false
                                 threePointPanel.visible = false
                                 kVPanel.visible = false
+                                valueSource.mACal = true
                                 // blocco il toggle cambio tecnica su 3 punti
                                 if (serialTerminal.getConnectionStatusSlot() !== false)
                                 {
@@ -2742,17 +2735,27 @@ Window {
                                 { // tolgo i pannelli del funzionamento
                                     // Attivo il pannello calibrazione MAFG
                                     mACalFGPanel.visible = true
-                                    maCalFPPanel.visible = false
+                                    mACalFPPanel.visible = false
                                     // il tempo e' fisso a  tmp = 1700; 17 mS impostato da IFXRAY
                                     // invio il messaggio di abilitazione calibrazione
                                 }else
                                 {
                                     mACalFPPanel.visible = true
                                 }
-                            }else if (data[3] === "2")// se abilitazione Calibrazione Tensione
+                            }else if (data[2] === "2")// se abilitazione Calibrazione Tensione
                             {
                                 mACalFGPanel.visible = false
 
+                            }else if (data[2] === "0")
+                            {
+                                valueSource.mACal = false
+                                mACalPanel.visible = false
+                                swTecnique.enabled = true
+                                kVPanel.visible = true
+                                if (valueSource.tecn) // se tecnica 3 punti
+                                    threePointPanel.visible = true
+                                else
+                                    twoPointPanel.visible = true
                             }
                         }
 
@@ -3705,7 +3708,7 @@ Window {
                 width: 230
                 height: 40
                 visible: true
-                color: "#fbfbfb"
+                color: "#060606"
                 text: "Enter Installer Password"
                 anchors.top: parent.top
                 font.pixelSize: 20
@@ -4166,14 +4169,20 @@ Window {
                 onClicked: {
                     // chiudi menu
                     menu_out.running = true
-
-                    // In realtà dovrei inviare solamente il messaggio al sistema
-                    // invio il comando
-                    if (serialTerminal.getConnectionStatusSlot() !== false)
+                    if (!valueSource.mACal)
                     {
-                        serialTerminal.putPC1cmd("OC1",1)
+                        // invio il comando
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("OC1",1)
+                        }
+                    } else
+                    {    // invio il comando
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("OC0",1)
+                        }
                     }
-
                 }
             }
 
