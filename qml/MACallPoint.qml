@@ -14,7 +14,66 @@ Item {
     property alias c_N:  caseNumber.text
     property alias selected:pointer.on   
     property alias maR: val_maR.text
+    property alias trimmer : trimmerInput.text
+    property string kvstr : ""
+    property  string mAstr : ""
+    property int idn: 0
 
+    function setTrimmer( newText)
+    {
+         trimmerInput.text = newText
+    }
+
+    function  getTrimmer(tex)
+    {
+        tex = trimmerInput.text
+    }
+
+    function maSelection(val)
+    {
+        if (val)
+            val_mA.selectAll()
+        else
+            val_mA.deselect()
+    }
+    function kvSelection(val)
+    {
+        if (val)
+            val_kV.selectAll()
+        else
+            val_kV.deselect()
+    }
+
+
+    function selectionChange(index)
+   //onPointNChanged:
+    {
+        if (calPointArea.idn === index)
+        {
+            calPointArea.selected = true//(mACalPanel.selector === toSel)
+            calPointArea.kvSelection(true)
+            calPointArea.maSelection(true)
+            forceActiveFocus()
+            pointer.on = true
+            // qui dovrei impostare i valori da seriale e i valori confermati dovrebbero andare in calibrazione
+            if (val_kV.text.length < 3)
+                 kvstr = "KV0" + val_kV.text
+            else
+                kvstr = "KV" + val_kV.text
+            if (val_mA.text.length < 3)
+                mAstr = "MA00"+ val_mA.text +"0"
+            else
+                mAstr = "MA0"+ val_mA.text +"0"
+            serialTerminal.putPC1cmd(kvstr,1)//"KV050",0)
+            serialTerminal.putPC1cmd(mAstr,1)//"MA01600",0)
+        }
+        else
+        {
+            pointer.on = false
+            calPointArea.kvSelection(false)
+            calPointArea.maSelection(false)
+        }
+    }
 
     TurnIndicator{
         id: pointer
@@ -58,10 +117,11 @@ Item {
         font.pixelSize: 14
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+        enabled: false
         anchors.horizontalCenter: lab_KV.horizontalCenter
         anchors.topMargin: 3
         z: 1
-        readOnly: true
+        readOnly: false
         mouseSelectionMode: TextInput.SelectCharacters
         Rectangle{
             anchors.fill: parent
@@ -95,9 +155,10 @@ Item {
         font.pixelSize: 14
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+        enabled: false
         anchors.horizontalCenter: lab_KV.horizontalCenter
         anchors.topMargin: 3
-        readOnly: true
+        readOnly: false
         Rectangle{
             anchors.fill: parent
             z: -1
@@ -146,6 +207,7 @@ Item {
         font.pixelSize: 14
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+        enabled: false
         anchors.horizontalCenter: lab_Trimmer.horizontalCenter
         anchors.topMargin: 3
         readOnly: true
@@ -181,6 +243,7 @@ Item {
             z: -1
             border.color: "grey"
         }
+
     }
 
     Text {
@@ -204,22 +267,8 @@ Item {
     }
 
 
-   /*onPointNChanged:
-    {
-        if (mACalPanel.selector === toSel)
-        {
 
-            forceActiveFocus()
-            pointer.on = true
-            // qui dovrei impostare i valori da seriale e i valori confermati dovrebbero andare in calibrazione
-
-        }
-        else
-        {
-            pointer.on = false
-        }      
-    }
-    onActiveFocusChanged:
+ /*   onActiveFocusChanged:
     {
         if (!calPointArea.focus)
             pointer.on = false

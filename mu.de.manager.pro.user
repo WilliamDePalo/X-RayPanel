@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.13.1, 2020-11-03T19:13:24. -->
+<!-- Written by QtCreator 4.13.1, 2021-01-12T17:35:01. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -148,8 +148,8 @@
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
     <value type="bool">true</value>
     <value type="int" key="EnableQmlDebugging">2</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">C:\Progetti\Interfaccia Mu.De. Manager\sv_Mu.De.Manager 1.0\build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Release</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory.shadowDir">C:/Progetti/Interfaccia Mu.De. Manager/sv_Mu.De.Manager 1.0/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">C:\Progetti\Interfaccia Mu.De. Manager\Mu.De.Manager\sv_Mu.De.Manager\build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory.shadowDir">C:/Progetti/Interfaccia Mu.De. Manager/Mu.De.Manager/sv_Mu.De.Manager/build-mu.de.manager-Desktop_Qt_5_12_6_MSVC2017_64bit-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>

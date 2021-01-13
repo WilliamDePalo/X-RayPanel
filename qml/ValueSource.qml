@@ -93,6 +93,7 @@ Item {
     property string btnTXT: "ENTER"
     property string advanced_PWD : ",Wilhelm."
     property bool mACal: false // Calibrazione mA
+    property int maCalIDX: 0 // indice della punto calibrazione selezionato)
 
 //! [0]
 /*
