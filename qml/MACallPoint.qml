@@ -235,7 +235,7 @@ Item {
         anchors.horizontalCenter: lab_Trimmer.horizontalCenter
         inputMethodHints: Qt.ImhDigitsOnly
 
-        property var b_color: rec.color
+        property var b_color: rec.border.color
         Rectangle{
             id: rec
             border.width: 4
@@ -243,6 +243,13 @@ Item {
             z: -1
             border.color: "grey"
         }
+        onAccepted:  {
+            if (calPointArea.idn <10)
+                sendTrimmer("0" + calPointArea.idn.toString() + trimmerInput.text)
+            else
+                sendTrimmer(calPointArea.idn.toString() + trimmerInput.text)
+        }
+
 
     }
 

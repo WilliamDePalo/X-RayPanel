@@ -81,7 +81,6 @@ Window {
     height: 600
 
     color: "#d3eccb"
-    property alias capacitorPerc: capacitorPerc
     //  property alias btnCloseCopyrightText: btnCloseCopyright.text
     // property alias touchSynchroText: touchSynchro.text
 
@@ -123,14 +122,16 @@ Window {
         if (value)
         {
             valueSource.advancedMode = true
-            valueSource.btnTXT = "EXIT"
+            valueSource.btnTXT = "EXIT ADVANCED MODE"
             advancedIcon.visible = true
+            btnEnter.width = 250
         }
         else
         {
             valueSource.advancedMode = false
             valueSource.btnTXT = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; color:#ffffff;\">ENTER</span></p></body></html>"
             advancedIcon.visible = false
+            btnEnter.width = 100
         }
     }
 
@@ -257,7 +258,12 @@ Window {
         // si potrebbe aggiungere anche lo stato "ST"
     }
 
-
+    function sendTrimmer(strTrimvalue){
+        if (serialTerminal.getConnectionStatusSlot() !== false)
+        {
+            serialTerminal.putPC1cmd("AW"+strTrimvalue,1)
+        }
+    }
     function checkErrorReady()
     {// c'è un allarme in atto // non ho la connessione // lo stato è init, alarm, o disconnect // la carica e' minore di 98%
         if ((errorMessage.visible == true) || (serialTerminal.getConnectionStatusSlot() === false) ||
@@ -1842,7 +1848,7 @@ Window {
                         // blocco il toggle cambio tecnica su 3 punti
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
-                            serialTerminal.putPC1cmd("AW",1)
+                            serialTerminal.putPC1cmd("AS1",1)
                         }
                     }
                 }
@@ -3995,7 +4001,7 @@ Window {
                     {
                         // check pwd
                         if (pwdPanel.checkPWD(pwdTxtIn.text.toString()))
-                            setAdvancedMode(true)
+                            setAdvancedMode(true)                         
                         else
                             error_txt.visible = true
                     }else
