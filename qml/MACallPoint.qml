@@ -216,8 +216,8 @@ Item {
             z: -1
         }
         onTextChanged: {
-            if (val_maR.text!="000.0")
-                trimmerInput.b_color = "black"
+            if (val_maR.text!="000.0")                
+                rec.border.color = "black"
         }
     }
 
@@ -235,7 +235,8 @@ Item {
         anchors.horizontalCenter: lab_Trimmer.horizontalCenter
         inputMethodHints: Qt.ImhDigitsOnly
 
-        property var b_color: rec.border.color
+
+      //  property var b_color: rec.border.color
         Rectangle{
             id: rec
             border.width: 4

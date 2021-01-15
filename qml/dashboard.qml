@@ -446,6 +446,10 @@ Window {
         cap16.selectionChange(index)
         cap17.selectionChange(index)
         cap18.selectionChange(index)
+
+        keyboardArea.x = 700
+        keyboardArea.anchors.rightMargin = -220
+
     }
     // Dashboards are typically in a landscape orientation, so we need to ensure
     // our height is never greater than our width.
@@ -2772,14 +2776,14 @@ Window {
                                     // Attivo il pannello calibrazione MAFG
                                     mACalFGPanel.visible = true
                                     mACalFPPanel.visible = false
-                                    point9.select = true // seleziono il primo punto
+                                    selectPoint(9)  // seleziono il primo punto
                                     // il tempo e' fisso a  tmp = 1700; 17 mS impostato da IFXRAY
                                     // invio il messaggio di abilitazione calibrazione
                                 }else
                                 {
                                     mACalFPPanel.visible = true
                                     mACalFGPanel.visible = false
-                                    point1.select = true // seleziono il primo punto
+                                    selectPoint(1) // seleziono il primo punto
                                 }
                             }else if (data[2] === "2")// se abilitazione Calibrazione Tensione
                             {
@@ -3886,13 +3890,11 @@ Window {
                     placeholderText:  qsTr("Insert Password")
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
                     enterKeyAction: EnterKeyAction.Next
-                    /*                   onPressed: {
-                        if (!keyboardArea.visible)
-                        {
-                            keyboardArea.visible = true
-                            kb_in.running = true
-                        }
-                    }*/
+                    onPressed: {
+
+                      keyboardArea.x = 398
+                      keyboardArea.anchors.rightMargin = 0
+                    }
 
 
 
@@ -4058,11 +4060,10 @@ Window {
 
         Item {
             id: keyboardArea
-            x: 198
+            x: 398
             y: 0//376//392
             width: 650
             height: 200
-            anchors.horizontalCenterOffset: -83
 
             // color: "#00000000"
             // Only set with CONFIG+=disable-desktop.
@@ -4074,9 +4075,10 @@ Window {
 
             rotation: Screen.width < Screen.height ? 90 : 0
             visible: true
+            anchors.right: parent.right
             anchors.bottom: parent.bottom
+            anchors.rightMargin: 0
             anchors.bottomMargin: 0
-            anchors.horizontalCenter: parent.horizontalCenter
             //Basic {
             /*        Item{
                 id: virtualKeyboard
@@ -4093,7 +4095,8 @@ Window {
                 */
             InputPanel {
                 id: inputPanel
-                y: 283 // Qt.inputMethod.visible ? keyboardArea.height - inputPanel.height : keyboardArea.height// appContainer.height
+                y: 283// Qt.inputMethod.visible ? keyboardArea.height - inputPanel.height : keyboardArea.height// appContainer.height
+
                 anchors.left: parent.left
                 anchors.right: parent.right
                 z: 89
@@ -4112,22 +4115,11 @@ Window {
                         y: 0 //keyboardArea.height - inputPanel.height
 
                     }
+
+
                 }
 
-                /*                transitions: Transition {
-                        id: inputPanelTransition
-                        from: ""
-                        to: "visible"
-                        reversible: true
-                        enabled: true //!VirtualKeyboardSettings.fullScreenMode
-                        ParallelAnimation {
-                            NumberAnimation {
-                                properties: "y"
-                                duration: 2250
-                                easing.type: Easing.InOutQuad
-                            }
-                        }
-                    }*/
+
                 transitions: Transition {
                     id: kb_in
                     from: ""
