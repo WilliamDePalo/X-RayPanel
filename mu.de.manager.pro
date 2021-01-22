@@ -39,7 +39,7 @@ OTHER_FILES += \
     ./qml/ValueSource.qml \
     ./qml/NumberPadSupport/Display.qml \
     ./qml/menuSupport/BlackButtonStyle.qml \
-    ./qml/mACallPoint.qml
+#  ./qml/MACallPoint.qml
 
 target.path = ./quickcontrols/extras/dashboard
 INSTALLS += target
@@ -72,10 +72,10 @@ DISTFILES += \
     ./qml/TachometerStyle.qml \
     ./qml/TurnIndicator.qml \
     ./qml/ValueSource.qml \
+    qml/KvCallStep.qml \
     qml/keyPadSupport/FloatingButton_Active.svg \
     qml/keyPadSupport/FloatingButton_Available.svg \
     qml/keyPadSupport/FloatingButton_Unavailable.svg \
-    qml/mACallPoint.qml \
     qml/keyPadSupport/TextField.qml \
     images/background.png \
     images/background.svg \

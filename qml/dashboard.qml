@@ -1675,8 +1675,7 @@ Window {
                         id: point18
                         width: 210
                         height: 100
-                        property bool select : false
-                        property string mAR : ""
+                        property bool select : false                       
                         property string trimmer : ""
                         MACallPoint{id: cap18;c_N: "10.";kV:"70";mA:"400";selected:point18.select;trimmer: point18.trimmer;idn: 18}
                         onClicked:  {
@@ -1761,10 +1760,10 @@ Window {
                         property string trimmer : ""
                         width: 210
                         height: 100
-                    MACallPoint{id: cap4;c_N: "4.";kV:"95";mA:"100";selected:point4.select;trimmer: point4.trimmer;idn: 4}
-                    onClicked:  {
-                        selectPoint(4)
-                    }
+                        MACallPoint{id: cap4;c_N: "4.";kV:"95";mA:"100";selected:point4.select;trimmer: point4.trimmer;idn: 4}
+                        onClicked:  {
+                            selectPoint(4)
+                        }
                     }
                     MouseArea{
                         id: point5
@@ -1773,10 +1772,10 @@ Window {
                         property string trimmer : ""
                         width: 210
                         height: 100
-                    MACallPoint{id: cap5;c_N: "5.";kV:"45";mA:"125";selected:point5.select;trimmer: point5.trimmer;idn: 5}
-                    onClicked:  {
-                            selectPoint(5)
-                    }
+                        MACallPoint{id: cap5;c_N: "5.";kV:"45";mA:"125";selected:point5.select;trimmer: point5.trimmer;idn: 5}
+                        onClicked:  {
+                                selectPoint(5)
+                        }
                     }
                     MouseArea{
                         id: point6
@@ -1912,6 +1911,271 @@ Window {
                     anchors.leftMargin: 507
                     Text {
                         id: btnClsTxt1
+                        visible: true
+                        color: "#ffffff"
+                        text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">CLOSE</span></p></body></html>"
+                        anchors.fill: parent
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        textFormat: Text.RichText
+                        minimumPixelSize: 13
+                    }
+                    iconSource: ""
+                    enabled: true
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: "#de1414"
+                            radius: height/2
+                            border.color: "#ffffff"
+                            border.width: 2
+                            antialiasing: true
+                        }
+                    }
+                    onClicked: {
+                        // invio il comando
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("CA0",1)
+                        }
+
+                    }
+                    isDefault: false
+                    z: 3
+                }
+            }
+            Item {
+                id: kVCalPanel
+                anchors.left: parent.left
+                anchors.right: rigthColumn.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 115
+                anchors.topMargin: 168
+                anchors.leftMargin: 0
+                anchors.bottomMargin: 0
+                visible: true
+                //           property int selector : 1
+                //          onSelectorChanged:{
+//
+      //          }
+
+
+                MouseArea{
+                    id: maKV1
+                    property bool select : true
+                    rotation: 30
+                    width: 140
+                    height: 90
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.topMargin: 10
+                    anchors.leftMargin: 20
+                    KvCallStep{id: pKv1; rotation: 0; selected: maKV1.select ;c_N: "1.";kV:"40";idn: 1}
+                    onClicked:  {
+                        selectKvPoint(1)
+                    }
+                }
+                MouseArea{
+                    id: maKV2
+                    property bool select : true
+                    width: 140
+                    height: 90
+                    anchors.top: maKV1.bottom
+                    anchors.horizontalCenterOffset: -20
+                    anchors.horizontalCenter: maKV1.horizontalCenter
+                    anchors.topMargin: 10
+                    KvCallStep{id: pKv2; selected: maKV2.select ;c_N: "2.";kV:"50";idn: 2}
+                    onClicked:  {
+                        selectKvPoint(2)
+                    }
+                }
+                MouseArea{
+                    id: maKV3
+                    property bool select : true
+                    width: 140
+                    height: 90
+                    anchors.top: maKV2.bottom
+                    anchors.horizontalCenter: maKV1.horizontalCenter
+                    rotation: -30
+                    anchors.topMargin: 10
+                    KvCallStep{id: pKv3; selected: maKV3.select ;c_N: "3.";kV:"60";idn: 3}
+                    onClicked:  {
+                        selectKvPoint(3)
+                    }
+                }
+                MouseArea{
+                    id: maKV4
+                    property bool select : true
+                    width: 140
+                    height: 90
+                    anchors.verticalCenter: maKV3.verticalCenter
+                    anchors.right: maKV3.right
+                    anchors.rightMargin: -90
+                    anchors.verticalCenterOffset: 90
+                    rotation: -60
+                    KvCallStep{id: pKv4; x: 0; y: -23; selected: maKV4.select ;c_N: "4.";kV:"70";idn: 4}
+                    onClicked:  {
+                        selectKvPoint(4)
+                    }
+                }
+                MouseArea{
+                    id: maKV5
+                    property bool select : true
+                    width: 140
+                    height: 90
+                    anchors.verticalCenter: maKV4.verticalCenter
+                    anchors.left: maKV4.right
+                    anchors.verticalCenterOffset: 20
+                    anchors.leftMargin: -22
+                    rotation: -90
+                    KvCallStep{id: pKv5; x: 2; y: -22; selected: maKV5.select ;c_N: "5.";kV:"80";idn: 5}
+                    onClicked:  {
+                        selectKvPoint(5)
+                    }
+                }
+                MouseArea{
+                    id: maKV6
+                    property bool select : true
+                    y: 105
+                    width: 140
+                    height: 90
+                    anchors.verticalCenter: maKV4.verticalCenter
+                    anchors.left: maKV5.right
+                    anchors.verticalCenterOffset: 0
+                    rotation: 60
+                    anchors.leftMargin: -22
+                    KvCallStep_rev{id: pKv6; anchors.fill: parent; scale: 1; selected: maKV6.select ;c_N: "6.";kV:"90";idn: 6}
+                    onClicked:  {
+                        selectKvPoint(6)
+                    }
+                }
+                MouseArea{
+                    id: maKV7
+                    property bool select : true
+                    width: 140
+                    height: 90
+                    anchors.verticalCenter: maKV3.verticalCenter
+                    anchors.left: maKV6.left
+                    rotation: 30
+                    anchors.leftMargin: 90
+                    KvCallStep_rev{id: pKv7; anchors.fill: parent; selected: maKV7.select ;c_N: "7.";kV:"100";idn: 7}
+                    onClicked:  {
+                        selectKvPoint(7)
+                    }
+                }
+                MouseArea{
+                    id: maKV8
+                    property bool select : true
+                    width: 140
+                    height: 90
+                    anchors.verticalCenter: maKV2.verticalCenter
+                    anchors.right: maKV7.right
+                    anchors.rightMargin: -20
+                    anchors.verticalCenterOffset: 0
+                    KvCallStep_rev{id: pKv8; selected: maKV8.select ;c_N: "8.";kV:"110";idn: 8}
+                    onClicked:  {
+                        selectKvPoint(8)
+                    }
+                }
+                MouseArea{
+                    id: maKV9
+                    property bool select : true
+                    width: 140
+                    height: 90
+                    anchors.verticalCenter: maKV1.verticalCenter
+                    anchors.right: maKV8.right
+                    anchors.bottom: maKV8.top
+                    anchors.rightMargin: 0
+                    anchors.bottomMargin: 10
+                    rotation: -30
+                    KvCallStep_rev{id: pKv9; selected: maKV9.select ;c_N: "9.";kV:"120";idn: 9}
+                    onClicked:  {
+                        selectKvPoint(9)
+                    }
+                }
+
+                Button{
+                    id:btnSaveCAl
+                    x: 335
+                    y: 34
+                    width: 55
+                    height: 55
+                    anchors.bottom: btnClsmACalPnl.top
+                    anchors.bottomMargin: 15
+                    anchors.horizontalCenter: btnClsmACalPnl.horizontalCenter
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: "transparent"
+                            radius: height/2
+                            border.color: "#00000000"
+                            border.width: 1
+                            antialiasing: true
+                        }
+                    }
+                    Image {
+                        id: imgBtnSaveCal
+                        anchors.fill: parent
+                        sourceSize.width: 0
+                        visible: true
+                        fillMode: Image.Stretch
+                        sourceSize.height: 0
+                        scale: 1
+                        rotation: 0
+                        source: "../images/save_icon.png"
+                    }
+                    onClicked: {
+                        // blocco il toggle cambio tecnica su 3 punti
+                        if (serialTerminal.getConnectionStatusSlot() !== false)
+                        {
+                            serialTerminal.putPC1cmd("AS1",1)
+                        }
+                    }
+                }
+                Button{
+                    id:setTara
+                    x: 288
+                    y: 162
+                    width: 55
+                    height: 55
+                    text: "40.5"
+                    anchors.verticalCenter: maKV2.verticalCenter
+                    anchors.bottom: btnSaveACAl.bottom
+                    anchors.verticalCenterOffset: 25
+                    layer.textureMirroring: ShaderEffectSource.NoMirroring
+                    smooth: true
+                    layer.smooth: false
+                    antialiasing: true
+                    anchors.bottomMargin: 70
+                    anchors.horizontalCenter: maKV5.horizontalCenter
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: "transparent"
+                            radius: height/2
+                            border.color: "#00000000"
+                            border.width: 1
+                            antialiasing: true
+                        }
+                    }
+                    onClicked:
+                    {
+                        if (valueSource.fuoco)
+                            refreshCalmAFG()
+                        else
+                            refreshCalmAFP()
+                    }
+                }
+
+                Button {
+                    id: btnClsmalPnl
+                    height: 30
+                    anchors.verticalCenter: maKV1.verticalCenter
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.rightMargin: 396
+                    checkable: true
+                    anchors.leftMargin: 179
+                    Text {
+                        id: btnClxt1
                         visible: true
                         color: "#ffffff"
                         text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">CLOSE</span></p></body></html>"

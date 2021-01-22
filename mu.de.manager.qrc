@@ -46,7 +46,6 @@
         <file>images/icon-go.png</file>
         <file>fonts/OpenSans-Regular.ttf</file>
         <file>qml/keyPadSupport/TextField.qml</file>
-        <file>qml/MACallPoint.qml</file>
         <file>images/sfondo/sfondo-grigio-chiaro.png</file>
         <file>images/sfondo/sfondo-grigio-scuro.png</file>
         <file>images/refresh-page-arrow.png</file>
@@ -58,5 +57,8 @@
         <file>images/piu_b.png</file>
         <file>images/toppng.com-menu-icon-black.png</file>
         <file>images/options-settings.svg</file>
+        <file>qml/KvCallStep.qml</file>
+        <file>qml/MACallPoint.qml</file>
+        <file>qml/KvCallStep_rev.qml</file>
     </qresource>
 </RCC>
