@@ -51,6 +51,8 @@
 import QtQuick 2.2
 //import master
 //! [0]
+
+
 Item {
     id: valueSource
   //  property real kph: 0
@@ -93,8 +95,19 @@ Item {
     property string btnTXT: "ENTER"
     property string advanced_PWD : ",Wilhelm."
     property bool mACal: false // Calibrazione mA
-    property int maCalIDX: 0 // indice della punto calibrazione selezionato)
+    property int maCalIDX: 0 // indice della punto calibrazione selezionato
 
+    property int kVCal: 0 // Disattivazione calibrazione KV
+
+    property int sts_IDLE: 0
+    property int sts_REQUEST: 1
+    property int sts_WAITING_MA: 2
+    property int sts_ACTIVE : 3
+    property int kvCallIDX: 0 // indice della punto calibrazione Kv selezionato
+
+     // 1 Attivazione calibrazione KV
+    // 2    0 richiesta calibrazione KV
+    property string version : "01.01.01"
 //! [0]
 /*
     function randomDirection() {

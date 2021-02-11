@@ -87,7 +87,7 @@ Window {
     property alias yellowButtonIconSource: yellowButton.iconSource
     //property alias elementAnchorsverticalCenterOffset: element.anchors.verticalCenterOffset
     //  property alias fuelGaugeY: focusGauge.y
-    title: "Mu.De. Manager"
+    title: "Mu.De. Manager " + valueSource.version
 
 
 
@@ -268,7 +268,7 @@ Window {
     {// c'è un allarme in atto // non ho la connessione // lo stato è init, alarm, o disconnect // la carica e' minore di 98%
         if ((errorMessage.visible == true) || (serialTerminal.getConnectionStatusSlot() === false) ||
                 ((valueSource.numericSTS == 0)  ||(valueSource.numericSTS == 1) || (valueSource.numericSTS == 5)) ||
-                (valueSource.cap < 98))         
+                (valueSource.cap < 98))
         {
             readyImg.source = "../images/noReady.png"
         }else
@@ -368,10 +368,13 @@ Window {
         case 18:
             cap18.maR = val
             break
-       default:
-           break;
+        default:
+            break;
         }
     }
+
+
+
 
     function checkmASet()
     {
@@ -446,11 +449,39 @@ Window {
         cap16.selectionChange(index)
         cap17.selectionChange(index)
         cap18.selectionChange(index)
-
         keyboardArea.x = 700
         keyboardArea.anchors.rightMargin = -220
 
     }
+    function selectKvPoint(index)
+    {
+        valueSource.kvCallIDX = index
+        pKv1.selectionChange(index)
+        pKv2.selectionChange(index)
+        pKv3.selectionChange(index)
+        pKv4.selectionChange(index)
+        pKv5.selectionChange(index)
+        pKv6.selectionChange(index)
+        pKv7.selectionChange(index)
+        pKv8.selectionChange(index)
+        pKv9.selectionChange(index)
+        keyboardArea.x = 700
+        keyboardArea.anchors.rightMargin = -220
+
+    }
+    function checkkVCal()
+    {
+        if (valueSource.kv.toString() === pKv1.kV) pKv1.kvSelection(false)
+        if (valueSource.kv.toString() === pKv2.kV) pKv2.kvSelection(false)
+        if (valueSource.kv.toString() === pKv3.kV) pKv3.kvSelection(false)
+        if (valueSource.kv.toString() === pKv4.kV) pKv4.kvSelection(false)
+        if (valueSource.kv.toString() === pKv5.kV) pKv5.kvSelection(false)
+        if (valueSource.kv.toString() === pKv6.kV) pKv6.kvSelection(false)
+        if (valueSource.kv.toString() === pKv7.kV) pKv7.kvSelection(false)
+        if (valueSource.kv.toString() === pKv8.kV) pKv8.kvSelection(false)
+        if (valueSource.kv.toString() === pKv9.kV) pKv9.kvSelection(false)
+    }
+
     // Dashboards are typically in a landscape orientation, so we need to ensure
     // our height is never greater than our width.
     Item {
@@ -776,28 +807,28 @@ Window {
 
                         }
 
-                    minorTickmark:Item{
-                        implicitWidth: 8
+                        minorTickmark:Item{
+                            implicitWidth: 8
                             implicitHeight: 2
 
-                        Rectangle {
-                            color:"#626262"
-                            radius: 0
-                            border.width: 0
-                            anchors.fill: parent
-                            anchors.leftMargin: -3
-                            anchors.rightMargin: 3
-                            z: 1
+                            Rectangle {
+                                color:"#626262"
+                                radius: 0
+                                border.width: 0
+                                anchors.fill: parent
+                                anchors.leftMargin: -3
+                                anchors.rightMargin: 3
+                                z: 1
 
+                            }
                         }
-                    }
                         tickmark: Item {
-                          implicitWidth: 18
-                          implicitHeight: 2
+                            implicitWidth: 18
+                            implicitHeight: 2
 
-                          Rectangle {
+                            Rectangle {
 
-                              color: "black"
+                                color: "black"
                                 radius: 0
                                 border.width: 0
                                 anchors.fill: parent
@@ -1113,7 +1144,7 @@ Window {
                 height: 285
                 anchors.left: kVPanel.right
                 anchors.leftMargin: 10
-                visible: false
+                visible: true
                 anchors.verticalCenterOffset: 50
                 anchors.verticalCenter: parent.verticalCenter
                 MasGauge{
@@ -1520,10 +1551,10 @@ Window {
                 anchors.leftMargin: 0
                 anchors.bottomMargin: 0
                 visible: false
-     //           property int selector : 1
-      //          onSelectorChanged:{
-//
-      //          }
+                //           property int selector : 1
+                //          onSelectorChanged:{
+                //
+                //          }
 
                 Grid {
                     id: mACalFGPanel
@@ -1544,7 +1575,7 @@ Window {
 
                     MouseArea{
                         id: point9
-              //          property bool selection: true
+                        //          property bool selection: true
                         property string mAR : ""
                         property bool select : true
                         property string trimmer : ""
@@ -1556,7 +1587,7 @@ Window {
 
                         onClicked:  {
 
-                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                            // Se ho selezionato il punto invio i dati e deseleziono gli altri
                             /*    point18.select = false
                                 point17.select = false
                                 point16.select = false
@@ -1675,7 +1706,7 @@ Window {
                         id: point18
                         width: 210
                         height: 100
-                        property bool select : false                       
+                        property bool select : false
                         property string trimmer : ""
                         MACallPoint{id: cap18;c_N: "10.";kV:"70";mA:"400";selected:point18.select;trimmer: point18.trimmer;idn: 18}
                         onClicked:  {
@@ -1691,7 +1722,7 @@ Window {
                     height: 400
                     visible: false
                     spacing: 0
-                    topPadding: 0
+                  //  topPadding: 0
                     flow: Grid.TopToBottom
                     rows: 4
                     columns: 3
@@ -1708,15 +1739,15 @@ Window {
                         property string trimmer : ""
                         width: 210
                         height: 100
-               //         Item {
-               //             id: itm1
-                            MACallPoint{ id:cap1; selected: point1.select;c_N: "1.";kV:"80";mA:"80";trimmer: point1.trimmer;idn: 1}  // toSel:1 è l'elemento che deve essere selezionato per primo
-                //        }
+                        //         Item {
+                        //             id: itm1
+                        MACallPoint{ id:cap1; selected: point1.select;c_N: "1.";kV:"80";mA:"80";trimmer: point1.trimmer;idn: 1}  // toSel:1 è l'elemento che deve essere selezionato per primo
+                        //        }
                         onClicked:  {
 
-                                // Se ho selezionato il punto invio i dati e deseleziono gli altri
+                            // Se ho selezionato il punto invio i dati e deseleziono gli altri
 
-                    /*            point8.select = false
+                            /*            point8.select = false
                                 point7.select = false
                                 point6.select = false
                                 point5.select = false
@@ -1724,7 +1755,7 @@ Window {
                                 point3.select = false
                                 point2.select = false
                                 point1.select = true*/
-                                selectPoint(1)
+                            selectPoint(1)
 
                         }
 
@@ -1738,7 +1769,7 @@ Window {
                         height: 100
                         MACallPoint{id: cap2;c_N: "2.";kV:"115";mA:"80";selected:point2.select;trimmer: point2.trimmer;idn: 2}
                         onClicked:  {
-                                selectPoint(2)
+                            selectPoint(2)
                         }
                     }
                     MouseArea{
@@ -1774,7 +1805,7 @@ Window {
                         height: 100
                         MACallPoint{id: cap5;c_N: "5.";kV:"45";mA:"125";selected:point5.select;trimmer: point5.trimmer;idn: 5}
                         onClicked:  {
-                                selectPoint(5)
+                            selectPoint(5)
                         }
                     }
                     MouseArea{
@@ -1949,15 +1980,16 @@ Window {
                 anchors.right: rigthColumn.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                z: 1
                 anchors.rightMargin: 115
                 anchors.topMargin: 168
                 anchors.leftMargin: 0
                 anchors.bottomMargin: 0
-                visible: true
+                visible: false
                 //           property int selector : 1
                 //          onSelectorChanged:{
-//
-      //          }
+                //
+                //          }
 
 
                 MouseArea{
@@ -2025,8 +2057,8 @@ Window {
                     height: 90
                     anchors.verticalCenter: maKV4.verticalCenter
                     anchors.left: maKV4.right
-                    anchors.verticalCenterOffset: 20
-                    anchors.leftMargin: -22
+                    anchors.verticalCenterOffset: 25
+                    anchors.leftMargin: -45
                     rotation: -90
                     KvCallStep{id: pKv5; x: 2; y: -22; selected: maKV5.select ;c_N: "5.";kV:"80";idn: 5}
                     onClicked:  {
@@ -2043,8 +2075,8 @@ Window {
                     anchors.left: maKV5.right
                     anchors.verticalCenterOffset: 0
                     rotation: 60
-                    anchors.leftMargin: -22
-                    KvCallStep_rev{id: pKv6; anchors.fill: parent; scale: 1; selected: maKV6.select ;c_N: "6.";kV:"90";idn: 6}
+                    anchors.leftMargin: -35
+                    KvCallStep_rev{id: pKv6; anchors.fill: parent; anchors.rightMargin: 0; anchors.bottomMargin: 0; anchors.leftMargin: 0; anchors.topMargin: 0; scale: 1; selected: maKV6.select ;c_N: "6.";kV:"90";idn: 6}
                     onClicked:  {
                         selectKvPoint(6)
                     }
@@ -2056,9 +2088,10 @@ Window {
                     height: 90
                     anchors.verticalCenter: maKV3.verticalCenter
                     anchors.left: maKV6.left
+                    anchors.verticalCenterOffset: 5
                     rotation: 30
-                    anchors.leftMargin: 90
-                    KvCallStep_rev{id: pKv7; anchors.fill: parent; selected: maKV7.select ;c_N: "7.";kV:"100";idn: 7}
+                    anchors.leftMargin: 80
+                    KvCallStep_rev{id: pKv7; y: 0; anchors.fill: parent; anchors.rightMargin: 0; anchors.bottomMargin: 0; anchors.leftMargin: 0; anchors.topMargin: 0; selected: maKV7.select ;c_N: "7.";kV:"100";idn: 7}
                     onClicked:  {
                         selectKvPoint(7)
                     }
@@ -2085,7 +2118,7 @@ Window {
                     anchors.verticalCenter: maKV1.verticalCenter
                     anchors.right: maKV8.right
                     anchors.bottom: maKV8.top
-                    anchors.rightMargin: 0
+                    anchors.rightMargin: 20
                     anchors.bottomMargin: 10
                     rotation: -30
                     KvCallStep_rev{id: pKv9; selected: maKV9.select ;c_N: "9.";kV:"120";idn: 9}
@@ -2096,12 +2129,14 @@ Window {
 
                 Button{
                     id:btnSaveCAl
-                    x: 335
                     y: 34
                     width: 55
                     height: 55
-                    anchors.bottom: btnClsmACalPnl.top
-                    anchors.bottomMargin: 15
+                    anchors.verticalCenter: btnClsmalPnl.verticalCenter
+                    anchors.left: btnClsmalPnl.right
+                    anchors.right: maKV9.left
+                    anchors.leftMargin: 20
+                    anchors.rightMargin: 35
                     anchors.horizontalCenter: btnClsmACalPnl.horizontalCenter
                     style: ButtonStyle {
                         background: Rectangle {
@@ -2124,44 +2159,190 @@ Window {
                         source: "../images/save_icon.png"
                     }
                     onClicked: {
-                        // blocco il toggle cambio tecnica su 3 punti
+
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
                             serialTerminal.putPC1cmd("AS1",1)
                         }
                     }
                 }
-                Button{
+                Rectangle{
                     id:setTara
                     x: 288
                     y: 162
-                    width: 55
-                    height: 55
-                    text: "40.5"
+                    width: 127
+                    height: 119
+
+                   // text: ""
                     anchors.verticalCenter: maKV2.verticalCenter
                     anchors.bottom: btnSaveACAl.bottom
                     anchors.verticalCenterOffset: 25
                     layer.textureMirroring: ShaderEffectSource.NoMirroring
                     smooth: true
                     layer.smooth: false
-                    antialiasing: true
+                    antialiasing: false
                     anchors.bottomMargin: 70
                     anchors.horizontalCenter: maKV5.horizontalCenter
-                    style: ButtonStyle {
-                        background: Rectangle {
-                            color: "transparent"
-                            radius: height/2
-                            border.color: "#00000000"
-                            border.width: 1
-                            antialiasing: true
+                    color: "#2dc958"
+                    radius: height/2
+                    border.color: "#0d0000"
+                    border.width: 3
+                    z: 4
+
+                    gradient: Gradient {
+                        GradientStop {
+                            position: 0
+                            color: "#2dc958"
+                        }
+
+                        GradientStop {
+                            position: 1
+                            color: "#46ca6a"
                         }
                     }
-                    onClicked:
-                    {
-                        if (valueSource.fuoco)
-                            refreshCalmAFG()
-                        else
-                            refreshCalmAFP()
+
+                    TextInput {
+                        id: bTextKv
+                        visible: true
+                        color: "#0d0000"
+                        text: "0.00"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        wrapMode: Text.NoWrap
+                        anchors.verticalCenterOffset: -5
+                        anchors.leftMargin: 33
+                        anchors.rightMargin: 33
+                        font.pointSize: 18
+                        inputMethodHints: Qt.ImhDigitsOnly
+                        // maximumLineCount: 9995
+                        // textFormat: Text.RichText
+                        //minimumPixelSize: 13
+                    }
+
+                    Text {
+                        id: lab_RedKv
+                        x: 30
+                        y: 5
+                        text: qsTr("Measure Kv:")
+                        anchors.fill: parent
+                        font.pixelSize: 12
+                        minimumPointSize: 15
+                        minimumPixelSize: 15
+                        anchors.rightMargin: 30
+                        anchors.bottomMargin: 90
+                        anchors.leftMargin: 30
+                        anchors.topMargin: 15
+                    }
+
+                    Button {
+                        id: btnPushtoSet
+                        height: 25
+                        text: qsTr("Set Kv")
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: bTextKv.bottom
+                        anchors.rightMargin: 30
+                        anchors.leftMargin: 30
+                        scale: 1
+                        anchors.topMargin: 5
+                        property string kVtoSet:""
+                        property string kvstr:""
+                        //  font.pixelSize: 12
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                radius: 0
+                                border.color: "#0d0000"
+                                border.width: 1
+                                layer.textureMirroring: ShaderEffectSource.NoMirroring
+                                gradient: Gradient {
+                                    GradientStop {
+                                        position: 0.00289
+                                        color: "#ffdbeb36"
+                                    }
+
+                                    GradientStop {
+                                        position: 0.14451
+                                        color: "#ffe2f337"
+                                    }
+
+                                    GradientStop {
+                                        position: 0.33815
+                                        color: "#ffe2f337"
+                                    }
+
+                                    GradientStop {
+                                        position: 0.86994
+                                        color: "#eaf38b"
+                                    }
+
+                                    GradientStop {
+                                        position: 0.99133
+                                        color: "#eaf38b"
+                                    }
+                                }
+                                antialiasing: true
+                            }
+                        }
+                        onClicked:
+                        {
+                            // invio il comando VW
+
+                            switch (valueSource.kvCallIDX)
+                            {
+                                case 1:
+                                    btnPushtoSet.kVtoSet = pKv1.kV
+                                    break;
+                                case 2:
+                                     btnPushtoSet.kVtoSet = pKv2.kV
+                                    break;
+                                case 3:
+                                    btnPushtoSet.kVtoSet = pKv3.kV
+                                    break;
+                                case 4:
+                                     btnPushtoSet.kVtoSet = pKv4.kV
+                                    break;
+                                case 5:
+                                     btnPushtoSet.kVtoSet = pKv5.kV
+                                    break;
+                                case 6:
+                                     btnPushtoSet.kVtoSet = pKv6.kV
+                                    break;
+                                case 7:
+                                     btnPushtoSet.kVtoSet = pKv7.kV
+                                    break;
+                                case 8:
+                                     btnPushtoSet.kVtoSet = pKv8.kV
+                                break;
+                                case 9:
+                                     btnPushtoSet.kVtoSet = pKv9.kV
+                                    break;
+                                default:
+                                    btnPushtoSet.kVtoSet =  "0"
+                                    break;
+                            }
+                            if (btnPushtoSet.kVtoSet.length < 3)
+                                 btnPushtoSet.kvstr = "VW0" + btnPushtoSet.kVtoSet
+                            else
+                                btnPushtoSet.kvstr = "VW" + btnPushtoSet.kVtoSet
+                       //   if ((bTextKv.text > 40) & (bTextKv.text < 123.9))
+            //              {      // se  non c'è virgola
+                            if ((bTextKv.text.search(".")==0) || (bTextKv.text.search(",")==0))
+                            {
+                                if(bTextKv.text.length < 3)
+                                    btnPushtoSet.kvstr += "0"+ bTextKv.text +"0"
+                                else
+                                    btnPushtoSet.kvstr +=bTextKv.text +"0"
+                            }else
+                            {
+                                var res = bTextKv.text.split(".")
+                                btnPushtoSet.kvstr+= res[0] + res[1]
+                            }
+                            serialTerminal.putPC1cmd(btnPushtoSet.kvstr,1)
+                         //   }
+                        }
                     }
                 }
 
@@ -2197,15 +2378,20 @@ Window {
                         }
                     }
                     onClicked: {
-                        // invio il comando
-                        if (serialTerminal.getConnectionStatusSlot() !== false)
-                        {
-                            serialTerminal.putPC1cmd("CA0",1)
-                        }
+                        valueSource.kVCal = valueSource.sts_IDLE
+                        mACalPanel.visible = false
+                        kVCalPanel.visible = false
+                        swTecnique.enabled = true
+                        kVPanel.visible = true
+                        if (valueSource.tecn) // se tecnica 3 punti
+                            threePointPanel.visible = true
+                        else
+                            twoPointPanel.visible = true
+                        swTecnique.enabled = true
 
                     }
                     isDefault: false
-                    z: 3
+                    z: 0
                 }
             }
 
@@ -2612,7 +2798,7 @@ Window {
                                 if (mACalPanel.visible)
                                 {
                                     mACalFPPanel.visible = true
-                                    mACalFGPanel.visible = false                                   
+                                    mACalFGPanel.visible = false
                                     point1.select = true // seleziono il primo punto
                                     selectPoint(1)
                                 }
@@ -2632,6 +2818,13 @@ Window {
                                     mACalFPPanel.visible = false
                                     mACalFGPanel.visible = true
                                     selectPoint(9) // seleziono il primo punto
+                                }
+                                /// CONTROLLO GESTIONE CALIBRAZIONE KV
+                                if (valueSource.kVCal == valueSource.sts_REQUEST)
+                                {
+                                    // imposto i mA 200
+                                    serialTerminal.putPC1cmd("MA02000",1)
+                                    valueSource.kVCal = valueSource.sts_WAITING_MA
                                 }
                             }
                             errorMessage.visible = false
@@ -2726,13 +2919,18 @@ Window {
                         {
                             tmp = (data[2]-"0")*100;
                             tmp += (data[3]-"0")*10;
-                            tmp += data[4]-"0";                            
+                            tmp += data[4]-"0";
                             valueSource.kv = tmp;
                             errorMessage.visible = false
                             if (valueSource.mACal)
                             {
-                              checkkVSet();
+                                checkkVSet();
                             }
+                            if (valueSource.kVCal  === valueSource.sts_ACTIVE)
+                            {
+                                checkkVCal();
+                            }
+
                             cntr = 0
                         }else if ((data[0]==="V") &&
                                   (data[1]==="C"))
@@ -2756,23 +2954,42 @@ Window {
                             valueSource.mA = tmp;
                             if (valueSource.mACal)
                             {
-                              checkmASet();
+                                checkmASet();
+                            }
+                            if (valueSource.mA == 200)
+                            {
+                                if (valueSource.kVCal == valueSource.sts_WAITING_MA)
+                                {
+                                    twoPointPanel.visible = false
+                                    threePointPanel.visible = false
+                                    kVPanel.visible = false
+                                    if( valueSource.mACal)
+                                    {
+                                        valueSource.mACal =false
+                                        mACalPanel.visible = false
+                                    }
+                                    kVCalPanel.visible = true
+                                    valueSource.kVCal = valueSource.sts_ACTIVE
+                                    swTecnique.enabled = false
+                                    focusBtn.enabled = false
+                                    selectKvPoint(1)
+                                }
                             }
                             errorMessage.visible = false
                             cntr = 0
                         }else if ((data[0] ==="M")&&            // gestione Ma
                                   (data[1]==="C"))
-                         {
-                             // tmp +=  data[6]-"0";
-                             if (valueSource.mACal)
-                             {
-                                 var strMar= ""
-                                 strMar = data[2] +data[3] +data[4] + "." +data[5]+data[6]
-                                 setMAr(strMar);
-                             }
-                             errorMessage.visible = false
-                             cntr = 0
-                         }else if ((data[0] ==="M")&&            // gestione Ms
+                        {
+                            // tmp +=  data[6]-"0";
+                            if (valueSource.mACal)
+                            {
+                                var strMar= ""
+                                strMar = data[2] +data[3] +data[4] + "." +data[5]+data[6]
+                                setMAr(strMar);
+                            }
+                            errorMessage.visible = false
+                            cntr = 0
+                        }else if ((data[0] ==="M")&&            // gestione Ms
                                   (data[1]==="S"))
                         {
                             /*     tmp =  (data[2]-"0")*10000;
@@ -3027,6 +3244,12 @@ Window {
                                 twoPointPanel.visible = false
                                 threePointPanel.visible = false
                                 kVPanel.visible = false
+                                if(valueSource.kVCal!==valueSource.sts_IDLE)
+                                {
+                                    valueSource.kVCal = valueSource.sts_IDLE
+                                    kVCalPanel.visible = false
+                                }
+
                                 valueSource.mACal = true
                                 // blocco il toggle cambio tecnica su 3 punti
                                 if (serialTerminal.getConnectionStatusSlot() !== false)
@@ -3067,97 +3290,97 @@ Window {
                         }
                         else if ((data[0]==="A")&&(data[1]==="R"))
                         {
-                             switch (data[2])
-                             {
-                             case "0":
-                                 switch (data[3])
-                                 {
-                                     case "1":
-                                        point1.trimmer = data[4]+data[5]+data[6]+data[7]
-                                        cap1.setTrimmer(point1.trimmer)
-                                         break
-                                     case "2":
-                                         point2.trimmer = data[4]+data[5]+data[6]+data[7]
-                                         cap2.setTrimmer(point2.trimmer)
-                                         break
-                                     case "3":
-                                         point3.trimmer = data[4]+data[5]+data[6]+data[7]
-                                         cap3.setTrimmer(point3.trimmer)
-                                         break
-                                     case "4":
-                                         point4.trimmer = data[4]+data[5]+data[6]+data[7]
-                                         cap4.setTrimmer(point4.trimmer)
-                                         break
-                                     case "5":
-                                         point5.trimmer = data[4]+data[5]+data[6]+data[7]
-                                         cap5.setTrimmer(point5.trimmer)
-                                         break
-                                     case "6":
-                                         point6.trimmer = data[4]+data[5]+data[6]+data[7]
-                                         cap6.setTrimmer(point6.trimmer)
-                                         break
-                                     case "7":
-                                         point7.trimmer = data[4]+data[5]+data[6]+data[7]
-                                         cap7.setTrimmer(point7.trimmer)
-                                         break
-                                     case "8":
-                                         point8.trimmer = data[4]+data[5]+data[6]+data[7]
-                                         cap8.setTrimmer(point8.trimmer)
-                                         break
-                                     case "9":
-                                         point9.trimmer = data[4]+data[5]+data[6]+data[7]
-                                         cap9.setTrimmer(point9.trimmer)
-                                         break
-                                 }
-                                 break
-                             case "1":
-                                 switch (data[3])
-                                 {
-                                    case "0":
-                                        point10.trimmer = data[4]+data[5]+data[6]+data[7]
-                                        cap10.setTrimmer(point10.trimmer)
+                            switch (data[2])
+                            {
+                            case "0":
+                                switch (data[3])
+                                {
+                                case "1":
+                                    point1.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap1.setTrimmer(point1.trimmer)
                                     break
-                                    case "1":
-                                        point11.trimmer = data[4]+data[5]+data[6]+data[7]
-                                        cap11.setTrimmer(point11.trimmer)
+                                case "2":
+                                    point2.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap2.setTrimmer(point2.trimmer)
                                     break
-                                    case "2":
-                                        point12.trimmer = data[4]+data[5]+data[6]+data[7]
-                                        cap12.setTrimmer(point12.trimmer)
+                                case "3":
+                                    point3.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap3.setTrimmer(point3.trimmer)
                                     break
-                                    case "3":
-                                        point13.trimmer = data[4]+data[5]+data[6]+data[7]
-                                        cap13.setTrimmer(point13.trimmer)
+                                case "4":
+                                    point4.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap4.setTrimmer(point4.trimmer)
                                     break
-                                    case "4":
-                                        point14.trimmer = data[4]+data[5]+data[6]+data[7]
-                                        cap14.setTrimmer(point14.trimmer)
+                                case "5":
+                                    point5.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap5.setTrimmer(point5.trimmer)
                                     break
-                                    case "5":
-                                        point15.trimmer = data[4]+data[5]+data[6]+data[7]
-                                        cap15.setTrimmer(point15.trimmer)
+                                case "6":
+                                    point6.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap6.setTrimmer(point6.trimmer)
                                     break
-                                    case "6":
-                                       point16.trimmer = data[4]+data[5]+data[6]+data[7]
-                                       cap16.setTrimmer(point16.trimmer)
+                                case "7":
+                                    point7.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap7.setTrimmer(point7.trimmer)
                                     break
-                                    case "7":
-                                        point17.trimmer = data[4]+data[5]+data[6]+data[7]
-                                        cap17.setTrimmer(point17.trimmer)
+                                case "8":
+                                    point8.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap8.setTrimmer(point8.trimmer)
                                     break
-                                    case "8":
-                                       point18.trimmer = data[3]+data[4]+data[5]+data[6]
-                                       cap18.setTrimmer(point18.trimmer)
+                                case "9":
+                                    point9.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap9.setTrimmer(point9.trimmer)
                                     break
-                                  //  case "9":
-                                  //      point20.trimmer = data[3]+data[4]+data[5]+data[6]
-                                  //  break
-                                 }
-                                 break
-                             //case "2":
-                               //  point1.trimmer = data[3]+data[4]+data[5]+data[6]
-                               //  break
-                             }
+                                }
+                                break
+                            case "1":
+                                switch (data[3])
+                                {
+                                case "0":
+                                    point10.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap10.setTrimmer(point10.trimmer)
+                                    break
+                                case "1":
+                                    point11.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap11.setTrimmer(point11.trimmer)
+                                    break
+                                case "2":
+                                    point12.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap12.setTrimmer(point12.trimmer)
+                                    break
+                                case "3":
+                                    point13.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap13.setTrimmer(point13.trimmer)
+                                    break
+                                case "4":
+                                    point14.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap14.setTrimmer(point14.trimmer)
+                                    break
+                                case "5":
+                                    point15.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap15.setTrimmer(point15.trimmer)
+                                    break
+                                case "6":
+                                    point16.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap16.setTrimmer(point16.trimmer)
+                                    break
+                                case "7":
+                                    point17.trimmer = data[4]+data[5]+data[6]+data[7]
+                                    cap17.setTrimmer(point17.trimmer)
+                                    break
+                                case "8":
+                                    point18.trimmer = data[3]+data[4]+data[5]+data[6]
+                                    cap18.setTrimmer(point18.trimmer)
+                                    break
+                                    //  case "9":
+                                    //      point20.trimmer = data[3]+data[4]+data[5]+data[6]
+                                    //  break
+                                }
+                                break
+                                //case "2":
+                                //  point1.trimmer = data[3]+data[4]+data[5]+data[6]
+                                //  break
+                            }
                         }
 
                         else if (data==="CONNERROR")
@@ -3170,11 +3393,11 @@ Window {
                             else
                             {//Se sono in preparazione o in emissione non rispondo ai messaggi
                                 if((valueSource.numericSTS!=3) ||
-                                   (valueSource.numericSTS!=4))
+                                        (valueSource.numericSTS!=4))
                                 {
 
-                                        errorMessage.text = qsTr("CONNECTION LOST !!!")
-                                        errorMessage.visible = true
+                                    errorMessage.text = qsTr("CONNECTION LOST !!!")
+                                    errorMessage.visible = true
                                 }
                                 cntr = 0
                             }
@@ -4156,8 +4379,8 @@ Window {
                     enterKeyAction: EnterKeyAction.Next
                     onPressed: {
 
-                      keyboardArea.x = 398
-                      keyboardArea.anchors.rightMargin = 0
+                        keyboardArea.x = 398
+                        keyboardArea.anchors.rightMargin = 0
                     }
 
 
@@ -4267,7 +4490,7 @@ Window {
                     {
                         // check pwd
                         if (pwdPanel.checkPWD(pwdTxtIn.text.toString()))
-                            setAdvancedMode(true)                         
+                            setAdvancedMode(true)
                         else
                             error_txt.visible = true
                     }else
@@ -4588,6 +4811,33 @@ Window {
                 onClicked: {
                     // chiudi menu
                     menu_out.running = true
+                    // se la calibrazione KV non è attiva
+                    if (valueSource.kVCal == valueSource.sts_IDLE)
+                    {
+                        valueSource.kVCal = valueSource.sts_REQUEST
+                        // imposto 3 punti
+                        serialTerminal.putPC1cmd("ET1",1)
+                        // imposto i mA 160 per cambiare fuoco
+                        serialTerminal.putPC1cmd("MA01600",0)
+                        // imposto i ms 50
+                        serialTerminal.putPC1cmd("MS00500",1)
+                        // imposto FG
+                        serialTerminal.putPC1cmd("FO1",1)
+                        // sul controllo ms attivo kVCal e i ma a 200
+                    }else
+                    {
+                        valueSource.kVCal = valueSource.sts_IDLE
+                        mACalPanel.visible = false
+                        kVCalPanel.visible = false
+                        swTecnique.enabled = true
+                        focusBtn.enabled = true
+                        kVPanel.visible = true
+                        if (valueSource.tecn) // se tecnica 3 punti
+                            threePointPanel.visible = true
+                        else
+                            twoPointPanel.visible = true
+                        swTecnique.enabled = true
+                    }
                 }
             }
 
