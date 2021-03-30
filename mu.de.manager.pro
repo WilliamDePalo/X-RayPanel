@@ -74,6 +74,7 @@ DISTFILES += \
     ./qml/ValueSource.qml \
     qml/KvCallStep.qml \
     qml/KvCallStep_rev.qml \
+    qml/MACallPoint.qml \
     qml/keyPadSupport/FloatingButton_Active.svg \
     qml/keyPadSupport/FloatingButton_Available.svg \
     qml/keyPadSupport/FloatingButton_Unavailable.svg \

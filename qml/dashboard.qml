@@ -2205,7 +2205,7 @@ Window {
                         id: bTextKv
                         visible: true
                         color: "#0d0000"
-                        text: "0.00"
+                        text: "00.0"
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -2329,17 +2329,12 @@ Window {
                                 btnPushtoSet.kvstr = "VW" + btnPushtoSet.kVtoSet
                        //   if ((bTextKv.text > 40) & (bTextKv.text < 123.9))
             //              {      // se  non c'è virgola
-                            if ((bTextKv.text.search(".")==0) || (bTextKv.text.search(",")==0))
-                            {
-                                if(bTextKv.text.length < 3)
-                                    btnPushtoSet.kvstr += "0"+ bTextKv.text +"0"
+
+                                if(bTextKv.text.length < 5)
+                                    btnPushtoSet.kvstr += "0"+ bTextKv.text
                                 else
-                                    btnPushtoSet.kvstr +=bTextKv.text +"0"
-                            }else
-                            {
-                                var res = bTextKv.text.split(".")
-                                btnPushtoSet.kvstr+= res[0] + res[1]
-                            }
+                                    btnPushtoSet.kvstr +=bTextKv.text
+
                             serialTerminal.putPC1cmd(btnPushtoSet.kvstr,1)
                          //   }
                         }
@@ -2388,7 +2383,7 @@ Window {
                         else
                             twoPointPanel.visible = true
                         swTecnique.enabled = true
-
+                        focusBtn.enabled = true
                     }
                     isDefault: false
                     z: 0
@@ -2792,20 +2787,23 @@ Window {
                                 if ((valueSource.tecn == 1) &&  valueSource.fuoco) // solo sul cambio
                                     if (serialTerminal.getConnectionStatusSlot() !== false)
                                         serialTerminal.putPC1cmd("MA00800",1)
-                                valueSource.fuoco = false
+
                                 focusImage.source =  "../images/fuoco-piccolo_B.png"
-                                // se attiva la calibrazione
-                                if (mACalPanel.visible)
-                                {
-                                    mACalFPPanel.visible = true
-                                    mACalFGPanel.visible = false
-                                    point1.select = true // seleziono il primo punto
-                                    selectPoint(1)
+
+                                if (valueSource.fuoco != false)
+                                { // se attiva la calibrazione
+                                    if (mACalPanel.visible)
+                                    {
+                                        mACalFPPanel.visible = true
+                                        mACalFGPanel.visible = false
+                                        point1.select = true // seleziono il primo punto
+                                        selectPoint(1)
+                                    }
                                 }
+                                valueSource.fuoco = false
                             }
                             else
-                            {
-                                valueSource.fuoco = true
+                            {                                
                                 speedometer.minimumValue= 160
                                 speedometer.maximumValue= 400
                                 speedometer.DashboardGaugeStyle.labelStepSize = 50
@@ -2813,12 +2811,16 @@ Window {
                                     if (serialTerminal.getConnectionStatusSlot() !== false)
                                         serialTerminal.putPC1cmd("MA01600",1)
                                 focusImage.source =  "../images/fuoco-grande_B.png"
-                                if (mACalPanel.visible)
+                                if (valueSource.fuoco != true)
                                 {
-                                    mACalFPPanel.visible = false
-                                    mACalFGPanel.visible = true
-                                    selectPoint(9) // seleziono il primo punto
+                                    if (mACalPanel.visible)
+                                    {
+                                        mACalFPPanel.visible = false
+                                        mACalFGPanel.visible = true
+                                        selectPoint(9) // seleziono il primo punto
+                                    }
                                 }
+                                valueSource.fuoco = true
                                 /// CONTROLLO GESTIONE CALIBRAZIONE KV
                                 if (valueSource.kVCal == valueSource.sts_REQUEST)
                                 {
@@ -3248,6 +3250,7 @@ Window {
                                 {
                                     valueSource.kVCal = valueSource.sts_IDLE
                                     kVCalPanel.visible = false
+                                    focusBtn.enabled = true
                                 }
 
                                 valueSource.mACal = true
@@ -3275,11 +3278,13 @@ Window {
                             }else if (data[2] === "2")// se abilitazione Calibrazione Tensione
                             {
                                 mACalFGPanel.visible = false
-
+                                kVCalPanel.visible = true
                             }else if (data[2] === "0")
                             {
                                 valueSource.mACal = false
                                 mACalPanel.visible = false
+                                kVCalPanel.visible = false
+                                focusBtn.enabled = true
                                 swTecnique.enabled = true
                                 kVPanel.visible = true
                                 if (valueSource.tecn) // se tecnica 3 punti
@@ -3369,7 +3374,7 @@ Window {
                                     cap17.setTrimmer(point17.trimmer)
                                     break
                                 case "8":
-                                    point18.trimmer = data[3]+data[4]+data[5]+data[6]
+                                    point18.trimmer = data[4]+data[5]+data[6]+data[7]
                                     cap18.setTrimmer(point18.trimmer)
                                     break
                                     //  case "9":
@@ -4232,7 +4237,7 @@ Window {
             Text {
                 id: versionTxt
                 height: 15
-                text: "v xx.yy.zz"
+                text: " v. " + valueSource.version
                 anchors.verticalCenter: title.verticalCenter
                 font.pixelSize: 12
                 horizontalAlignment: Text.AlignLeft
@@ -4829,6 +4834,7 @@ Window {
                         valueSource.kVCal = valueSource.sts_IDLE
                         mACalPanel.visible = false
                         kVCalPanel.visible = false
+                        focusBtn.enabled = true
                         swTecnique.enabled = true
                         focusBtn.enabled = true
                         kVPanel.visible = true
