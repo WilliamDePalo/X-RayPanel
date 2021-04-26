@@ -2,7 +2,6 @@
 #define SERIALTERMINAL_H
 
 #include <QtSerialPort/QSerialPort>
-
 #include <QObject>
 #include "serialLogger.h"
 #include <QTimer>

@@ -129,7 +129,7 @@ bool SerialTerminal::getConnectionStatusSlot(){
     return this->getConnectionStatus();
 }
 void SerialTerminal::readFromSerialPort(){
-   static unsigned char idx = 0;
+   static unsigned int idx = 0; // se metto char si crea un loop infinito dato che recvByte è lungo + di 299
    unsigned char idToSend = 0;
    unsigned char  cksm = 0;
    QByteArray toSend;
