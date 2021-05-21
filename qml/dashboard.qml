@@ -1722,7 +1722,7 @@ Window {
                     height: 400
                     visible: false
                     spacing: 0
-                  //  topPadding: 0
+                    //  topPadding: 0
                     flow: Grid.TopToBottom
                     rows: 4
                     columns: 3
@@ -2173,7 +2173,7 @@ Window {
                     width: 127
                     height: 119
 
-                   // text: ""
+                    // text: ""
                     anchors.verticalCenter: maKV2.verticalCenter
                     anchors.bottom: btnSaveACAl.bottom
                     anchors.verticalCenterOffset: 25
@@ -2292,51 +2292,51 @@ Window {
 
                             switch (valueSource.kvCallIDX)
                             {
-                                case 1:
-                                    btnPushtoSet.kVtoSet = pKv1.kV
-                                    break;
-                                case 2:
-                                     btnPushtoSet.kVtoSet = pKv2.kV
-                                    break;
-                                case 3:
-                                    btnPushtoSet.kVtoSet = pKv3.kV
-                                    break;
-                                case 4:
-                                     btnPushtoSet.kVtoSet = pKv4.kV
-                                    break;
-                                case 5:
-                                     btnPushtoSet.kVtoSet = pKv5.kV
-                                    break;
-                                case 6:
-                                     btnPushtoSet.kVtoSet = pKv6.kV
-                                    break;
-                                case 7:
-                                     btnPushtoSet.kVtoSet = pKv7.kV
-                                    break;
-                                case 8:
-                                     btnPushtoSet.kVtoSet = pKv8.kV
+                            case 1:
+                                btnPushtoSet.kVtoSet = pKv1.kV
                                 break;
-                                case 9:
-                                     btnPushtoSet.kVtoSet = pKv9.kV
-                                    break;
-                                default:
-                                    btnPushtoSet.kVtoSet =  "0"
-                                    break;
+                            case 2:
+                                btnPushtoSet.kVtoSet = pKv2.kV
+                                break;
+                            case 3:
+                                btnPushtoSet.kVtoSet = pKv3.kV
+                                break;
+                            case 4:
+                                btnPushtoSet.kVtoSet = pKv4.kV
+                                break;
+                            case 5:
+                                btnPushtoSet.kVtoSet = pKv5.kV
+                                break;
+                            case 6:
+                                btnPushtoSet.kVtoSet = pKv6.kV
+                                break;
+                            case 7:
+                                btnPushtoSet.kVtoSet = pKv7.kV
+                                break;
+                            case 8:
+                                btnPushtoSet.kVtoSet = pKv8.kV
+                                break;
+                            case 9:
+                                btnPushtoSet.kVtoSet = pKv9.kV
+                                break;
+                            default:
+                                btnPushtoSet.kVtoSet =  "0"
+                                break;
                             }
                             if (btnPushtoSet.kVtoSet.length < 3)
-                                 btnPushtoSet.kvstr = "VW0" + btnPushtoSet.kVtoSet
+                                btnPushtoSet.kvstr = "VW0" + btnPushtoSet.kVtoSet
                             else
                                 btnPushtoSet.kvstr = "VW" + btnPushtoSet.kVtoSet
-                       //   if ((bTextKv.text > 40) & (bTextKv.text < 123.9))
-            //              {      // se  non c'è virgola
+                            //   if ((bTextKv.text > 40) & (bTextKv.text < 123.9))
+                            //              {      // se  non c'è virgola
 
-                                if(bTextKv.text.length < 5)
-                                    btnPushtoSet.kvstr += "0"+ bTextKv.text
-                                else
-                                    btnPushtoSet.kvstr +=bTextKv.text
+                            if(bTextKv.text.length < 5)
+                                btnPushtoSet.kvstr += "0"+ bTextKv.text
+                            else
+                                btnPushtoSet.kvstr +=bTextKv.text
 
                             serialTerminal.putPC1cmd(btnPushtoSet.kvstr,1)
-                         //   }
+                            //   }
                         }
                     }
                 }
@@ -2376,6 +2376,7 @@ Window {
                         valueSource.kVCal = valueSource.sts_IDLE
                         mACalPanel.visible = false
                         kVCalPanel.visible = false
+                        confPanel.visible = false
                         swTecnique.enabled = true
                         kVPanel.visible = true
                         if (valueSource.tecn) // se tecnica 3 punti
@@ -2389,7 +2390,108 @@ Window {
                     z: 0
                 }
             }
+            Item {
+                id: confPanel
+                x: 0
+                width: 675
+                anchors.left: parent.left
+                anchors.right: rigthColumn.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                z: 28
+                anchors.rightMargin: 115
+                anchors.topMargin: 168
+                anchors.leftMargin: 0
+                anchors.bottomMargin: 0
+                visible: false
 
+                ToggleButton {
+                    id: btTecnique
+                    x: 339
+                    y: 40
+                    text: qsTr("Align Tecnique")
+                }
+
+                ToggleButton {
+                    id: btThermo
+                    x: 339
+                    y: 194
+                    text: qsTr("Termic switch")
+                }
+
+                Item {
+                    id: capacitorRectangle
+                    x: 50
+                    y: 45
+                    width: 237
+                    height: 263
+
+                    ToggleButton {
+                        id: btSmallCB
+                        x: 8
+                        y: 30
+                        width: 78
+                        height: 63
+                        text: qsTr("small")
+                        checked: true
+                    }
+
+                    ToggleButton {
+                        id: btMedCB
+                        x: 8
+                        y: 101
+                        width: 78
+                        height: 63
+                        opacity: 0.87
+                        text: "med"
+                    }
+
+                    ToggleButton {
+                        id: btBigCB
+                        x: 8
+                        y: 176
+                        width: 78
+                        height: 63
+                        text: qsTr("large")
+                    }
+
+                    TextEdit {
+                        id: smallCBText
+                        x: 99
+                        y: 52
+                        width: 80
+                        height: 20
+                        text: qsTr("12 x 11nF")
+                        font.pixelSize: 12
+                    }
+
+                    TextEdit {
+                        id: mediumCBTxt
+                        x: 99
+                        y: 122
+                        width: 80
+                        height: 20
+                        text: qsTr("24 x 11nF")
+                        font.pixelSize: 12
+                    }
+
+                    TextEdit {
+                        id: largeCBText
+                        x: 99
+                        y: 198
+                        width: 80
+                        height: 20
+                        text: qsTr("24 x 16 nF")
+                        font.pixelSize: 12
+                    }
+                }
+
+                Text {
+                    id: tecniqueText
+                    text: qsTr("Text")
+                    font.pixelSize: 12
+                }
+            }
 
         }
 
@@ -2552,10 +2654,12 @@ Window {
                             {
                                 bt_calA.visible = true
                                 bt_calV.visible = true
+                                bt_conf.visible = true
                             }else
                             {
                                 bt_calA.visible = false
                                 bt_calV.visible = false
+                                bt_conf.visible = false
                             }
 
                             menuPanel.visible = true
@@ -2803,7 +2907,7 @@ Window {
                                 valueSource.fuoco = false
                             }
                             else
-                            {                                
+                            {
                                 speedometer.minimumValue= 160
                                 speedometer.maximumValue= 400
                                 speedometer.DashboardGaugeStyle.labelStepSize = 50
@@ -3279,6 +3383,7 @@ Window {
                             {
                                 mACalFGPanel.visible = false
                                 kVCalPanel.visible = true
+                                confPanel.visible = false
                             }else if (data[2] === "0")
                             {
                                 valueSource.mACal = false
@@ -3386,8 +3491,53 @@ Window {
                                 //  point1.trimmer = data[3]+data[4]+data[5]+data[6]
                                 //  break
                             }
+                        }else if ((data[0]==="B")&&(data[1]==="S"))
+                        {
+                            if (valueSource.configurationForm)
+                            {
+                                if (data[2] === "0")
+                                {
+                                    btSmallCB.checked =true
+                                    btMedCB.checked= false
+                                    btBigCB.checked = false
+                                }else if (data[2]=== "1")
+                                {
+                                    btSmallCB.checked = false
+                                    btMedCB.checked = true
+                                    btBigCB.checked = false
+                                }else if (data[2]==="2")
+                                {
+                                    btSmallCB.checked = false
+                                    btMedCB.checked = false
+                                    btBigCB.checked = true
+                                }
+                            }
+                        }else if ((data[0] === "A") && (data[1] === "C"))
+                        {
+                            if (valueSource.configurationForm)
+                            {
+                                if (data[2] === "0")
+                                {
+                                    btTecnique.checked = false
+                                }else
+                                {
+                                    btTecnique.checked = true
+                                }
+                            }
                         }
-
+                        else if ((data[0] === "T")&&(data[1] === "C"))
+                        {
+                            if (valueSource.configurationForm)
+                            {
+                                if (data[2] === "0")
+                                {
+                                    btThermo.checked = false
+                                }else
+                                {
+                                    btThermo.checked = true
+                                }
+                            }
+                        }
                         else if (data==="CONNERROR")
                         {
                             //Deve succedere almeno 2 volte di seguito
@@ -4704,8 +4854,9 @@ Window {
             columnSpacing: 0
             rowSpacing: 0
             id: menuPad
-            rows: 5
+            rows: 6
             signal mnButtonPressed
+
             anchors.fill: parent
 
 
@@ -4846,7 +4997,58 @@ Window {
                     }
                 }
             }
+            Button {
+                id: bt_conf
+                y: 334
+                width: menuPad.width
+                height: menuPad.height * (1/menuPad.rows)
+                text: "Configuration"
+                visible : false
+                style: BlackButtonStyle {
+                    fontColor: menuPanel.darkFontColor
+                    rightAlignedIconSource: "qrc:/images/icon-go.png"
+                }
+                onClicked: {
+                    // chiudi menu
+                    menu_out.running = true
+                    // se la calibrazione KV non è attiva
+                    if (!valueSource.configurationForm)
+                    {
+                        // chiedo stato Tecnique
+                        serialTerminal.putPC1cmd("AC?",1)
+                        // chiedo stato Bank Size
+                        serialTerminal.putPC1cmd("BS?",1)
+                        // chiedo stato Termal Control switch
+                        serialTerminal.putPC1cmd("TC?",1)
+                        valueSource.configurationForm = 1;
+                        confPanel.visible = true
+                        mACalPanel.visible = false
 
+                        twoPointPanel.visible = false
+                        threePointPanel.visible = false
+                        kVPanel.visible = false
+                        if( valueSource.mACal)
+                        {
+                            valueSource.mACal =false
+                            mACalPanel.visible = false
+                        }
+                        kVCalPanel.visible = false
+                        swTecnique.enabled = false
+                        focusBtn.enabled = false
+                    }else
+                    {
+                        if (valueSource.tecn) // se tecnica 3 punti
+                            threePointPanel.visible = true
+                        else
+                            twoPointPanel.visible = true
+                        valueSource.configurationForm = 0;
+                        confPanel.visible = false
+                        swTecnique.enabled = true
+                        focusBtn.enabled = true
+                        kVPanel.visible = true
+                    }
+                }
+            }
         }
         /*StackView {
                 id: stackView

@@ -96,7 +96,7 @@ Item {
     property string advanced_PWD : ",Wilhelm."
     property bool mACal: false // Calibrazione mA
     property int maCalIDX: 0 // indice della punto calibrazione selezionato
-
+    property bool configurationForm : false
     property int kVCal: 0 // Disattivazione calibrazione KV
 
     property int sts_IDLE: 0
@@ -107,7 +107,7 @@ Item {
 
      // 1 Attivazione calibrazione KV
     // 2    0 richiesta calibrazione KV
-    property string version : "01.01.02"
+    property string version : "01.01.03"
 //! [0]
 /*
     function randomDirection() {
