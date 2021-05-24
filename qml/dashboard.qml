@@ -2410,6 +2410,15 @@ Window {
                     x: 339
                     y: 40
                     text: qsTr("Align Tecnique")
+
+                    onClicked:
+                    {
+                       if (!btTecnique.checked)
+                           serialTerminal.putPC1cmd("AC0",1)
+                       else
+                           serialTerminal.putPC1cmd("AC1",1)
+
+                    }
                 }
 
                 ToggleButton {
@@ -2417,6 +2426,14 @@ Window {
                     x: 339
                     y: 194
                     text: qsTr("Termic switch")
+                    checkable: false
+                    onClicked:
+                    {
+                       if (btThermo.checked)
+                            serialTerminal.putPC1cmd("TC0",1)
+                       else
+                            serialTerminal.putPC1cmd("TC1",1)
+                    }
                 }
 
                 Item {
@@ -2434,6 +2451,10 @@ Window {
                         height: 63
                         text: qsTr("small")
                         checked: true
+                        onClicked:
+                        {
+                           serialTerminal.putPC1cmd("BS0",1)
+                        }
                     }
 
                     ToggleButton {
@@ -2444,6 +2465,10 @@ Window {
                         height: 63
                         opacity: 0.87
                         text: "med"
+                        onClicked:
+                        {
+                           serialTerminal.putPC1cmd("BS1",1)
+                        }
                     }
 
                     ToggleButton {
@@ -2453,29 +2478,33 @@ Window {
                         width: 78
                         height: 63
                         text: qsTr("large")
+                        onClicked:
+                        {
+                           serialTerminal.putPC1cmd("BS2",1)
+                        }
                     }
 
-                    TextEdit {
+                    Text {
                         id: smallCBText
                         x: 99
                         y: 52
                         width: 80
                         height: 20
-                        text: qsTr("12 x 11nF")
+                        text: qsTr("12 x 11 nF")
                         font.pixelSize: 12
                     }
 
-                    TextEdit {
+                    Text {
                         id: mediumCBTxt
                         x: 99
                         y: 122
                         width: 80
                         height: 20
-                        text: qsTr("24 x 11nF")
+                        text: qsTr("24 x 11 nF")
                         font.pixelSize: 12
                     }
 
-                    TextEdit {
+                    Text {
                         id: largeCBText
                         x: 99
                         y: 198
@@ -2484,12 +2513,6 @@ Window {
                         text: qsTr("24 x 16 nF")
                         font.pixelSize: 12
                     }
-                }
-
-                Text {
-                    id: tecniqueText
-                    text: qsTr("Text")
-                    font.pixelSize: 12
                 }
             }
 
@@ -3216,7 +3239,7 @@ Window {
                                 plVersion.text = "CAP BANK VER: " + "PANEL MANAGEMENT"
 
                         }
-                        else if ((data[0] ==="P")&&            // gestione LATCHING ERROR
+                        else if ((data[0] ==="P")&&
                                  (data[1]==="A"))
                         {
                             if((data[9] & 1)) // pos 0
@@ -3298,12 +3321,16 @@ Window {
                                         errorMessage.text = qsTr("PREPARATION TIMEOUT")
                                     if(data[4]==="5")
                                         errorMessage.text = qsTr("CHARGE CONNECTION TIMEOUT")
+                                }else if (data[3]==="5")
+                                {
+                                    if(data[4]==="9")
+                                        errorMessage.text = qsTr("HOUSING HEAT LIMIT EXCEEDED !")
                                 }
                             }
 
 
                             errorMessage.visible = true
-                        }else if ((data[0] ==="E")&&            // gestione LATCHING ERROR
+                        }else if ((data[0] ==="E")&&            // gestione NON LATCHING ERROR
                                   (data[1]==="R"))
                         {
                             //       serialTerminal.putPC1cmd(data);
