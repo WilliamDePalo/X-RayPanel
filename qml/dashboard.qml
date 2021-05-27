@@ -3321,6 +3321,10 @@ Window {
                                         errorMessage.text = qsTr("PREPARATION TIMEOUT")
                                     if(data[4]==="5")
                                         errorMessage.text = qsTr("CHARGE CONNECTION TIMEOUT")
+                                }else if (data[3]==="3")
+                                {
+                                    if(data[4]==="3")
+                                        errorMessage.text = qsTr("LOW CAPACITOR BANK SIZE !")
                                 }else if (data[3]==="5")
                                 {
                                     if(data[4]==="9")
