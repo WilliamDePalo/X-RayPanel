@@ -56,7 +56,7 @@
 #include <QQmlContext>
 
 //#include <QApplication>
-//#include "serial/mainwindow.h"
+//#include "serial/mainwindow.h
 
 #include <QtSerialPort/QSerialPortInfo>
 #include "serial/serialterminal.h"

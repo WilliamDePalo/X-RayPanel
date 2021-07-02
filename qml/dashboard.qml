@@ -1331,10 +1331,10 @@ Window {
                     // because they're laid out horizontally, and that would create
                     // large horizontal gaps between gauges on wide screens.
                     height: 285
-                    anchors.top: parent.top
-                    anchors.topMargin: 0
-                    anchors.right: tempGauge.left
-                    anchors.rightMargin: 30
+                    anchors.top: parent.verticalCenter
+                    anchors.topMargin: -142
+                    anchors.right: tempGauge.horizontalCenter
+                    anchors.rightMargin: 90
                     stepSize: 1
 
                     opacity: 1
@@ -2398,6 +2398,7 @@ Window {
                 anchors.right: rigthColumn.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                clip: false
                 z: 28
                 anchors.rightMargin: 115
                 anchors.topMargin: 168
@@ -2409,7 +2410,13 @@ Window {
                     id: btTecnique
                     x: 339
                     y: 40
+                    width: 128
+                    height: 128
                     text: qsTr("Align Tecnique")
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenterOffset: -100
+                    anchors.horizontalCenterOffset: 60
+                    anchors.horizontalCenter: parent.horizontalCenter
 
                     onClicked:
                     {
@@ -2425,7 +2432,14 @@ Window {
                     id: btThermo
                     x: 339
                     y: 194
+                    width: 128
+                    height: 128
+                    visible: true
                     text: qsTr("Termic switch")
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenterOffset: 45
+                    anchors.horizontalCenterOffset: 60
+                    anchors.horizontalCenter: parent.horizontalCenter
                     checkable: false
                     onClicked:
                     {
@@ -2463,7 +2477,7 @@ Window {
                         y: 101
                         width: 78
                         height: 63
-                        opacity: 0.87
+                        opacity: 1
                         text: "med"
                         onClicked:
                         {
@@ -3102,6 +3116,13 @@ Window {
                                     swTecnique.enabled = false
                                     focusBtn.enabled = false
                                     selectKvPoint(1)
+                                    if (valueSource.configurationForm) // se aperto chiudo pannello conf
+                                    {
+                                        valueSource.configurationForm = 0;
+                                        confPanel.visible = false
+                                        swTecnique.enabled = true
+                                        focusBtn.enabled = true
+                                    }
                                 }
                             }
                             errorMessage.visible = false
@@ -3387,7 +3408,13 @@ Window {
                                     kVCalPanel.visible = false
                                     focusBtn.enabled = true
                                 }
-
+                                if (valueSource.configurationForm) // se aperto chiudo pannello conf
+                                {
+                                    valueSource.configurationForm = 0;
+                                    confPanel.visible = false
+                                    swTecnique.enabled = true
+                                    focusBtn.enabled = true
+                                }
                                 valueSource.mACal = true
                                 // blocco il toggle cambio tecnica su 3 punti
                                 if (serialTerminal.getConnectionStatusSlot() !== false)
@@ -3414,7 +3441,14 @@ Window {
                             {
                                 mACalFGPanel.visible = false
                                 kVCalPanel.visible = true
-                                confPanel.visible = false
+                                if (valueSource.configurationForm) // se aperto chiudo pannello conf
+                                {
+                                    valueSource.configurationForm = 0;
+                                    confPanel.visible = false
+                                    swTecnique.enabled = true
+                                    focusBtn.enabled = true
+                                }
+
                             }else if (data[2] === "0")
                             {
                                 valueSource.mACal = false
@@ -5042,7 +5076,7 @@ Window {
                 onClicked: {
                     // chiudi menu
                     menu_out.running = true
-                    // se la calibrazione KV non è attiva
+                    // se la configurazione non è attiva
                     if (!valueSource.configurationForm)
                     {
                         // chiedo stato Tecnique
