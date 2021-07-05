@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<RCC>
+    <qresource prefix="/">
+        <file alias="fonts/DejaVuSans.ttf">../Mu.De._Manager/fonts/DejaVuSans.ttf</file>
+        <file alias="images/green.png">../Mu.De._Manager/images/green.png</file>
+        <file alias="images/red.png">../Mu.De._Manager/images/red.png</file>
+        <file alias="images/yellow.png">../Mu.De._Manager/images/yellow.png</file>
+        <file alias="images/background.png">../Mu.De._Manager/images/background.png</file>
+        <file alias="images/background.svg">../Mu.De._Manager/images/background.svg</file>
+        <file alias="images/needle.svg">../Mu.De._Manager/images/needle.svg</file>
+        <file alias="images/tickmark.svg">../Mu.De._Manager/images/tickmark.svg</file>
+        <file alias="images/logoRxR.jpg">../Mu.De._Manager/images/logoRxR.jpg</file>
+        <file alias="images/smallFocus.png">../Mu.De._Manager/images/smallFocus.png</file>
+        <file alias="images/sfondo/line_violet_color.jpg">../Mu.De._Manager/images/sfondo/line_violet_color.jpg</file>
+        <file alias="images/sfondo/neon-background.jpg">../Mu.De._Manager/images/sfondo/neon-background.jpg</file>
+        <file alias="images/sfondo/raggi.jpg">../Mu.De._Manager/images/sfondo/raggi.jpg</file>
+        <file alias="images/info64.png">../Mu.De._Manager/images/info64.png</file>
+        <file alias="images/fuoco-grande.png">../Mu.De._Manager/images/fuoco-grande.png</file>
+        <file alias="images/fuoco-piccolo.png">../Mu.De._Manager/images/fuoco-piccolo.png</file>
+        <file alias="images/xray-bianco.png">../Mu.De._Manager/images/xray-bianco.png</file>
+        <file alias="images/xray-giallo.png">../Mu.De._Manager/images/xray-giallo.png</file>
+        <file alias="images/sfondo/sfondo.png">../Mu.De._Manager/images/sfondo/sfondo.png</file>
+        <file alias="images/sfondo/sfondo1.png">../Mu.De._Manager/images/sfondo/sfondo1.png</file>
+        <file alias="images/needleW.svg">../Mu.De._Manager/images/needleW.svg</file>
+        <file alias="images/needleWb.svg">../Mu.De._Manager/images/needleWb.svg</file>
+        <file alias="images/backgroundB.svg">../Mu.De._Manager/images/backgroundB.svg</file>
+        <file alias="images/noReady.png">../Mu.De._Manager/images/noReady.png</file>
+        <file alias="images/ready.png">../Mu.De._Manager/images/ready.png</file>
+        <file alias="images/fuoco-grande_B.png">../Mu.De._Manager/images/fuoco-grande_B.png</file>
+        <file alias="images/fuoco-piccolo_B.png">../Mu.De._Manager/images/fuoco-piccolo_B.png</file>
+        <file alias="qml/content/background.svg">../Mu.De._Manager/qml/content/background.svg</file>
+        <file alias="images/icon-go.png">../Mu.De._Manager/images/icon-go.png</file>
+        <file alias="fonts/OpenSans-Regular.ttf">../Mu.De._Manager/fonts/OpenSans-Regular.ttf</file>
+        <file alias="images/sfondo/sfondo-grigio-chiaro.png">../Mu.De._Manager/images/sfondo/sfondo-grigio-chiaro.png</file>
+        <file alias="images/sfondo/sfondo-grigio-scuro.png">../Mu.De._Manager/images/sfondo/sfondo-grigio-scuro.png</file>
+        <file alias="images/refresh-page-arrow.png">../Mu.De._Manager/images/refresh-page-arrow.png</file>
+        <file alias="images/Risorsa 1.png">../Mu.De._Manager/images/Risorsa 1.png</file>
+        <file alias="images/Risorsa 2.png">../Mu.De._Manager/images/Risorsa 2.png</file>
+        <file alias="images/fuoco-piccolo_red.png">../Mu.De._Manager/images/fuoco-piccolo_red.png</file>
+        <file alias="images/meno_b.png">../Mu.De._Manager/images/meno_b.png</file>
+        <file alias="images/save_icon.png">../Mu.De._Manager/images/save_icon.png</file>
+        <file alias="images/piu_b.png">../Mu.De._Manager/images/piu_b.png</file>
+        <file alias="images/toppng.com-menu-icon-black.png">../Mu.De._Manager/images/toppng.com-menu-icon-black.png</file>
+        <file alias="images/options-settings.svg">../Mu.De._Manager/images/options-settings.svg</file>
+    </qresource>
+</RCC>

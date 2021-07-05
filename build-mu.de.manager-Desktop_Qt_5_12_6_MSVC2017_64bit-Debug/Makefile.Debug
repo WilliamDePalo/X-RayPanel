@@ -80,10 +80,12 @@ DIST          = ./fonts/DejaVuSans.ttf \
 		./qml/TachometerStyle.qml \
 		./qml/TurnIndicator.qml \
 		./qml/ValueSource.qml \
+		qml/KvCallStep.qml \
+		qml/KvCallStep_rev.qml \
+		qml/MACallPoint.qml \
 		qml/keyPadSupport/FloatingButton_Active.svg \
 		qml/keyPadSupport/FloatingButton_Available.svg \
 		qml/keyPadSupport/FloatingButton_Unavailable.svg \
-		qml/mACallPoint.qml \
 		qml/keyPadSupport/TextField.qml \
 		images/background.png \
 		images/background.svg \
@@ -234,7 +236,9 @@ compiler_rcc_clean:
 debug\qrc_mu.de.manager.cpp: ..\Mu.De._Manager\mu.de.manager.qrc \
 		C:\Qt\5.12.6\msvc2017_64\bin\rcc.exe \
 		..\Mu.De._Manager\qml\Button.qml \
+		..\Mu.De._Manager\qml\KvCallStep_rev.qml \
 		..\Mu.De._Manager\qml\TurnIndicator.qml \
+		..\Mu.De._Manager\qml\KvCallStep.qml \
 		..\Mu.De._Manager\qml\dashboard.qml \
 		..\Mu.De._Manager\qml\IconGaugeStyle.qml \
 		..\Mu.De._Manager\qml\DashboardGaugeStyle.qml \
@@ -252,42 +256,43 @@ debug\qrc_mu.de.manager.cpp: ..\Mu.De._Manager\mu.de.manager.qrc \
 		..\Mu.De._Manager\qml\NumberPadSupport\calculator.js \
 		..\Mu.De._Manager\qml\NumberPadSupport\NP_Button.qml \
 		..\Mu.De._Manager\images\tickmark.svg \
+		..\Mu.De._Manager\images\fuoco-piccolo_red.png \
 		..\Mu.De._Manager\images\noReady.png \
 		..\Mu.De._Manager\images\background.png \
 		..\Mu.De._Manager\images\red.png \
 		..\Mu.De._Manager\images\fuoco-piccolo_B.png \
-		..\Mu.De._Manager\images\piu.png \
-		..\Mu.De._Manager\images\toppng.com-menu-icon-white.png \
-		..\Mu.De._Manager\images\logoRxRwhite.png \
 		..\Mu.De._Manager\images\ready.png \
 		..\Mu.De._Manager\images\fuoco-grande_B.png \
 		..\Mu.De._Manager\images\smallFocus.png \
-		..\Mu.De._Manager\images\yellow.png \
 		..\Mu.De._Manager\images\xray-giallo.png \
-		..\Mu.De._Manager\images\fuel-icon.png \
+		..\Mu.De._Manager\images\yellow.png \
 		..\Mu.De._Manager\images\logoRxR.jpg \
-		..\Mu.De._Manager\images\meno.png \
-		..\Mu.De._Manager\images\temperature-icon.png \
+		"..\Mu.De._Manager\images\Risorsa 1.png" \
+		"..\Mu.De._Manager\images\Risorsa 2.png" \
 		..\Mu.De._Manager\images\icon-go.png \
 		..\Mu.De._Manager\images\needle.svg \
+		..\Mu.De._Manager\images\meno_b.png \
 		..\Mu.De._Manager\images\backgroundB.svg \
-		..\Mu.De._Manager\images\whitetramp.png \
 		..\Mu.De._Manager\images\background.svg \
 		..\Mu.De._Manager\images\needleW.svg \
-		..\Mu.De._Manager\images\whitetrasp.png \
+		..\Mu.De._Manager\images\refresh-page-arrow.png \
 		..\Mu.De._Manager\images\green.png \
 		..\Mu.De._Manager\images\xray-bianco.png \
-		..\Mu.De._Manager\images\options-settings-White.svg \
+		..\Mu.De._Manager\images\toppng.com-menu-icon-black.png \
 		..\Mu.De._Manager\images\info64.png \
-		..\Mu.De._Manager\images\fuoco-grande.png \
+		..\Mu.De._Manager\images\save_icon.png \
+		..\Mu.De._Manager\images\options-settings.svg \
+		..\Mu.De._Manager\images\piu_b.png \
 		..\Mu.De._Manager\images\fuoco-piccolo.png \
-		..\Mu.De._Manager\images\logo-rampoldi.png \
+		..\Mu.De._Manager\images\fuoco-grande.png \
 		..\Mu.De._Manager\images\needleWb.svg \
 		..\Mu.De._Manager\images\sfondo\sfondo.png \
 		..\Mu.De._Manager\images\sfondo\neon-background.jpg \
 		..\Mu.De._Manager\images\sfondo\raggi.jpg \
 		..\Mu.De._Manager\images\sfondo\line_violet_color.jpg \
 		..\Mu.De._Manager\images\sfondo\sfondo1.png \
+		..\Mu.De._Manager\images\sfondo\sfondo-grigio-chiaro.png \
+		..\Mu.De._Manager\images\sfondo\sfondo-grigio-scuro.png \
 		..\Mu.De._Manager\fonts\DejaVuSans.ttf \
 		..\Mu.De._Manager\fonts\OpenSans-Regular.ttf
 	C:\Qt\5.12.6\msvc2017_64\bin\rcc.exe -name mu.de.manager ..\Mu.De._Manager\mu.de.manager.qrc -o debug\qrc_mu.de.manager.cpp
@@ -1269,49 +1274,12 @@ debug\settingsdialog.obj: ..\Mu.De._Manager\serial\settingsdialog.cpp ..\Mu.De._
 		C:\Qt\5.12.6\msvc2017_64\include\QtSerialPort\qserialportinfo.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtCore\QVariant \
 		ui_settingsdialog.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QApplication \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qapplication.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qcoreapplication.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qeventloop.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qdesktopwidget.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qguiapplication.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qinputmethod.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QCheckBox \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qcheckbox.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractbutton.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qicon.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QComboBox \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qcombobox.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractitemdelegate.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qstyleoption.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractspinbox.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtGui\QIntValidator \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qvalidator.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qregularexpression.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qslider.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qabstractslider.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qstyle.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qtabbar.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qtabwidget.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qrubberband.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qframe.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtCore\qabstractitemmodel.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QGridLayout \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qgridlayout.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlayout.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlayoutitem.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qboxlayout.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QGroupBox \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qgroupbox.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QHBoxLayout \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QLabel \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlabel.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QPushButton \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qpushbutton.h \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QSpacerItem \
-		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QVBoxLayout \
-		C:\Qt\5.12.6\msvc2017_64\include\QtGui\QIntValidator \
 		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\QLineEdit \
 		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qlineedit.h \
+		C:\Qt\5.12.6\msvc2017_64\include\QtWidgets\qframe.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qtextcursor.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qtextformat.h \
 		C:\Qt\5.12.6\msvc2017_64\include\QtGui\qpen.h \
