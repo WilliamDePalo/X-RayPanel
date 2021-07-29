@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
+
+
 Item {
     id: calPointArea
 
@@ -18,6 +20,8 @@ Item {
     property string kvstr : ""
     property  string mAstr : ""
     property int idn: 0
+    property int lowCurx100 : -10
+    property int hiCurx100 : -6
 
     function setTrimmer( newText)
     {
@@ -43,7 +47,23 @@ Item {
         else
             val_kV.deselect()
     }
+property double num_maR :0
+property double num_mA :0
 
+    function checkMarLimit(maR, mA)
+    {
+
+        num_maR =  maR*1
+        num_mA = mA*1
+        if (num_maR < (num_mA + (num_mA * lowCurx100 / 100)))
+        {
+            return 2
+        }else if (num_maR > (num_mA + (num_mA * hiCurx100 / 100)))
+        {
+            return 1
+        }else
+            return 0
+    }
 
     function selectionChange(index)
    //onPointNChanged:
@@ -81,6 +101,7 @@ Item {
         anchors.left: parent.left
         anchors.top: caseNumber.bottom
         anchors.bottom: parent.bottom
+        rotation: 0
         anchors.topMargin: 0
         anchors.bottomMargin: 8
         direction: 2
@@ -215,9 +236,28 @@ Item {
             anchors.fill: parent
             z: -1
         }
+        property int check: 0
         onTextChanged: {
-            if (val_maR.text!="000.0")                
-                rec.border.color = "black"
+            if (val_maR.text!="000.0"){
+                rec.border.color = "black"                
+                check = checkMarLimit(val_maR.text,val_mA.text)
+                if (check === 0)
+                //if ((val_maR.text > (val_mA.text + (val_mA.text * lowCurx100 / 100))) ||
+                //    (val_maR.text < (val_mA.text + (val_mA.text * hiCurx100 / 100))))
+                {
+                    val_maR.color = "green"
+                 // rec.color = "green"
+                    pointer.rotation = 0
+                }else
+                {                   
+                   val_maR.color = "red"
+                    if (check === 1)
+                        pointer.rotation = 90
+                    //   rec.color = "red"
+                    if (check === 2)
+                        pointer.rotation = 270
+                }
+            }
         }
     }
 
@@ -242,7 +282,7 @@ Item {
             border.width: 4
             anchors.fill: parent
             z: -1
-            border.color: "grey"
+            border.color: "grey"            
         }
         onAccepted:  {
             if (calPointArea.idn <10)

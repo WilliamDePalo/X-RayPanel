@@ -24,7 +24,7 @@ signals:
 
 public slots:
  void write(const QString &value);
-
+ void checkDim();
 };
 
 #endif // SERIALLOGGER_H

@@ -60,5 +60,6 @@
         <file>qml/KvCallStep.qml</file>
         <file>qml/MACallPoint.qml</file>
         <file>qml/KvCallStep_rev.qml</file>
+        <file>other/90053.C VDC XRST30_rev08.xls</file>
     </qresource>
 </RCC>

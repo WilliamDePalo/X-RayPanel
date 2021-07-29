@@ -107,7 +107,7 @@ Item {
 
      // 1 Attivazione calibrazione KV
     // 2    0 richiesta calibrazione KV
-    property string version : "01.02.01"
+    property string version : "01.02.02" // limite file serilalogger.txt
 //! [0]
 /*
     function randomDirection() {

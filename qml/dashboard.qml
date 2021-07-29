@@ -2420,10 +2420,10 @@ Window {
 
                     onClicked:
                     {
-                       if (!btTecnique.checked)
-                           serialTerminal.putPC1cmd("AC0",1)
-                       else
-                           serialTerminal.putPC1cmd("AC1",1)
+                        if (!btTecnique.checked)
+                            serialTerminal.putPC1cmd("AC0",1)
+                        else
+                            serialTerminal.putPC1cmd("AC1",1)
 
                     }
                 }
@@ -2443,9 +2443,9 @@ Window {
                     checkable: false
                     onClicked:
                     {
-                       if (btThermo.checked)
+                        if (btThermo.checked)
                             serialTerminal.putPC1cmd("TC0",1)
-                       else
+                        else
                             serialTerminal.putPC1cmd("TC1",1)
                     }
                 }
@@ -2467,7 +2467,7 @@ Window {
                         checked: true
                         onClicked:
                         {
-                           serialTerminal.putPC1cmd("BS0",1)
+                            serialTerminal.putPC1cmd("BS0",1)
                         }
                     }
 
@@ -2481,7 +2481,7 @@ Window {
                         text: "med"
                         onClicked:
                         {
-                           serialTerminal.putPC1cmd("BS1",1)
+                            serialTerminal.putPC1cmd("BS1",1)
                         }
                     }
 
@@ -2494,7 +2494,7 @@ Window {
                         text: qsTr("large")
                         onClicked:
                         {
-                           serialTerminal.putPC1cmd("BS2",1)
+                            serialTerminal.putPC1cmd("BS2",1)
                         }
                     }
 
@@ -2801,21 +2801,6 @@ Window {
                 model: portsNameModel
 
 
-
-                Label{
-                    id: spLab
-                    color: "#060606"
-
-                    text: qsTr("Serial port: ")
-                    anchors.right: parent.right
-                    anchors.rightMargin: 139
-                    anchors.left: parent.left
-                    anchors.leftMargin: -95
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 3
-                    anchors.top: parent.top
-                    anchors.topMargin: 4
-                }
             }
 
             Label {
@@ -2825,10 +2810,9 @@ Window {
                 color: "#060606"
 
                 text: qsTr("Baud: ")
+                anchors.verticalCenter: baudRate.verticalCenter
                 anchors.right: baudRate.left
                 anchors.rightMargin: 10
-                anchors.top: parent.top
-                anchors.topMargin: 35
             }
 
             ComboBox {
@@ -2849,6 +2833,17 @@ Window {
             }
 
             StringParsing{ id: strPars }
+            Label{
+                id: spLab
+                height: 20
+                color: "#060606"
+
+                text: qsTr("Serial port: ")
+                anchors.verticalCenter: serialPorts.verticalCenter
+                anchors.right: serialPorts.left
+                anchors.rightMargin: 10
+            }
+
             Connections {
 
                 target: serialTerminal
@@ -3637,7 +3632,7 @@ Window {
             Button {
 
                 id: connectBtn
-                width: 100
+                width: 150
                 text: qsTr("Connect")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: baudRate.bottom
@@ -3675,6 +3670,7 @@ Window {
                     }
                 }
             }
+
 
         }
         //    Timer {

@@ -55,7 +55,8 @@
 #include <QIntValidator>
 #include <QLineEdit>
 #include <QSerialPortInfo>
-
+#include "qaxobject.h"
+#include <qdebug.h>
 static const char blankString[] = QT_TRANSLATE_NOOP("SettingsDialog", "N/A");
 
 SettingsDialog::SettingsDialog(/*QWidget *parent*/) :
@@ -80,6 +81,21 @@ SettingsDialog::SettingsDialog(/*QWidget *parent*/) :
     fillPortsInfo();
 
     updateSettings();
+
+    auto excel     = new QAxObject("Excel.Application");
+    auto workbooks = excel->querySubObject("Workbooks");
+    auto workbook  = workbooks->querySubObject("Open(const QString&)",".\\other\\90053.C VDC XRST30_rev08.xlsx");
+    auto sheets    = workbook->querySubObject("Worksheets");
+    auto sheet     = sheets->querySubObject("Item(int)", 1);
+
+    // read the first cells in row 1..5
+    for (int r = 1; (r <= 5); ++r)
+    {
+        auto cCell = sheet->querySubObject("Cells(int,int)",r,1);
+        qDebug() << cCell->dynamicCall("Value()").toInt();
+    }
+
+
 }
 
 SettingsDialog::~SettingsDialog()
