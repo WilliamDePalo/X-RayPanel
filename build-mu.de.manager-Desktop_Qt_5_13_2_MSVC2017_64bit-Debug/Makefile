@@ -245,6 +245,7 @@ Makefile: ..\Mu.De._Manager\mu.de.manager.pro C:\Qt\5.13.2\msvc2017_64\mkspecs\w
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\qt_config.prf \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\win32-msvc\qmake.conf \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\spec_post.prf \
+		.qmake.stash \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\exclusive_builds.prf \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\common\msvc-version.conf \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\toolchain.prf \
@@ -262,6 +263,7 @@ Makefile: ..\Mu.De._Manager\mu.de.manager.pro C:\Qt\5.13.2\msvc2017_64\mkspecs\w
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\moc.prf \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\win32\opengl.prf \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\uic.prf \
+		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\win32\dumpcpp.prf \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\qmake_use.prf \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\file_copies.prf \
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\win32\windows.prf \
@@ -271,6 +273,8 @@ Makefile: ..\Mu.De._Manager\mu.de.manager.pro C:\Qt\5.13.2\msvc2017_64\mkspecs\w
 		C:\Qt\5.13.2\msvc2017_64\mkspecs\features\lex.prf \
 		..\Mu.De._Manager\mu.de.manager.pro \
 		C:\Qt\5.13.2\msvc2017_64\lib\Qt5Quick.prl \
+		C:\Qt\5.13.2\msvc2017_64\lib\Qt5AxContainer.prl \
+		C:\Qt\5.13.2\msvc2017_64\lib\Qt5AxBase.prl \
 		C:\Qt\5.13.2\msvc2017_64\lib\Qt5Widgets.prl \
 		C:\Qt\5.13.2\msvc2017_64\lib\Qt5Gui.prl \
 		C:\Qt\5.13.2\msvc2017_64\lib\Qt5Qml.prl \
@@ -447,6 +451,7 @@ C:\Qt\5.13.2\msvc2017_64\mkspecs\features\qt_functions.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\qt_config.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\win32-msvc\qmake.conf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\spec_post.prf:
+.qmake.stash:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\exclusive_builds.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\common\msvc-version.conf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\toolchain.prf:
@@ -464,6 +469,7 @@ C:\Qt\5.13.2\msvc2017_64\mkspecs\features\resources.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\moc.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\win32\opengl.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\uic.prf:
+C:\Qt\5.13.2\msvc2017_64\mkspecs\features\win32\dumpcpp.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\qmake_use.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\file_copies.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\win32\windows.prf:
@@ -473,6 +479,8 @@ C:\Qt\5.13.2\msvc2017_64\mkspecs\features\yacc.prf:
 C:\Qt\5.13.2\msvc2017_64\mkspecs\features\lex.prf:
 ..\Mu.De._Manager\mu.de.manager.pro:
 C:\Qt\5.13.2\msvc2017_64\lib\Qt5Quick.prl:
+C:\Qt\5.13.2\msvc2017_64\lib\Qt5AxContainer.prl:
+C:\Qt\5.13.2\msvc2017_64\lib\Qt5AxBase.prl:
 C:\Qt\5.13.2\msvc2017_64\lib\Qt5Widgets.prl:
 C:\Qt\5.13.2\msvc2017_64\lib\Qt5Gui.prl:
 C:\Qt\5.13.2\msvc2017_64\lib\Qt5Qml.prl:
