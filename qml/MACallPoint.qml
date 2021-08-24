@@ -26,6 +26,8 @@ Item {
     function setTrimmer( newText)
     {
          trimmerInput.text = newText
+        // salvo i trimmer
+         excel_mgm.setList(calPointArea.idn,trimmerInput.text);
     }
 
     function  getTrimmer(tex)
@@ -289,6 +291,8 @@ property double num_mA :0
                 sendTrimmer("0" + calPointArea.idn.toString() + trimmerInput.text)
             else
                 sendTrimmer(calPointArea.idn.toString() + trimmerInput.text)
+            // salvo i trimmer
+            excel_mgm.setList(calPointArea.idn,trimmerInput.text);
         }
 
 

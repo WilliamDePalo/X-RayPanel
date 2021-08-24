@@ -1726,7 +1726,7 @@ Window {
                     flow: Grid.TopToBottom
                     rows: 4
                     columns: 3
-                    property var calSel:".1"
+                    property string calSel:".1"
                     onVisibleChanged: {
                         if (mACalFPPanel.visible === true)
                             refreshCalmAFP()
@@ -1883,6 +1883,13 @@ Window {
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
                             serialTerminal.putPC1cmd("AS1",1)
+                            if (excel_mgm.openFile()) 
+                            {
+                                // salvo i trimmer
+                                excel_mgm.writeParam();
+                                excel_mgm.closeFile();
+                                excel_mgm.deleteLater();
+                            }
                         }
                     }
                 }

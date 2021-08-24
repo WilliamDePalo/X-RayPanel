@@ -27,6 +27,7 @@ SOURCES += \
     ./serial/serialLogger.cpp \
     ./serial/serialterminal.cpp \
     ./serial/settingsdialog.cpp \
+    excelmgm.cpp \
     serial/readconffile.cpp
 
 RESOURCES += \
@@ -55,6 +56,7 @@ HEADERS += \
     ./serial/serialLogger.h \
     ./serial/serialterminal.h \
     ./serial/settingsdialog.h \
+    excelmgm.h \
     serial/readconffile.h
 
 DISTFILES += \
