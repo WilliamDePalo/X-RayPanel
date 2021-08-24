@@ -1331,10 +1331,10 @@ Window {
                     // because they're laid out horizontally, and that would create
                     // large horizontal gaps between gauges on wide screens.
                     height: 285
-                    anchors.top: parent.top
-                    anchors.topMargin: 0
-                    anchors.right: tempGauge.left
-                    anchors.rightMargin: 30
+                    anchors.top: parent.verticalCenter
+                    anchors.topMargin: -142
+                    anchors.right: tempGauge.horizontalCenter
+                    anchors.rightMargin: 90
                     stepSize: 1
 
                     opacity: 1
@@ -1726,7 +1726,7 @@ Window {
                     flow: Grid.TopToBottom
                     rows: 4
                     columns: 3
-                    property var calSel:".1"
+                    property string calSel:".1"
                     onVisibleChanged: {
                         if (mACalFPPanel.visible === true)
                             refreshCalmAFP()
@@ -1883,6 +1883,13 @@ Window {
                         if (serialTerminal.getConnectionStatusSlot() !== false)
                         {
                             serialTerminal.putPC1cmd("AS1",1)
+                            if (excel_mgm.openFile()) 
+                            {
+                                // salvo i trimmer
+                                excel_mgm.writeParam();
+                                excel_mgm.closeFile();
+                                excel_mgm.deleteLater();
+                            }
                         }
                     }
                 }
@@ -2398,6 +2405,7 @@ Window {
                 anchors.right: rigthColumn.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                clip: false
                 z: 28
                 anchors.rightMargin: 115
                 anchors.topMargin: 168
@@ -2409,14 +2417,20 @@ Window {
                     id: btTecnique
                     x: 339
                     y: 40
+                    width: 128
+                    height: 128
                     text: qsTr("Align Tecnique")
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenterOffset: -100
+                    anchors.horizontalCenterOffset: 60
+                    anchors.horizontalCenter: parent.horizontalCenter
 
                     onClicked:
                     {
-                       if (!btTecnique.checked)
-                           serialTerminal.putPC1cmd("AC0",1)
-                       else
-                           serialTerminal.putPC1cmd("AC1",1)
+                        if (!btTecnique.checked)
+                            serialTerminal.putPC1cmd("AC0",1)
+                        else
+                            serialTerminal.putPC1cmd("AC1",1)
 
                     }
                 }
@@ -2425,13 +2439,20 @@ Window {
                     id: btThermo
                     x: 339
                     y: 194
+                    width: 128
+                    height: 128
+                    visible: true
                     text: qsTr("Termic switch")
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenterOffset: 45
+                    anchors.horizontalCenterOffset: 60
+                    anchors.horizontalCenter: parent.horizontalCenter
                     checkable: false
                     onClicked:
                     {
-                       if (btThermo.checked)
+                        if (btThermo.checked)
                             serialTerminal.putPC1cmd("TC0",1)
-                       else
+                        else
                             serialTerminal.putPC1cmd("TC1",1)
                     }
                 }
@@ -2453,7 +2474,7 @@ Window {
                         checked: true
                         onClicked:
                         {
-                           serialTerminal.putPC1cmd("BS0",1)
+                            serialTerminal.putPC1cmd("BS0",1)
                         }
                     }
 
@@ -2463,11 +2484,11 @@ Window {
                         y: 101
                         width: 78
                         height: 63
-                        opacity: 0.87
+                        opacity: 1
                         text: "med"
                         onClicked:
                         {
-                           serialTerminal.putPC1cmd("BS1",1)
+                            serialTerminal.putPC1cmd("BS1",1)
                         }
                     }
 
@@ -2480,7 +2501,7 @@ Window {
                         text: qsTr("large")
                         onClicked:
                         {
-                           serialTerminal.putPC1cmd("BS2",1)
+                            serialTerminal.putPC1cmd("BS2",1)
                         }
                     }
 
@@ -2787,21 +2808,6 @@ Window {
                 model: portsNameModel
 
 
-
-                Label{
-                    id: spLab
-                    color: "#060606"
-
-                    text: qsTr("Serial port: ")
-                    anchors.right: parent.right
-                    anchors.rightMargin: 139
-                    anchors.left: parent.left
-                    anchors.leftMargin: -95
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 3
-                    anchors.top: parent.top
-                    anchors.topMargin: 4
-                }
             }
 
             Label {
@@ -2811,10 +2817,9 @@ Window {
                 color: "#060606"
 
                 text: qsTr("Baud: ")
+                anchors.verticalCenter: baudRate.verticalCenter
                 anchors.right: baudRate.left
                 anchors.rightMargin: 10
-                anchors.top: parent.top
-                anchors.topMargin: 35
             }
 
             ComboBox {
@@ -2835,6 +2840,17 @@ Window {
             }
 
             StringParsing{ id: strPars }
+            Label{
+                id: spLab
+                height: 20
+                color: "#060606"
+
+                text: qsTr("Serial port: ")
+                anchors.verticalCenter: serialPorts.verticalCenter
+                anchors.right: serialPorts.left
+                anchors.rightMargin: 10
+            }
+
             Connections {
 
                 target: serialTerminal
@@ -3102,6 +3118,13 @@ Window {
                                     swTecnique.enabled = false
                                     focusBtn.enabled = false
                                     selectKvPoint(1)
+                                    if (valueSource.configurationForm) // se aperto chiudo pannello conf
+                                    {
+                                        valueSource.configurationForm = 0;
+                                        confPanel.visible = false
+                                        swTecnique.enabled = true
+                                        focusBtn.enabled = true
+                                    }
                                 }
                             }
                             errorMessage.visible = false
@@ -3387,7 +3410,13 @@ Window {
                                     kVCalPanel.visible = false
                                     focusBtn.enabled = true
                                 }
-
+                                if (valueSource.configurationForm) // se aperto chiudo pannello conf
+                                {
+                                    valueSource.configurationForm = 0;
+                                    confPanel.visible = false
+                                    swTecnique.enabled = true
+                                    focusBtn.enabled = true
+                                }
                                 valueSource.mACal = true
                                 // blocco il toggle cambio tecnica su 3 punti
                                 if (serialTerminal.getConnectionStatusSlot() !== false)
@@ -3414,7 +3443,14 @@ Window {
                             {
                                 mACalFGPanel.visible = false
                                 kVCalPanel.visible = true
-                                confPanel.visible = false
+                                if (valueSource.configurationForm) // se aperto chiudo pannello conf
+                                {
+                                    valueSource.configurationForm = 0;
+                                    confPanel.visible = false
+                                    swTecnique.enabled = true
+                                    focusBtn.enabled = true
+                                }
+
                             }else if (data[2] === "0")
                             {
                                 valueSource.mACal = false
@@ -3603,7 +3639,7 @@ Window {
             Button {
 
                 id: connectBtn
-                width: 100
+                width: 150
                 text: qsTr("Connect")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: baudRate.bottom
@@ -3641,6 +3677,7 @@ Window {
                     }
                 }
             }
+
 
         }
         //    Timer {
@@ -5042,7 +5079,7 @@ Window {
                 onClicked: {
                     // chiudi menu
                     menu_out.running = true
-                    // se la calibrazione KV non è attiva
+                    // se la configurazione non è attiva
                     if (!valueSource.configurationForm)
                     {
                         // chiedo stato Tecnique

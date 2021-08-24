@@ -56,14 +56,17 @@
 #include <QQmlContext>
 
 //#include <QApplication>
-//#include "serial/mainwindow.h"
+//#include "serial/mainwindow.h
 
 #include <QtSerialPort/QSerialPortInfo>
 #include "serial/serialterminal.h"
-#include "serial/settingsdialog.h"
+#include "excelmgm.h"
+//#include "serial/settingsdialog.h"
 #include <QDebug>
 
 #include <QQmlEngine>
+
+
 
 int main(int argc, char *argv[])
 {
@@ -85,7 +88,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QSerialPortInfo serialPortInfo;
-    QList<QSerialPortInfo> ports = serialPortInfo.availablePorts();
+    QList<QSerialPortInfo> ports = serialPortInfo.availablePorts(); // questa dovrebbe essere ripetuta ad ogni refresh
     QList<qint32> bauds = serialPortInfo.standardBaudRates();
     QStringList portsName;
     QStringList baudsStr;
@@ -108,10 +111,12 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QQmlContext *context = engine.rootContext();
     SerialTerminal serialTerminal;
+    Excelmgm excel_mgm;
 
     context->setContextProperty("serialTerminal",&serialTerminal);
     context->setContextProperty("portsNameModel",QVariant::fromValue(portsName));
     context->setContextProperty("baudsModel",QVariant::fromValue(baudsStr));
+    context->setContextProperty("excel_mgm", &excel_mgm);
    // SettingsDialog settingsDialog;
    // context->setContextProperty("settingsDialog",&settingsDialog);
 

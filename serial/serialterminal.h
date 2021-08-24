@@ -54,7 +54,7 @@ enum ackState{
        ACK_FREE = 0,
        ACK_WAITING,
        ACK_TO_SEND
-};
+    };
     QSerialPort *serialPort;
     Logger *logger;
     char waitForAnAck;  //0 free, 1 Wait to receive an ack, 2 wat to send an ack

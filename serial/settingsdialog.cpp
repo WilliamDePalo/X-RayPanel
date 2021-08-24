@@ -56,6 +56,8 @@
 #include <QLineEdit>
 #include <QSerialPortInfo>
 
+
+
 static const char blankString[] = QT_TRANSLATE_NOOP("SettingsDialog", "N/A");
 
 SettingsDialog::SettingsDialog(/*QWidget *parent*/) :
@@ -64,7 +66,6 @@ SettingsDialog::SettingsDialog(/*QWidget *parent*/) :
     m_intValidator(new QIntValidator(0, 4000000, this))
 {
     m_ui->setupUi(this);
-
     m_ui->baudRateBox->setInsertPolicy(QComboBox::NoInsert);
 
     connect(m_ui->applyButton, &QPushButton::clicked,
@@ -80,6 +81,10 @@ SettingsDialog::SettingsDialog(/*QWidget *parent*/) :
     fillPortsInfo();
 
     updateSettings();
+
+
+
+
 }
 
 SettingsDialog::~SettingsDialog()

@@ -5,6 +5,7 @@ QT += quick
 QT += widgets
 QT += serialport
 QT += qml quick
+QT += core gui axcontainer
 static {
    QT += svg
    QTPLUGIN += qtvirtualkeyboardplugin
@@ -26,6 +27,8 @@ SOURCES += \
     ./serial/serialLogger.cpp \
     ./serial/serialterminal.cpp \
     ./serial/settingsdialog.cpp \
+    excelmgm.cpp \
+    serial/readconffile.cpp
 
 RESOURCES += \
     ./mu.de.manager.qrc
@@ -53,6 +56,8 @@ HEADERS += \
     ./serial/serialLogger.h \
     ./serial/serialterminal.h \
     ./serial/settingsdialog.h \
+    excelmgm.h \
+    serial/readconffile.h
 
 DISTFILES += \
     ./fonts/DejaVuSans.ttf \
