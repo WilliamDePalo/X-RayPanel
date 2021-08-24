@@ -259,6 +259,7 @@ property double num_mA :0
                     if (check === 2)
                         pointer.rotation = 270
                 }
+                excel_mgm.setmAr(calPointArea.idn,val_maR.text);
             }
         }
     }

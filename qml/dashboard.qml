@@ -1888,6 +1888,7 @@ Window {
                                 // salvo i trimmer
                                 excel_mgm.writeParam();
                                 excel_mgm.closeFile();
+                             //   delete excel_mgm;
                                 excel_mgm.deleteLater();
                             }
                         }

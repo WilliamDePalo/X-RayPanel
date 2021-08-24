@@ -14,6 +14,7 @@ public slots:
     int openFile();
     void writeParam();
     void setList(int pos, QString value);
+    void setmAr(int pos, QString value);
     void closeFile();
 private:
     struct TrimElem{
@@ -27,6 +28,7 @@ private:
      QAxObject * workbook;
      QAxObject * workbooks;
      QList <QString> trimBuff;
+     QList <QString> mArBuff;
      //QList <QVariant> trimBuff;
 };
 

@@ -12,9 +12,11 @@ Excelmgm::Excelmgm()
     unsigned char id = 0;
   //  trimBuff.reserve(25);
      trimBuff.begin();
+     mArBuff.begin();
     while (id < 25)
     {
         trimBuff.append("");
+        mArBuff.append("");
         id++;
     }
 
@@ -82,11 +84,16 @@ void Excelmgm::writeParam()
         //cCell->dynamicCall("Write()",trimBuff.operator[](r-22));            
       //  else
         //   r  = row - 22;
-
-        tmo = trimBuff.at(r++);
-        cCell = sheet->querySubObject("Cells(int,int)",row,7);
+//Scrivo i trimmer
+        tmo = trimBuff.at(r);
+        cCell = sheet->querySubObject("Cells(int,int)",row,7);        
         cCell->setProperty("Value",tmo);
-        QString dbg = cCell->dynamicCall("Value()").toString();
+// scrivo i Mar
+        tmo = mArBuff.at(r++);
+        cCell = sheet->querySubObject("Cells(int,int)",row,10);
+        cCell->setProperty("Value",tmo);
+
+       // QString dbg = cCell->dynamicCall("Value()").toString();
     }
     workbook->dynamicCall("Save()" );
 }
@@ -96,18 +103,21 @@ void Excelmgm::setList(int pos, QString value)
     TrimElem tmp;
     tmp.position = pos;
     tmp.sTrim=value;
+    trimBuff[(pos-1)] = value;  
+}
 
-    //if (trimBuff.at(pos-9) == NULL)
-    trimBuff[(pos-1)] = value;
-   // trimBuff.insert(pos-9,value);
-  //  trimBuff.at(pos-9) = "value";//)) value.toStdString()"value";
-    // lo scrivo nel posto giusto
-  //  strcpy((char*)trimBuff.at(pos-9),(const void *)&value.toStdString());
+void Excelmgm::setmAr(int pos, QString value)
+{
+    TrimElem tmp;
+    tmp.position = pos;
+    tmp.sTrim=value;
+    mArBuff[(pos-1)] = value;
 }
 
 void Excelmgm::closeFile()
 {
      excel->dynamicCall("Quit()");
+       delete excel;
 }
 
 Excelmgm::~Excelmgm()
@@ -115,5 +125,5 @@ Excelmgm::~Excelmgm()
         // workbook->dynamicCall("Close()");  //Close file
     // don't forget to quit Excel
   //  excel->dynamicCall("Quit()");
-    delete excel;
+   // delete excel;
 }
